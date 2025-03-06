@@ -10,7 +10,14 @@ body {
     min-height: 100vh;
 }
 
-.container {
+.splash-body {
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container, .splash-container {
     text-align: center;
     padding: 20px;
 }
@@ -23,7 +30,23 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Centerpiece Styling */
+/* Splash Page Styling */
+.splash-container button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #ff66b2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.splash-container button:hover {
+    background-color: #ff3399;
+}
+
+/* Main Page Styling */
 .centerpiece {
     position: relative;
     margin: 20px 0;
@@ -45,59 +68,6 @@ h1 {
     transform: scale(1.2);
 }
 
-/* Profile Sections */
-.profile-section {
-    display: none; /* Hidden by default */
-    margin-top: 40px;
-    padding: 20px;
-    background-color: rgba(255, 102, 178, 0.1); /* Semi-transparent pink */
-    border-radius: 10px;
-    text-align: left;
-}
-
-.profile-section.active {
-    display: block;
-}
-
-h2 {
-    color: #ff99cc;
-    margin-bottom: 10px;
-}
-
-input {
-    padding: 8px;
-    margin-right: 10px;
-    border: 1px solid #ff80bf;
-    border-radius: 4px;
-    background-color: rgba(255, 240, 245, 0.2);
-    color: #ff66b2;
-}
-
-button {
-    padding: 8px 15px;
-    background-color: #ff66b2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #ff3399;
-}
-
-div[id$="Data"] {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: rgba(255, 230, 240, 0.3);
-    border-radius: 4px;
-    color: #ff99cc;
-}
-
-/* Audio element hidden */
-audio {
-    display: none;
-}
 /* Audio element hidden */
 audio {
     display: none;
