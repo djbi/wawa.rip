@@ -22,4 +22,19 @@ function redirectSpotify() {
     window.location.href = 'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi?si=HMZBKe2NT9yL35EynPjtzw';
 }
 
-// Laser pointer effect (moved to CSS with pseudo-element for better performance)
+// Animate the browser tab title
+const baseTitle = "meow meow meow meow meow meow meow meow meow meow";
+let shift = 0;
+function animateTitle() {
+    shift = (shift + 1) % baseTitle.length;
+    const shiftedTitle = baseTitle.slice(shift) + baseTitle.slice(0, shift);
+    document.title = shiftedTitle;
+}
+setInterval(animateTitle, 200); // Animate every 200ms
+
+// Laser pointer effect
+document.addEventListener('mousemove', (e) => {
+    const laser = document.querySelector('.laser-pointer');
+    laser.style.left = `${e.clientX}px`;
+    laser.style.top = `${e.clientY}px`;
+});
