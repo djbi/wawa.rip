@@ -21,3 +21,5 @@ function redirectTikTok() {
 function redirectSpotify() {
     window.location.href = 'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi?si=HMZBKe2NT9yL35EynPjtzw';
 }
+
+// Laser pointer effect (moved to CSS with pseudo-element for better performance)
