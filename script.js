@@ -1,3 +1,11 @@
+// Toggle profile sections
+document.querySelectorAll('.icons img').forEach((img, index) => {
+    img.addEventListener('click', () => {
+        document.querySelectorAll('.profile-section').forEach(section => section.classList.remove('active'));
+        document.querySelectorAll('.profile-section')[index].classList.add('active');
+    });
+});
+
 // Roblox Data Fetch (Mock)
 function fetchRobloxData() {
     const username = document.getElementById('robloxUsername').value;
