@@ -13,38 +13,25 @@
         <!-- Centerpiece with Icons Only -->
         <div class="centerpiece">
             <div class="icons">
-                <img src="icons/roblox.png" alt="Roblox" onclick="fetchRobloxData()">
-                <img src="icons/brawlstars.png" alt="Brawl Stars" onclick="fetchBrawlStarsData()">
-                <img src="icons/tiktok.png" alt="TikTok" onclick="fetchTikTokData()">
-                <img src="icons/spotify.png" alt="Spotify" onclick="fetchSpotifyData()">
+                <img src="icons/roblox.png" alt="Roblox" onclick="redirectRoblox()">
+                <img src="icons/tiktok.png" alt="TikTok" onclick="redirectTikTok()">
+                <img src="icons/spotify.png" alt="Spotify" onclick="redirectSpotify()">
             </div>
         </div>
 
-        <!-- Profile Sections (Hidden by default, toggleable) -->
+        <!-- Profile Sections (Hidden by default, now only for display if needed) -->
         <section id="roblox" class="profile-section">
             <h2>Roblox Profile</h2>
-            <input type="text" id="robloxUsername" placeholder="Enter Roblox Username">
-            <button onclick="fetchRobloxData()">Link Roblox</button>
             <div id="robloxData"></div>
-        </section>
-
-        <section id="brawlStars" class="profile-section">
-            <h2>Brawl Stars Profile</h2>
-            <input type="text" id="brawlStarsTag" placeholder="Enter Brawl Stars Player Tag">
-            <button onclick="fetchBrawlStarsData()">Link Brawl Stars</button>
-            <div id="brawlStarsData"></div>
         </section>
 
         <section id="tiktok" class="profile-section">
             <h2>TikTok Feed</h2>
-            <input type="text" id="tiktokUsername" placeholder="Enter TikTok Username">
-            <button onclick="fetchTikTokData()">Link TikTok</button>
             <div id="tiktokData"></div>
         </section>
 
         <section id="spotify" class="profile-section">
             <h2>Spotify Favorites</h2>
-            <button onclick="fetchSpotifyData()">Link Spotify</button>
             <div id="spotifyData"></div>
         </section>
     </div>
@@ -57,6 +44,7 @@
 
     <script src="script.js"></script>
 </body>
+</html>
 </html>
     <script src="script.js"></script>
 </body>
