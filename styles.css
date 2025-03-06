@@ -8,18 +8,18 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    flex-direction: column;
 }
 
-.splash-body {
-    background-color: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.container, .splash-container {
+.splash-container {
     text-align: center;
     padding: 20px;
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+    display: none; /* Initially hidden */
 }
 
 h1 {
@@ -66,39 +66,6 @@ h1 {
 
 .icons img:hover {
     transform: scale(1.2);
-}
-
-.meow-text {
-    font-size: 24px;
-    margin-top: 20px;
-    opacity: 0.8;
-}
-
-/* Profile Sections */
-.profile-section {
-    display: none; /* Hidden by default */
-    margin-top: 40px;
-    padding: 20px;
-    background-color: rgba(255, 102, 178, 0.1); /* Semi-transparent pink */
-    border-radius: 10px;
-    text-align: left;
-}
-
-.profile-section.active {
-    display: block;
-}
-
-h2 {
-    color: #ff99cc;
-    margin-bottom: 10px;
-}
-
-div[id$="Data"] {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: rgba(255, 230, 240, 0.3);
-    border-radius: 4px;
-    color: #ff99cc;
 }
 
 /* Audio element hidden */
