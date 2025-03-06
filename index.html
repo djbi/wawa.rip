@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wawa.rip</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>wawa.rip</h1>
+        
+        <!-- Centerpiece -->
+        <div class="centerpiece">
+            <div class="faith">FAITH</div>
+            <div class="icons">
+                <img src="icons/roblox.png" alt="Roblox" onclick="fetchRobloxData()">
+                <img src="icons/brawlstars.png" alt="Brawl Stars" onclick="fetchBrawlStarsData()">
+                <img src="icons/tiktok.png" alt="TikTok" onclick="fetchTikTokData()">
+                <img src="icons/spotify.png" alt="Spotify" onclick="fetchSpotifyData()">
+            </div>
+        </div>
+
+        <!-- Roblox Section -->
+        <section id="roblox">
+            <h2>Roblox Profile</h2>
+            <input type="text" id="robloxUsername" placeholder="Enter Roblox Username">
+            <button onclick="fetchRobloxData()">Link Roblox</button>
+            <div id="robloxData"></div>
+        </section>
+
+        <!-- Brawl Stars Section -->
+        <section id="brawlStars">
+            <h2>Brawl Stars Profile</h2>
+            <input type="text" id="brawlStarsTag" placeholder="Enter Brawl Stars Player Tag">
+            <button onclick="fetchBrawlStarsData()">Link Brawl Stars</button>
+            <div id="brawlStarsData"></div>
+        </section>
+
+        <!-- TikTok Section -->
+        <section id="tiktok">
+            <h2>TikTok Feed</h2>
+            <input type="text" id="tiktokUsername" placeholder="Enter TikTok Username">
+            <button onclick="fetchTikTokData()">Link TikTok</button>
+            <div id="tiktokData"></div>
+        </section>
+
+        <!-- Spotify Section -->
+        <section id="spotify">
+            <h2>Spotify Favorites</h2>
+            <button onclick="fetchSpotifyData()">Link Spotify</button>
+            <div id="spotifyData"></div>
+        </section>
+    </div>
+
+    <!-- Background Music -->
+    <audio autoplay loop>
+        <source src="cocainewoman.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
