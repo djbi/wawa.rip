@@ -3,7 +3,7 @@ function enterSite() {
     document.getElementById('splash').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
     const audio = document.getElementById('backgroundMusic');
-    audio.currentTime = 0; // Reset to start
+    audio.currentTime = 0;
     audio.play().catch(function(error) {
         console.log("Audio playback failed: ", error);
     });
@@ -30,9 +30,9 @@ function animateTitle() {
     const shiftedTitle = baseTitle.slice(shift) + baseTitle.slice(0, shift);
     document.title = shiftedTitle;
 }
-setInterval(animateTitle, 100); // Faster animation (100ms)
+setInterval(animateTitle, 100);
 
-// Laser pointer effect with trail
+// Laser pointer effect with pink trail
 const laser = document.querySelector('.laser-pointer');
 const body = document.body;
 
@@ -40,17 +40,15 @@ document.addEventListener('mousemove', (e) => {
     laser.style.left = `${e.clientX}px`;
     laser.style.top = `${e.clientY}px`;
 
-    // Create trail effect
     const trail = document.createElement('div');
     trail.classList.add('trail');
     trail.style.left = `${e.clientX}px`;
     trail.style.top = `${e.clientY}px`;
     body.appendChild(trail);
 
-    // Remove trail after 1 second
     setTimeout(() => {
         trail.remove();
-    }, 1000);
+    }, 600);
 });
 
 document.addEventListener('touchmove', (e) => {
@@ -58,15 +56,21 @@ document.addEventListener('touchmove', (e) => {
     laser.style.left = `${touch.clientX}px`;
     laser.style.top = `${touch.clientY}px`;
 
-    // Create trail effect for touch
     const trail = document.createElement('div');
     trail.classList.add('trail');
     trail.style.left = `${touch.clientX}px`;
     trail.style.top = `${touch.clientY}px`;
     body.appendChild(trail);
 
-    // Remove trail after 1 second
     setTimeout(() => {
         trail.remove();
-    }, 1000);
+    }, 600);
 }, { passive: true });
+
+// Ensure icons are tappable on mobile
+document.querySelectorAll('.icons img').forEach((icon) => {
+    icon.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Prevent scrolling or zooming
+        icon.click(); // Trigger the onclick event
+    }, { passive: false });
+});
