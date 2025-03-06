@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wawa.rip - Enter</title>
+    <title>wawa.rip</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="splash-body">
-    <div class="splash-container">
+<body>
+    <div class="container">
         <h1>wawa.rip</h1>
-        <button onclick="window.location.href='main.html'">Click to Enter</button>
+        
+        <!-- Centerpiece with Icons -->
+        <div class="centerpiece">
+            <div class="icons">
+                <img src="icons/roblox.png" alt="Roblox" onclick="redirectRoblox()">
+                <img src="icons/tiktok.png" alt="TikTok" onclick="redirectTikTok()">
+                <img src="icons/spotify.png" alt="Spotify" onclick="redirectSpotify()">
+            </div>
+        </div>
     </div>
 
     <!-- Background Music -->
@@ -17,9 +25,7 @@
         <source src="cocainewoman.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-</body>
-</html>
-</html>
+
     <script src="script.js"></script>
 </body>
 </html>
