@@ -96,3 +96,6 @@ function displaySpotifyData(data) {
         <p><strong>Playlist:</strong> ${data.playlist}</p>
     `;
 }
+        <p><strong>Playlist:</strong> ${data.playlist}</p>
+    `;
+}
