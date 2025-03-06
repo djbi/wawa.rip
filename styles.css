@@ -10,21 +10,7 @@ body {
     min-height: 100vh;
     flex-direction: column;
     overflow: hidden;
-    cursor: none; /* Hide default cursor for laser effect */
-}
-
-/* Animated Title in Browser Tab (via ::before pseudo-element) */
-@keyframes moveTitle {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(20px); }
-    100% { transform: translateX(0); }
-}
-
-head::before {
-    content: "meow meow meow meow meow meow meow meow meow meow";
-    animation: moveTitle 2s infinite;
-    position: absolute;
-    visibility: hidden; /* Not visible but animates for title */
+    cursor: none; /* Hide default cursor */
 }
 
 /* Splash Page Styling */
@@ -94,7 +80,7 @@ h1 {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 4px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-shadow: 0 0 5px #ff66b2, 0 0 10px #ff99cc;
 }
 
@@ -102,6 +88,7 @@ h1 {
 .meow-text {
     font-size: 36px; /* Smaller than h1 (72px) */
     margin-top: 10px;
+    color: #ff66b2; /* Ensure visibility */
     animation: blink 0.2s infinite; /* Fast disappear/reappear */
 }
 
@@ -124,7 +111,7 @@ h1 {
     width: 40px;
     height: 40px;
     margin: 0 10px;
-    cursor: pointer;
+    cursor: none; /* Reinforce no default cursor */
     transition: transform 0.2s;
 }
 
@@ -132,9 +119,8 @@ h1 {
     transform: scale(1.2);
 }
 
-/* Laser Pointer Cursor Effect */
-body::after {
-    content: '';
+/* Laser Pointer Cursor */
+.laser-pointer {
     position: absolute;
     width: 10px;
     height: 10px;
@@ -142,27 +128,8 @@ body::after {
     border-radius: 50%;
     pointer-events: none;
     transform: translate(-50%, -50%);
-    transition: transform 0.1s;
     z-index: 9999;
 }
-
-body:hover::after {
-    display: block; /* Ensure it shows on hover */
-}
-
-body {
-    cursor: none; /* Hide default cursor */
-}
-
-body:hover {
-    cursor: none; /* Reinforce no default cursor */
-}
-
-document.addEventListener('mousemove', (e) => {
-    const laser = document.querySelector('body::after');
-    laser.style.left = `${e.clientX}px`;
-    laser.style.top = `${e.clientY}px`;
-});
 
 /* Audio element hidden */
 audio {
