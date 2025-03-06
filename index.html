@@ -3,37 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wawa.rip</title>
+    <title>wawa.rip - Enter</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="container">
+<body class="splash-body">
+    <div class="splash-container">
         <h1>wawa.rip</h1>
-        
-        <!-- Centerpiece with Icons Only -->
-        <div class="centerpiece">
-            <div class="icons">
-                <img src="icons/roblox.png" alt="Roblox" onclick="redirectRoblox()">
-                <img src="icons/tiktok.png" alt="TikTok" onclick="redirectTikTok()">
-                <img src="icons/spotify.png" alt="Spotify" onclick="redirectSpotify()">
-            </div>
-        </div>
-
-        <!-- Profile Sections (Hidden by default, now only for display if needed) -->
-        <section id="roblox" class="profile-section">
-            <h2>Roblox Profile</h2>
-            <div id="robloxData"></div>
-        </section>
-
-        <section id="tiktok" class="profile-section">
-            <h2>TikTok Feed</h2>
-            <div id="tiktokData"></div>
-        </section>
-
-        <section id="spotify" class="profile-section">
-            <h2>Spotify Favorites</h2>
-            <div id="spotifyData"></div>
-        </section>
+        <button onclick="window.location.href='main.html'">Click to Enter</button>
     </div>
 
     <!-- Background Music -->
@@ -41,8 +17,6 @@
         <source src="cocainewoman.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-
-    <script src="script.js"></script>
 </body>
 </html>
 </html>
