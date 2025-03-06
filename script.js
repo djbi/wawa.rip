@@ -1,4 +1,17 @@
-// Toggle profile sections
+// Redirect functions
+function redirectRoblox() {
+    window.location.href = 'https://www.roblox.com/share?code=44cb54032142d34787f1f2ad3aff1033&type=Profile&source=ProfileShare&stamp=1741296009841';
+}
+
+function redirectTikTok() {
+    window.location.href = 'https://www.tiktok.com/@faith.meows?_t=ZN-8uT1pCNKhvC&_r=1';
+}
+
+function redirectSpotify() {
+    window.location.href = 'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi?si=HMZBKe2NT9yL35EynPjtzw';
+}
+
+// Toggle profile sections (optional display)
 document.querySelectorAll('.icons img').forEach((img, index) => {
     img.addEventListener('click', () => {
         document.querySelectorAll('.profile-section').forEach(section => section.classList.remove('active'));
@@ -6,18 +19,13 @@ document.querySelectorAll('.icons img').forEach((img, index) => {
     });
 });
 
-// Roblox Data Fetch (Mock)
+// Placeholder data functions (no input needed due to redirects)
 function fetchRobloxData() {
-    const username = document.getElementById('robloxUsername').value;
-    if (!username) {
-        alert('Please enter a Roblox username');
-        return;
-    }
     const mockRobloxData = {
-        username: username,
-        id: '12345678',
+        username: 'Linked Profile',
+        id: '44cb5403',
         friendsCount: 50,
-        status: 'Playing My Awesome Game'
+        status: 'Online'
     };
     displayRobloxData(mockRobloxData);
 }
@@ -31,42 +39,11 @@ function displayRobloxData(data) {
     `;
 }
 
-// Brawl Stars Data Fetch (Mock)
-function fetchBrawlStarsData() {
-    const tag = document.getElementById('brawlStarsTag').value;
-    if (!tag) {
-        alert('Please enter a Brawl Stars player tag');
-        return;
-    }
-    const mockBrawlStarsData = {
-        tag: tag,
-        name: 'PlayerOne',
-        trophies: 25000,
-        club: 'Cool Club'
-    };
-    displayBrawlStarsData(mockBrawlStarsData);
-}
-
-function displayBrawlStarsData(data) {
-    document.getElementById('brawlStarsData').innerHTML = `
-        <p><strong>Tag:</strong> ${data.tag}</p>
-        <p><strong>Name:</strong> ${data.name}</p>
-        <p><strong>Trophies:</strong> ${data.trophies}</p>
-        <p><strong>Club:</strong> ${data.club}</p>
-    `;
-}
-
-// TikTok Data Fetch (Mock)
 function fetchTikTokData() {
-    const username = document.getElementById('tiktokUsername').value;
-    if (!username) {
-        alert('Please enter a TikTok username');
-        return;
-    }
     const mockTikTokData = {
-        username: username,
+        username: '@faith.meows',
         followers: 10000,
-        latestVideo: 'Funny Dance Video'
+        latestVideo: 'Latest Post'
     };
     displayTikTokData(mockTikTokData);
 }
@@ -79,10 +56,9 @@ function displayTikTokData(data) {
     `;
 }
 
-// Spotify Data Fetch (Mock)
 function fetchSpotifyData() {
     const mockSpotifyData = {
-        currentSong: 'Song Title',
+        currentSong: 'Current Track',
         artist: 'Artist Name',
         playlist: 'My Favorites'
     };
@@ -93,9 +69,6 @@ function displaySpotifyData(data) {
     document.getElementById('spotifyData').innerHTML = `
         <p><strong>Current Song:</strong> ${data.currentSong}</p>
         <p><strong>Artist:</strong> ${data.artist}</p>
-        <p><strong>Playlist:</strong> ${data.playlist}</p>
-    `;
-}
         <p><strong>Playlist:</strong> ${data.playlist}</p>
     `;
 }
