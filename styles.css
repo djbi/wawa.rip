@@ -1,39 +1,45 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #ff99cc; /* Bubblegum pink background */
+    background-color: #000; /* Black background */
     margin: 0;
     padding: 20px;
+    color: #ff66b2; /* Neon pink for text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    background: #ffccdd; /* Lighter pink for container */
+    text-align: center;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
-    text-align: center;
-    color: #ff3399; /* Darker pink for text */
+    font-size: 48px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px #ff66b2, 0 0 20px #ff99cc, 0 0 30px #ff3399;
+    margin-bottom: 20px;
 }
 
 /* Centerpiece Styling */
 .centerpiece {
-    text-align: center;
-    margin: 20px 0;
+    position: relative;
 }
 
 .faith {
-    font-size: 80px;
+    font-size: 120px;
     font-weight: bold;
-    color: #ff66b2; /* Bright pink for "FAITH" */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    text-shadow: 0 0 10px #ff66b2, 0 0 20px #ff99cc, 0 0 30px #ff3399;
+    margin-bottom: 10px;
 }
 
 .icons {
-    margin-top: 10px;
+    margin: 20px 0;
 }
 
 .icons img {
@@ -41,6 +47,7 @@ h1 {
     height: 40px;
     margin: 0 10px;
     cursor: pointer;
+    filter: drop-shadow(0 0 5px #ff66b2);
     transition: transform 0.2s;
 }
 
@@ -48,16 +55,52 @@ h1 {
     transform: scale(1.2);
 }
 
-section {
-    margin: 20px 0;
-    padding: 15px;
-    border: 1px solid #ff80bf; /* Pink border */
-    border-radius: 5px;
-    background-color: #ffe6f0; /* Very light pink */
+.tagline {
+    font-size: 24px;
+    font-style: italic;
+    margin: 10px 0;
+    opacity: 0.8;
+}
+
+.social-icons {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.social-icons span {
+    margin: 0 5px;
+}
+
+.contact {
+    font-size: 16px;
+    opacity: 0.6;
+    margin: 10px 0;
+}
+
+.song {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    opacity: 0.7;
+}
+
+/* Profile Sections */
+.profile-section {
+    display: none; /* Hidden by default */
+    margin-top: 40px;
+    padding: 20px;
+    background-color: rgba(255, 102, 178, 0.1); /* Semi-transparent pink */
+    border-radius: 10px;
+    text-align: left;
+}
+
+.profile-section.active {
+    display: block;
 }
 
 h2 {
-    color: #ff3399;
+    color: #ff99cc;
+    margin-bottom: 10px;
 }
 
 input {
@@ -65,7 +108,8 @@ input {
     margin-right: 10px;
     border: 1px solid #ff80bf;
     border-radius: 4px;
-    background-color: #fff0f5;
+    background-color: rgba(255, 240, 245, 0.2);
+    color: #ff66b2;
 }
 
 button {
@@ -84,9 +128,14 @@ button:hover {
 div[id$="Data"] {
     margin-top: 10px;
     padding: 10px;
-    background-color: #fff0f5;
+    background-color: rgba(255, 230, 240, 0.3);
     border-radius: 4px;
-    color: #ff3399;
+    color: #ff99cc;
+}
+
+/* Audio element hidden */
+audio {
+    display: none;
 }
 
 /* Audio element hidden */
