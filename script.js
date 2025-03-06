@@ -30,11 +30,43 @@ function animateTitle() {
     const shiftedTitle = baseTitle.slice(shift) + baseTitle.slice(0, shift);
     document.title = shiftedTitle;
 }
-setInterval(animateTitle, 200); // Animate every 200ms
+setInterval(animateTitle, 100); // Faster animation (100ms)
 
-// Laser pointer effect
+// Laser pointer effect with trail
+const laser = document.querySelector('.laser-pointer');
+const body = document.body;
+
 document.addEventListener('mousemove', (e) => {
-    const laser = document.querySelector('.laser-pointer');
     laser.style.left = `${e.clientX}px`;
     laser.style.top = `${e.clientY}px`;
+
+    // Create trail effect
+    const trail = document.createElement('div');
+    trail.classList.add('trail');
+    trail.style.left = `${e.clientX}px`;
+    trail.style.top = `${e.clientY}px`;
+    body.appendChild(trail);
+
+    // Remove trail after 1 second
+    setTimeout(() => {
+        trail.remove();
+    }, 1000);
 });
+
+document.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    laser.style.left = `${touch.clientX}px`;
+    laser.style.top = `${touch.clientY}px`;
+
+    // Create trail effect for touch
+    const trail = document.createElement('div');
+    trail.classList.add('trail');
+    trail.style.left = `${touch.clientX}px`;
+    trail.style.top = `${touch.clientY}px`;
+    body.appendChild(trail);
+
+    // Remove trail after 1 second
+    setTimeout(() => {
+        trail.remove();
+    }, 1000);
+}, { passive: true });
