@@ -1,54 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>meow meow meow meow meow meow meow meow meow meow</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>meow meow meow meow meow meow meow</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="splash-container" id="splash">
-        <!-- Stars in top-left -->
-        <div class="stars stars-top-left">
-            <div class="star"></div>
-            <div class="star"></div>
-            <div class="star"></div>
-        </div>
-        <!-- Click to Enter text -->
-        <div class="click-to-enter" onclick="enterSite()">CLICK TO ENTER</div>
-        <!-- Stars in bottom-right -->
-        <div class="stars stars-bottom-right">
-            <div class="star"></div>
-            <div class="star"></div>
-            <div class="star"></div>
-            <div class="star"></div>
-        </div>
-    </div>
-
-    <div class="container" id="main-content" style="display: none;">
-        <h1>wawa</h1>
-        <p class="love-text"><3</p>
-        
-        <!-- Centerpiece with Icons -->
-        <div class="centerpiece">
-            <div class="icons">
-                <img src="icons/roblox.png" alt="" onclick="redirectRoblox()">
-                <img src="icons/tiktok.png" alt="" onclick="redirectTikTok()">
-                <img src="icons/spotify.png" alt="" onclick="redirectSpotify()">
-            </div>
-        </div>
-    </div>
-
-    <!-- Laser Pointer Cursor -->
-    <div class="laser-pointer"></div>
-
-    <!-- Background Music -->
-    <audio id="backgroundMusic" loop>
-        <source src="cocainewoman.mp3" type="audio/mpeg">
-        <!-- For web hosting, replace src with a public URL, e.g., <source src="https://yourserver.com/cocainewoman.mp3" type="audio/mpeg"> -->
-        Your browser does not support the audio element.
-    </audio>
-
-    <script src="script.js"></script>
+  <div id="wawa">WAWA</div>
+  <div id="heart">&lt;3</div>
+  <div id="meow-text">meow meow meow meow meow meow meow</div>
+  <div id="logos">
+    <a href="https://www.roblox.com/share?code=44cb54032142d34787f1f2ad3aff1033&type=Profile&source=ProfileShare&stamp=1741302268702" target="_blank">
+      <img src="roblox.png" alt="ROBLOX">
+    </a>
+    <a href="https://www.tiktok.com/@faith.meows?_t=ZN-8uT1pCNKhvC&_r=1" target="_blank">
+      <img src="tiktok.png" alt="TikTok">
+    </a>
+    <a href="https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi?si=HMZBKe2NT9yL35EynPjtzw" target="_blank">
+      <img src="spotify.png" alt="Spotify">
+    </a>
+  </div>
+  <div id="laser"></div>
+  <audio id="song" src="cocaine_woman.mp3" autoplay></audio>
+  <script src="script.js"></script>
 </body>
 </html>
