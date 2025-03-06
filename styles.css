@@ -10,14 +10,7 @@ body {
     min-height: 100vh;
 }
 
-.splash-body {
-    background-color: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.container, .splash-container {
+.container {
     text-align: center;
     padding: 20px;
 }
@@ -30,23 +23,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Splash Page Styling */
-.splash-container button {
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #ff66b2;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.splash-container button:hover {
-    background-color: #ff3399;
-}
-
-/* Main Page Styling */
+/* Centerpiece Styling */
 .centerpiece {
     position: relative;
     margin: 20px 0;
