@@ -1,16 +1,16 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #000; /* Black background */
+    background-color: #000;
     margin: 0;
     padding: 0;
-    color: #ff66b2; /* Neon pink for text */
+    color: #ff66b2;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     flex-direction: column;
     overflow: hidden;
-    cursor: none; /* Hide default cursor */
+    touch-action: none; /* Improve mobile touch handling */
 }
 
 /* Splash Page Styling */
@@ -24,20 +24,19 @@ body {
     background-color: #000;
 }
 
-/* Click to Enter Text */
 .click-to-enter {
     font-family: monospace;
     font-size: 24px;
-    color: #000; /* Matches background to blend in */
+    color: #ff69b4; /* Bubblegum pink */
     padding: 10px 20px;
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 2px;
-    transition: color 0.3s; /* Smooth transition for hover */
+    transition: color 0.3s;
 }
 
 .click-to-enter:hover {
-    color: white; /* Reveals text on hover */
+    color: white;
 }
 
 /* Stars Styling */
@@ -69,27 +68,32 @@ body {
 .container {
     text-align: center;
     padding: 20px;
-    display: none; /* Initially hidden */
+    display: none;
     width: 100%;
     height: 100vh;
     background-color: #000;
 }
 
 h1 {
-    font-size: 72px;
+    font-size: 90px; /* Bigger */
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 4px;
+    letter-spacing: 6px;
     margin-bottom: 10px;
-    text-shadow: 0 0 5px #ff66b2, 0 0 10px #ff99cc;
+    text-shadow: 
+        0 0 5px #ff66b2,
+        0 0 10px #ff99cc,
+        2px 0 0 #ff66b2,
+        -2px 0 0 #ff66b2,
+        0 2px 0 #ff66b2,
+        0 -2px 0 #ff66b2; /* Dashed effect */
 }
 
-/* Meow Text Animation */
-.meow-text {
-    font-size: 36px; /* Smaller than h1 (72px) */
+.love-text {
+    font-size: 36px;
     margin-top: 10px;
-    color: #ff66b2; /* Ensure visibility */
-    animation: blink 0.2s infinite; /* Fast disappear/reappear */
+    color: #ff66b2;
+    animation: blink 0.2s infinite;
 }
 
 @keyframes blink {
@@ -105,13 +109,15 @@ h1 {
 
 .icons {
     margin: 20px 0;
+    display: flex;
+    justify-content: center;
 }
 
 .icons img {
     width: 40px;
     height: 40px;
     margin: 0 10px;
-    cursor: none; /* Reinforce no default cursor */
+    cursor: none;
     transition: transform 0.2s;
 }
 
@@ -119,18 +125,53 @@ h1 {
     transform: scale(1.2);
 }
 
-/* Laser Pointer Cursor */
+/* Laser Pointer Cursor with Trail */
 .laser-pointer {
     position: absolute;
     width: 10px;
     height: 10px;
-    background: red; /* PowerPoint laser color */
+    background: #ff69b4; /* Bubblegum pink */
     border-radius: 50%;
     pointer-events: none;
     transform: translate(-50%, -50%);
     z-index: 9999;
+    box-shadow: 0 0 10px #ff69b4; /* Glow effect */
 }
 
+.trail {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #ff69b4;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; transform: scale(2); }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .icons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .icons img {
+        width: 30px;
+        height: 30px;
+        margin: 5px;
+    }
+    h1 {
+        font-size: 60px; /* Adjust for mobile */
+    }
+    .love-text {
+        font-size: 24px;
+    }
+}
 /* Audio element hidden */
 audio {
     display: none;
