@@ -1,85 +1,180 @@
 body {
-  margin: 0;
-  padding: 0;
-  background-color: #000000;
-  overflow-x: hidden;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    margin: 0;
+    padding: 0;
+    color: #ff66b4; /* Bubblegum pink for consistency */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    overflow: hidden;
+    touch-action: manipulation; /* Optimize for touch events */
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
 }
 
-#wawa {
-  font-size: 5em;
-  color: #ffc1cc;
-  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+/* Splash Page Styling */
+.splash-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
 }
 
-#heart {
-  font-size: 2em;
-  color: #ffc1cc;
-  animation: blink 0.5s infinite;
+.click-to-enter {
+    font-family: monospace;
+    font-size: 24px;
+    color: #ff69b4; /* Bubblegum pink */
+    padding: 10px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: color 0.3s;
 }
 
-#meow-text {
-  position: absolute;
-  top: 50px;
-  left: -1000px;
-  white-space: nowrap;
-  color: #fff;
-  font-size: 1.5em;
-  animation: move 10s linear infinite;
+.click-to-enter:hover {
+    color: white;
 }
 
-#logos {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
+/* Stars Styling */
+.stars {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
 }
 
-#logos img {
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
+.stars-top-left {
+    top: 20px;
+    left: 20px;
 }
 
-#logos a {
-  text-decoration: none;
+.stars-bottom-right {
+    bottom: 20px;
+    right: 20px;
+    align-items: flex-end;
 }
 
-.laser-trail {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  background-color: #ffc1cc;
-  border-radius: 50%;
-  animation: fade 0.8s linear forwards;
+.star {
+    width: 2px;
+    height: 2px;
+    background-color: white;
+    margin: 5px 0;
+}
+
+/* Main Content Styling */
+.container {
+    text-align: center;
+    padding: 20px;
+    display: none;
+    width: 100%;
+    height: 100vh;
+    background-color: #000;
+}
+
+h1 {
+    font-size: 120px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    margin-bottom: 10px;
+    text-shadow: 
+        0 0 5px #ff69b4,
+        0 0 10px #ff99cc,
+        2px 0 0 #ff69b4,
+        -2px 0 0 #ff69b4,
+        0 2px 0 #ff69b4,
+        0 -2px 0 #ff69b4; /* Dashed effect */
+}
+
+.love-text {
+    font-size: 36px;
+    margin-top: 10px;
+    color: #ff69b4;
+    animation: blink 0.1s infinite;
 }
 
 @keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
-@keyframes move {
-  from { left: -1000px; }
-  to { left: 1000px; }
+/* Centerpiece Styling */
+.centerpiece {
+    position: relative;
+    margin: 20px 0;
 }
 
-@keyframes fade {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
+.icons {
+    margin: 20px 0;
+    display: flex !important; /* Ensure icons are visible */
+    justify-content: center;
+    visibility: visible !important; /* Force visibility */
 }
 
-@media (max-width: 600px) {
-  #wawa { font-size: 3em; }
-  #heart { font-size: 1.5em; }
-  #meow-text { font-size: 1em; }
-  #logos img { width: 30px; height: 30px; }
+.icons img {
+    width: 40px;
+    height: 40px;
+    margin: 0 10px;
+    cursor: pointer; /* Ensure tappable on mobile */
+    transition: transform 0.2s;
+    display: inline-block !important; /* Ensure display */
 }
+
+.icons img:hover {
+    transform: scale(1.2);
+}
+
+/* Laser Pointer Cursor with Pink Trail */
+.laser-pointer {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ff69b4;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    box-shadow: 0 0 10px #ff69b4;
+}
+
+.trail {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #ff69b4;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    animation: fadeOut 0.6s forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; transform: scale(2); }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .icons {
+        flex-wrap: wrap;
+        justify-content: center;
+        display: flex !important; /* Ensure icons are visible on mobile */
+        visibility: visible !important;
+    }
+    .icons img {
+        width: 30px;
+        height: 30px;
+        margin: 5px;
+        display: inline-block !important;
+    }
+    h1 {
+        font-size: 80px;
+    }
+    .love-text {
         font-size: 24px;
     }
 }
