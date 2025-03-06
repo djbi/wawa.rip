@@ -19,34 +19,37 @@
                 <img src="icons/tiktok.png" alt="TikTok" onclick="fetchTikTokData()">
                 <img src="icons/spotify.png" alt="Spotify" onclick="fetchSpotifyData()">
             </div>
+            <p class="tagline">I don’t lose</p>
+            <div class="social-icons">
+                <span>💰</span> <span>💻</span> <span>✈️</span> <span>🐱</span>
+            </div>
+            <p class="contact">contact at wawa@rip</p>
+            <p class="song">Cocaine Woman</p>
         </div>
 
-        <!-- Roblox Section -->
-        <section id="roblox">
+        <!-- Profile Sections (Hidden by default, toggleable) -->
+        <section id="roblox" class="profile-section">
             <h2>Roblox Profile</h2>
             <input type="text" id="robloxUsername" placeholder="Enter Roblox Username">
             <button onclick="fetchRobloxData()">Link Roblox</button>
             <div id="robloxData"></div>
         </section>
 
-        <!-- Brawl Stars Section -->
-        <section id="brawlStars">
+        <section id="brawlStars" class="profile-section">
             <h2>Brawl Stars Profile</h2>
             <input type="text" id="brawlStarsTag" placeholder="Enter Brawl Stars Player Tag">
             <button onclick="fetchBrawlStarsData()">Link Brawl Stars</button>
             <div id="brawlStarsData"></div>
         </section>
 
-        <!-- TikTok Section -->
-        <section id="tiktok">
+        <section id="tiktok" class="profile-section">
             <h2>TikTok Feed</h2>
             <input type="text" id="tiktokUsername" placeholder="Enter TikTok Username">
             <button onclick="fetchTikTokData()">Link TikTok</button>
             <div id="tiktokData"></div>
         </section>
 
-        <!-- Spotify Section -->
-        <section id="spotify">
+        <section id="spotify" class="profile-section">
             <h2>Spotify Favorites</h2>
             <button onclick="fetchSpotifyData()">Link Spotify</button>
             <div id="spotifyData"></div>
