@@ -10,6 +10,21 @@ body {
     min-height: 100vh;
     flex-direction: column;
     overflow: hidden;
+    cursor: none; /* Hide default cursor for laser effect */
+}
+
+/* Animated Title in Browser Tab (via ::before pseudo-element) */
+@keyframes moveTitle {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(20px); }
+    100% { transform: translateX(0); }
+}
+
+head::before {
+    content: "meow meow meow meow meow meow meow meow meow meow";
+    animation: moveTitle 2s infinite;
+    position: absolute;
+    visibility: hidden; /* Not visible but animates for title */
 }
 
 /* Splash Page Styling */
@@ -83,6 +98,19 @@ h1 {
     text-shadow: 0 0 5px #ff66b2, 0 0 10px #ff99cc;
 }
 
+/* Meow Text Animation */
+.meow-text {
+    font-size: 36px; /* Smaller than h1 (72px) */
+    margin-top: 10px;
+    animation: blink 0.2s infinite; /* Fast disappear/reappear */
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Centerpiece Styling */
 .centerpiece {
     position: relative;
     margin: 20px 0;
@@ -104,10 +132,38 @@ h1 {
     transform: scale(1.2);
 }
 
-/* Audio element hidden */
-audio {
-    display: none;
+/* Laser Pointer Cursor Effect */
+body::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: red; /* PowerPoint laser color */
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s;
+    z-index: 9999;
 }
+
+body:hover::after {
+    display: block; /* Ensure it shows on hover */
+}
+
+body {
+    cursor: none; /* Hide default cursor */
+}
+
+body:hover {
+    cursor: none; /* Reinforce no default cursor */
+}
+
+document.addEventListener('mousemove', (e) => {
+    const laser = document.querySelector('body::after');
+    laser.style.left = `${e.clientX}px`;
+    laser.style.top = `${e.clientY}px`;
+});
+
 /* Audio element hidden */
 audio {
     display: none;
