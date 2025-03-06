@@ -25,18 +25,18 @@ body {
 
 /* Click to Enter Text */
 .click-to-enter {
-    font-family: monospace; /* Mimics the font style in the image */
+    font-family: monospace;
     font-size: 24px;
-    color: white;
+    color: #000; /* Matches background to blend in */
     padding: 10px 20px;
-    border: 2px dashed white; /* Dashed border */
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 2px;
+    transition: color 0.3s; /* Smooth transition for hover */
 }
 
 .click-to-enter:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
+    color: white; /* Reveals text on hover */
 }
 
 /* Stars Styling */
