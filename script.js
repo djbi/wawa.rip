@@ -1,3 +1,6 @@
+// Add click event to the "CLICK TO ENTER" text
+document.querySelector('.click-to-enter').addEventListener('click', enterSite);
+
 // Enter site function to show main content and hide splash
 function enterSite() {
     document.getElementById('splash').style.display = 'none';
