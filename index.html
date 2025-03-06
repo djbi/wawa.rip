@@ -3,13 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wawa.rip - Enter</title>
+    <title>wawa.rip</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="splash-body">
-    <div class="splash-container">
+<body>
+    <div class="splash-container" id="splash">
         <h1>wawa.rip</h1>
-        <button onclick="window.location.href='main.html'">Click to Enter</button>
+        <button onclick="enterSite()">Click to Enter</button>
+    </div>
+
+    <div class="container" id="main-content" style="display: none;">
+        <h1>wawa.rip</h1>
+        
+        <!-- Centerpiece with Icons -->
+        <div class="centerpiece">
+            <div class="icons">
+                <img src="icons/roblox.png" alt="Roblox" onclick="redirectRoblox()">
+                <img src="icons/tiktok.png" alt="TikTok" onclick="redirectTikTok()">
+                <img src="icons/spotify.png" alt="Spotify" onclick="redirectSpotify()">
+            </div>
+        </div>
     </div>
 
     <!-- Background Music -->
@@ -19,13 +32,9 @@
         Your browser does not support the audio element.
     </audio>
 
-    <script>
-        // Ensure audio plays after user interaction (for local desktop)
-        document.querySelector('button').addEventListener('click', function() {
-            document.getElementById('backgroundMusic').play().catch(function(error) {
-                console.log("Audio playback failed: ", error);
-            });
-        });
+    <script src="script.js"></script>
+</body>
+</html>
     </script>
 </body>
 </html>
