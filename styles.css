@@ -2,44 +2,56 @@ body {
     font-family: Arial, sans-serif;
     background-color: #000; /* Black background */
     margin: 0;
-    padding: 20px;
+    padding: 0; /* Removed padding to avoid white edges on desktop */
     color: #ff66b2; /* Neon pink for text */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     flex-direction: column;
+    overflow: hidden; /* Prevents any overflow causing white space */
 }
 
 .splash-container {
     text-align: center;
     padding: 20px;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000; /* Ensure black background */
 }
 
 .container {
     text-align: center;
     padding: 20px;
     display: none; /* Initially hidden */
+    width: 100%;
+    height: 100vh;
+    background-color: #000; /* Ensure black background */
 }
 
 h1 {
-    font-size: 48px;
+    font-size: 72px; /* Increased size */
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 4px;
     margin-bottom: 20px;
+    text-shadow: 0 0 5px #ff66b2, 0 0 10px #ff99cc; /* Subtle glow effect */
 }
 
 /* Splash Page Styling */
 .splash-container button {
-    padding: 10px 20px;
-    font-size: 18px;
+    padding: 15px 30px;
+    font-size: 24px;
     background-color: #ff66b2;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    outline: none; /* Removes potential outline causing white square */
 }
 
 .splash-container button:hover {
@@ -68,6 +80,10 @@ h1 {
     transform: scale(1.2);
 }
 
+/* Audio element hidden */
+audio {
+    display: none;
+}
 /* Audio element hidden */
 audio {
     display: none;
