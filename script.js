@@ -1,11 +1,10 @@
-// Add click event to the "CLICK TO ENTER" text
-document.querySelector('.click-to-enter').addEventListener('click', enterSite);
-
-// Enter site function to show main content and hide splash
+// Enter site function to show main content, hide splash, and start/repeat music
 function enterSite() {
     document.getElementById('splash').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
-    document.getElementById('backgroundMusic').play().catch(function(error) {
+    const audio = document.getElementById('backgroundMusic');
+    audio.currentTime = 0; // Reset to start
+    audio.play().catch(function(error) {
         console.log("Audio playback failed: ", error);
     });
 }
