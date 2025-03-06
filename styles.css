@@ -98,3 +98,7 @@ div[id$="Data"] {
 audio {
     display: none;
 }
+/* Audio element hidden */
+audio {
+    display: none;
+}
