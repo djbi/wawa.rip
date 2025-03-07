@@ -1,75 +1,30 @@
-// Enter site function to show main content, hide splash, and start/repeat music
-function enterSite() {
-    document.getElementById('splash').style.display = 'none';
-    document.getElementById('main-content').style.display = 'block';
-    const audio = document.getElementById('backgroundMusic');
-    audio.currentTime = 0;
-    audio.play().catch(function(error) {
-        console.log("Audio playback failed: ", error);
+function addPost() {
+    const postContent = document.getElementById('new-post').value;
+    if (postContent.trim() === '') return;
+
+    const postList = document.getElementById('post-list');
+    const postDiv = document.createElement('div');
+    postDiv.className = 'post';
+    postDiv.textContent = `${postContent} - Posted on ${new Date().toLocaleString()}`;
+    postList.prepend(postDiv);
+
+    document.getElementById('new-post').value = ''; // Clear the textarea
+}
+
+// Sample posts on page load
+window.onload = function() {
+    const samplePosts = [
+        "Welcome to wawa.rip!",
+        "Bubble gum pink vibes forever."
+    ];
+    samplePosts.forEach(post => {
+        const postList = document.getElementById('post-list');
+        const postDiv = document.createElement('div');
+        postDiv.className = 'post';
+        postDiv.textContent = `${post} - Posted on ${new Date().toLocaleString()}`;
+        postList.appendChild(postDiv);
     });
-}
-
-// Redirect functions
-function redirectRoblox() {
-    window.location.href = 'https://www.roblox.com/share?code=44cb54032142d34787f1f2ad3aff1033&type=Profile&source=ProfileShare&stamp=1741296009841';
-}
-
-function redirectTikTok() {
-    window.location.href = 'https://www.tiktok.com/@faith.meows?_t=ZN-8uT1pCNKhvC&_r=1';
-}
-
-function redirectSpotify() {
-    window.location.href = 'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi?si=HMZBKe2NT9yL35EynPjtzw';
-}
-
-// Animate the browser tab title
-const baseTitle = "meow meow meow meow meow meow meow meow meow meow";
-let shift = 0;
-function animateTitle() {
-    shift = (shift + 1) % baseTitle.length;
-    const shiftedTitle = baseTitle.slice(shift) + baseTitle.slice(0, shift);
-    document.title = shiftedTitle;
-}
-setInterval(animateTitle, 100);
-
-// Laser pointer effect with pink trail
-const laser = document.querySelector('.laser-pointer');
-const body = document.body;
-
-document.addEventListener('mousemove', (e) => {
-    laser.style.left = `${e.clientX}px`;
-    laser.style.top = `${e.clientY}px`;
-
-    const trail = document.createElement('div');
-    trail.classList.add('trail');
-    trail.style.left = `${e.clientX}px`;
-    trail.style.top = `${e.clientY}px`;
-    body.appendChild(trail);
-
-    setTimeout(() => {
-        trail.remove();
-    }, 600);
-});
-
-document.addEventListener('touchmove', (e) => {
-    const touch = e.touches[0];
-    laser.style.left = `${touch.clientX}px`;
-    laser.style.top = `${touch.clientY}px`;
-
-    const trail = document.createElement('div');
-    trail.classList.add('trail');
-    trail.style.left = `${touch.clientX}px`;
-    trail.style.top = `${touch.clientY}px`;
-    body.appendChild(trail);
-
-    setTimeout(() => {
-        trail.remove();
-    }, 600);
-}, { passive: true });
-
-// Ensure icons are tappable on mobile
-document.querySelectorAll('.icons img').forEach((icon) => {
-    icon.addEventListener('touchstart', (e) => {
+};
         e.preventDefault(); // Prevent scrolling or zooming
         icon.click(); // Trigger the onclick event
     }, { passive: false });
