@@ -32,16 +32,9 @@ body {
         0 0 40px #990066,
         0 0 80px #990066;
     margin: 0;
-    animation: moveText 5s infinite linear; /* Move horizontally */
     font-family: 'Courier New', Courier, monospace;
     letter-spacing: 5px;
     user-select: none; /* Make text unselectable */
-}
-
-@keyframes moveText {
-    0% { transform: translateX(-100%); }
-    50% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
 }
 
 .social-icons {
@@ -66,8 +59,7 @@ body {
     font-size: 24px;
     color: #ff00ff;
     margin-top: 10px;
-    transform: rotate(90deg); /* Corrected to 90 degrees */
-    animation: blink 0.1s infinite; /* Blink every 0.1 seconds */
+    animation: rotateHeart 2s infinite linear, heartbeat 1s infinite; /* Rotate and heartbeat */
     text-shadow: 
         0 0 5px #ff69b4, /* Bubblegum pink glow */
         0 0 10px #ff69b4,
@@ -75,8 +67,15 @@ body {
     user-select: none; /* Make text unselectable */
 }
 
-@keyframes blink {
-    50% { opacity: 0; }
+@keyframes rotateHeart {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes heartbeat {
+    0% { text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 15px #ff1493; }
+    50% { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff1493; }
+    100% { text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 15px #ff1493; }
 }
 
 .splash-screen {
@@ -106,7 +105,7 @@ body {
     position: fixed;
     width: 20px;
     height: 20px;
-    background: url('https://via.placeholder.com/20/FF00FF?text=+') no-repeat center; /* Placeholder laser image */
+    background: url('https://via.placeholder.com/20/FFC1CC?text=♥') no-repeat center; /* Small pink heart */
     pointer-events: none;
     z-index: 10;
     transform: translate(-50%, -50%);
