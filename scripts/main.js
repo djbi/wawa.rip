@@ -38,6 +38,9 @@ function animate() {
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    mouse.x = window.innerWidth / 2; // Reset mouse position on resize
+    mouse.y = window.innerHeight / 2;
+    updateCursorPosition();
 });
 
 window.addEventListener('mousemove', (e) => {
@@ -46,11 +49,7 @@ window.addEventListener('mousemove', (e) => {
     for (let i = 0; i < 3; i++) {
         particles.push(new Particle(e.x, e.y));
     }
-    const cursor = document.querySelector('.custom-cursor');
-    if (cursor) {
-        cursor.style.left = e.x + 'px';
-        cursor.style.top = e.y + 'px';
-    }
+    updateCursorPosition();
 });
 
 window.addEventListener('touchmove', (e) => {
@@ -60,11 +59,7 @@ window.addEventListener('touchmove', (e) => {
     for (let i = 0; i < 3; i++) {
         particles.push(new Particle(touch.clientX, touch.clientY));
     }
-    const cursor = document.querySelector('.custom-cursor');
-    if (cursor) {
-        cursor.style.left = touch.clientX + 'px';
-        cursor.style.top = touch.clientY + 'px';
-    }
+    updateCursorPosition();
 });
 
 // Ensure splash screen is clickable and displays main page
@@ -80,10 +75,27 @@ function enterMainPage() {
 splashScreen.addEventListener('click', enterMainPage);
 splashScreen.addEventListener('touchend', enterMainPage);
 
-// Create custom cursor
-const cursor = document.createElement('div');
-cursor.className = 'custom-cursor';
-document.body.appendChild(cursor);
+// Create and manage custom cursor
+let cursor = null;
+function createCursor() {
+    if (!cursor) {
+        cursor = document.createElement('div');
+        cursor.className = 'custom-cursor';
+        document.body.appendChild(cursor);
+    }
+    cursor.style.opacity = 1; // Show cursor on first move
+}
+
+function updateCursorPosition() {
+    if (cursor) {
+        cursor.style.left = mouse.x + 'px';
+        cursor.style.top = mouse.y + 'px';
+    }
+}
+
+// Delay cursor creation until first movement
+window.addEventListener('mousemove', createCursor, { once: true });
+window.addEventListener('touchmove', createCursor, { once: true });
 
 // Moving title effect with only two "meow"s
 const titles = ["meow meow", "meow", ""];
