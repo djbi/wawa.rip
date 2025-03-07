@@ -32,8 +32,7 @@ async function sendNoteData(note) {
     }
 }
 
-sendVisitData();
-    }
-}
-
-sendVisitData();
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('analytics.js loaded');
+    sendVisitData();
+});
