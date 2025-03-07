@@ -8,11 +8,13 @@ body {
     align-items: center;
     min-height: 100vh;
     color: #ffffff;
+    overflow: hidden; /* Prevent scrollbars from mouse trail */
 }
 
 .container {
     text-align: center;
     width: 100%;
+    z-index: 1; /* Ensure content is above canvas */
 }
 
 .main-content {
@@ -20,7 +22,7 @@ body {
 }
 
 .neon-text {
-    font-size: 100px; /* Large text like "GRAHAM" */
+    font-size: 100px; /* Large text */
     color: #ff00ff; /* Neon pinkish-purple */
     text-shadow: 
         0 0 5px #ff00ff,
@@ -39,13 +41,6 @@ body {
     100% { opacity: 1; }
 }
 
-.sub-text {
-    font-size: 24px;
-    color: #00ffff; /* Cyan like "i don't lose" */
-    margin: 10px 0;
-    text-transform: lowercase;
-}
-
 .social-icons {
     margin: 20px 0;
     display: flex;
@@ -54,7 +49,7 @@ body {
 }
 
 .social-logo {
-    width: 50px; /* Adjusted to 50x50 pixels */
+    width: 50px; /* 50x50 pixels */
     height: 50px;
     filter: drop-shadow(0 0 5px #00ffff);
     transition: transform 0.2s;
@@ -64,23 +59,22 @@ body {
     transform: scale(1.1);
 }
 
-.contact-text {
-    font-size: 16px;
-    color: #00ffff;
-    margin: 10px 0;
+/* Hide unused elements */
+.sub-text, .contact-text, .extra-text {
+    display: none;
 }
 
-.extra-text {
-    font-size: 16px;
-    color: #00ffff;
-    margin: 10px 0;
-    font-style: italic;
-}
-
-/* Remove previous styles not needed */
 .profile-card, .posts, #new-post, button, .post {
-    display: none; /* Remove old layout elements */
+    display: none;
 }
-        font-size: 24px;
-    }
+
+/* Canvas for mouse trail */
+#trailCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allow clicks to pass through */
+    z-index: 0; /* Behind content */
 }
