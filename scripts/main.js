@@ -1,4 +1,3 @@
-// Main script to manage page interactions
 const canvas = document.getElementById('trailCanvas');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -16,12 +15,10 @@ const noteInput = document.getElementById('noteInput');
 const noteTextarea = document.getElementById('noteTextarea');
 const sendNoteButton = document.getElementById('sendNote');
 
-// Variables for double-tap detection on mobile
 let lastTapHeart = 0;
 let lastTapCocaine = 0;
-const doubleTapDelay = 300; // 300ms window for double-tap
+const doubleTapDelay = 300;
 
-// Initialize particles and squares
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (isSplashScreen) {
@@ -31,7 +28,6 @@ function animate() {
             square.draw(ctx);
             if (square.alpha <= 0) squares.splice(index, 1);
         });
-        // Mouse effect on splash screen
         for (let i = particles.length - 1; i >= 0; i--) {
             particles[i].update();
             particles[i].draw(ctx);
@@ -50,7 +46,7 @@ function animate() {
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    mouse.x = window.innerWidth / 2; // Reset mouse position on resize
+    mouse.x = window.innerWidth / 2;
     mouse.y = window.innerHeight / 2;
     updateCursorPosition();
 });
@@ -58,9 +54,7 @@ window.addEventListener('resize', () => {
 window.addEventListener('mousemove', (e) => {
     mouse.x = e.x;
     mouse.y = e.y;
-    for (let i = 0; i < 3; i++) {
-        particles.push(new Particle(e.x, e.y));
-    }
+    for (let i = 0; i < 3; i++) particles.push(new Particle(e.x, e.y));
     updateCursorPosition();
 });
 
@@ -68,18 +62,15 @@ window.addEventListener('touchmove', (e) => {
     const touch = e.touches[0];
     mouse.x = touch.clientX;
     mouse.y = touch.clientY;
-    for (let i = 0; i < 3; i++) {
-        particles.push(new Particle(touch.clientX, touch.clientY));
-    }
+    for (let i = 0; i < 3; i++) particles.push(new Particle(touch.clientX, touch.clientY));
     updateCursorPosition();
 });
 
-// Ensure splash screen is clickable and displays main page
 function enterMainPage() {
     if (isSplashScreen) {
         isSplashScreen = false;
         splashScreen.style.display = 'none';
-        mainContainer.style.display = 'block'; // Ensure main page is shown
+        mainContainer.style.display = 'block';
         visitCount++;
         localStorage.setItem('visitCount', visitCount);
         sendVisitData();
@@ -89,7 +80,6 @@ function enterMainPage() {
 splashScreen.addEventListener('click', enterMainPage);
 splashScreen.addEventListener('touchend', enterMainPage);
 
-// Create and manage custom cursor
 let cursor = null;
 function createCursor() {
     if (!cursor) {
@@ -97,7 +87,7 @@ function createCursor() {
         cursor.className = 'custom-cursor';
         document.body.appendChild(cursor);
     }
-    cursor.style.opacity = 1; // Show cursor on first move
+    cursor.style.opacity = 1;
 }
 
 function updateCursorPosition() {
@@ -107,16 +97,13 @@ function updateCursorPosition() {
     }
 }
 
-// Delay cursor creation until first movement
 window.addEventListener('mousemove', createCursor, { once: true });
 window.addEventListener('touchmove', createCursor, { once: true });
 
-// Double-click redirect for <3 (Desktop)
 heartText.addEventListener('dblclick', () => {
     window.location.href = 'https://discordapp.com/users/1265799421417754664';
 });
 
-// Double-tap redirect for <3 (Mobile)
 heartText.addEventListener('touchend', (e) => {
     e.preventDefault();
     const currentTime = new Date().getTime();
@@ -127,12 +114,10 @@ heartText.addEventListener('touchend', (e) => {
     lastTapHeart = currentTime;
 });
 
-// Double-click redirect for "Cocaine Woman" (Desktop)
 cocaineText.addEventListener('dblclick', () => {
     window.location.href = 'https://youtu.be/FMw_EXe18Qg?si=uXcD2Kykxww0JJGO';
 });
 
-// Double-tap redirect for "Cocaine Woman" (Mobile)
 cocaineText.addEventListener('touchend', (e) => {
     e.preventDefault();
     const currentTime = new Date().getTime();
@@ -143,33 +128,29 @@ cocaineText.addEventListener('touchend', (e) => {
     lastTapCocaine = currentTime;
 });
 
-// Triple-click "Faith" to show note input
 faithText.addEventListener('click', () => {
     faithClickCount++;
     if (faithClickCount === 3) {
         noteInput.style.display = 'block';
-        faithClickCount = 0; // Reset after showing input
+        faithClickCount = 0;
     }
-    setTimeout(() => {
-        faithClickCount = 0; // Reset after 1 second if not triple-clicked
-    }, 1000);
+    setTimeout(() => { faithClickCount = 0; }, 1000);
 });
 
-// Send note to webhook
 sendNoteButton.addEventListener('click', () => {
     const note = noteTextarea.value.trim();
-    if (note) {
-        sendNoteData(note);
-    } else {
-        alert('Please enter a note before sending.');
-    }
+    if (note) sendNoteData(note);
+    else alert('Please enter a note before sending.');
 });
 
-// Moving title effect with only two "meow"s
 const titles = ["meow meow", "meow", ""];
 let titleIndex = 0;
 setInterval(() => {
     document.title = titles[titleIndex];
+    titleIndex = (titleIndex + 1) % titles.length;
+}, 300);
+
+animate();
     titleIndex = (titleIndex + 1) % titles.length;
 }, 300);
 
