@@ -4,13 +4,13 @@ class Particle {
         this.x = x;
         this.y = y;
         this.size = 20; // Larger size for ♡ symbol
-        this.life = 0.8; // Duration in seconds
+        this.life = 1.5; // Extended duration to 1.5 seconds
         this.alpha = 1; // Opacity
     }
 
     update() {
         this.life -= 1 / 60; // Decrease life based on frame rate (approx 60fps)
-        this.alpha = this.life / 0.8; // Fade out
+        this.alpha = this.life / 1.5; // Fade out
     }
 
     draw(ctx) {
