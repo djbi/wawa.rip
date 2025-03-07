@@ -15,7 +15,7 @@ function addPost() {
 window.onload = function() {
     const samplePosts = [
         "Welcome to wawa.rip!",
-        "Bubble gum pink vibes forever."
+        "Faith vibes forever."
     ];
     samplePosts.forEach(post => {
         const postList = document.getElementById('post-list');
@@ -25,7 +25,3 @@ window.onload = function() {
         postList.appendChild(postDiv);
     });
 };
-        e.preventDefault(); // Prevent scrolling or zooming
-        icon.click(); // Trigger the onclick event
-    }, { passive: false });
-});
