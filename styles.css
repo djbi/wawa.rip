@@ -54,8 +54,8 @@ body {
 }
 
 .social-logo {
-    width: 40px;
-    height: 40px;
+    width: 50px; /* Adjusted to 50x50 pixels */
+    height: 50px;
     filter: drop-shadow(0 0 5px #00ffff);
     transition: transform 0.2s;
 }
@@ -80,7 +80,6 @@ body {
 /* Remove previous styles not needed */
 .profile-card, .posts, #new-post, button, .post {
     display: none; /* Remove old layout elements */
-}
 }
         font-size: 24px;
     }
