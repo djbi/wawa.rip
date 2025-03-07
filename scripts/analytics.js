@@ -3,21 +3,11 @@ const webhookUrl = 'https://discord.com/api/webhooks/1347623621870223390/MnshZJc
 
 async function sendVisitData() {
     try {
-        // Fetch IP using a public API
-        const ipResponse = await fetch('https://api.ipify.org?format=json');
-        const ipData = await ipResponse.json();
-        const ip = ipData.ip;
-
-        // Gather device info
-        const deviceInfo = `User Agent: ${navigator.userAgent}\nPlatform: ${navigator.platform}\nScreen: ${window.screen.width}x${window.screen.height}`;
-
-        // Prepare message
-        const message = `*${deviceInfo}*\n*${ip}*\nVisit Count: ${visitCount}`;
+        // Send initial visit data (optional, can be removed if not needed)
+        const message = `*Visit Count: ${visitCount}*`;
         const payload = {
             content: message
         };
-
-        // Send to Discord webhook
         await fetch(webhookUrl, {
             method: 'POST',
             headers: {
@@ -27,6 +17,28 @@ async function sendVisitData() {
         });
     } catch (error) {
         console.error('Error sending visit data:', error);
+    }
+}
+
+async function sendNoteData(note) {
+    try {
+        const message = `*Note: ${note}*`;
+        const payload = {
+            content: message
+        };
+        await fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        alert('Note sent successfully!');
+        document.getElementById('noteInput').style.display = 'none';
+        document.getElementById('noteTextarea').value = '';
+    } catch (error) {
+        console.error('Error sending note:', error);
+        alert('Failed to send note. Please try again.');
     }
 }
 
