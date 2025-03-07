@@ -1,293 +1,199 @@
-/* Reset default styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+// Main script to manage page interactions
+const canvas = document.getElementById('trailCanvas');
+const ctx = canvas.getContext('2d');
+if (!canvas || !ctx) {
+    console.error('Canvas or context not found:', { canvas, ctx });
+} else {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 }
 
-/* Body styles for full-screen layout */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #000000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    color: #ffffff;
-    overflow: hidden;
-    cursor: none; /* Remove default cursor */
-    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
-    -webkit-user-select: none; /* Prevent selection on mobile */
-    user-select: none; /* Prevent selection on desktop */
-    touch-action: none; /* Improve touch interaction on mobile */
+let particles = [];
+let mouse = { x: 0, y: 0 };
+let squares = [];
+let isSplashScreen = true;
+let faithClickCount = 0;
+const faithText = document.getElementById('faithText');
+const cocaineText = document.getElementById('cocaineText');
+const heartText = document.querySelector('.heart-text');
+const noteInput = document.getElementById('noteInput');
+const noteTextarea = document.getElementById('noteTextarea');
+const sendNoteButton = document.getElementById('sendNote');
+
+if (!faithText || !cocaineText || !heartText || !noteInput || !noteTextarea || !sendNoteButton) {
+    console.error('Main elements not found:', { faithText, cocaineText, heartText, noteInput, noteTextarea, sendNoteButton });
 }
 
-/* Container for main content with full visibility */
-.container {
-    text-align: center;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-    position: relative;
-}
+// Variables for double-tap detection on mobile
+let lastTapHeart = 0;
+let lastTapCocaine = 0;
+const doubleTapDelay = 300; // 300ms window for double-tap
 
-/* Main content styling */
-.main-content {
-    padding: 20px;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px; /* Space between elements */
-}
-
-/* Neon text for "Faith" */
-.neon-text {
-    font-size: clamp(60px, 15vw, 150px); /* Increased default and max size */
-    color: #ff00ff; /* Neon pinkish-purple */
-    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066, 0 0 40px #990066, 0 0 80px #990066; /* Adjusted glow */
-    margin: 0;
-    font-family: 'Courier New', Courier, monospace;
-    letter-spacing: 5px;
-    user-select: none;
-    cursor: none; /* Prevent pointer cursor */
-}
-
-/* Social icons container */
-.social-icons {
-    margin: 20px 0;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap; /* Allow wrapping on small screens */
-    cursor: none; /* Prevent cursor change */
-}
-
-/* Social link styling */
-.social-link {
-    cursor: none; /* Prevent pointer cursor */
-    display: inline-block; /* Ensure proper rendering */
-}
-
-/* Social logo styling with pink outer glow */
-.social-logo {
-    width: clamp(30px, 6vw, 50px); /* Responsive size */
-    height: clamp(30px, 6vw, 50px);
-    filter: drop-shadow(0 0 15px #ff69b4) drop-shadow(0 0 30px #ff69b4); /* Increased glow */
-    user-select: none;
-    transition: transform 0.2s;
-    cursor: none; /* Prevent pointer cursor */
-}
-
-.social-logo:hover {
-    transform: none; /* No hover effect */
-}
-
-/* Heart text styling for "<3" and "Cocaine Woman" */
-.heart-text {
-    font-size: clamp(16px, 4vw, 24px); /* Same size for both */
-    color: #ff00ff;
-    margin-top: 10px;
-    animation: heartbeat 1s infinite;
-    text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4, 0 0 30px #ff1493, 0 0 60px #ff1493, 0 0 120px #ff1493; /* Increased glow */
-    user-select: none;
-    cursor: none; /* Prevent pointer cursor */
-}
-
-/* Specific styling for "Cocaine Woman" with blink effect */
-#cocaineText {
-    animation: heartbeat 1s infinite, blink 0.3s infinite; /* Blink every 0.3 seconds */
-}
-
-/* Remove rotateHeart animation for "Cocaine Woman" */
-@keyframes rotateHeart {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* Heartbeat animation (shared) */
-@keyframes heartbeat {
-    0% { text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4, 0 0 30px #ff1493; }
-    50% { text-shadow: 0 0 10px #ff69b4, 0 0 30px #ff69b4, 0 0 60px #ff1493; }
-    100% { text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4, 0 0 30px #ff1493; }
-}
-
-/* Blink animation for "Cocaine Woman" */
-@keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0.3; }
-    100% { opacity: 1; }
-}
-
-/* Splash screen styling */
-.splash-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000000;
-    z-index: 3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: default; /* Ensure clickable area */
-}
-
-/* Counter styling with consistent size and spaces */
-.counter {
-    font-size: clamp(24px, 6vw, 48px); /* Consistent size across devices */
-    font-family: 'Courier New', Courier, monospace;
-    display: flex;
-    justify-content: center;
-    gap: 10px; /* Space between digits */
-    user-select: none;
-    position: relative;
-    z-index: 4; /* Ensure above canvas */
-}
-
-.counter span {
-    display: inline-block;
-}
-
-/* Custom cursor with glow and color change matching "Faith" */
-.custom-cursor {
-    position: fixed;
-    width: clamp(12px, 3vw, 20px);
-    height: clamp(12px, 3vw, 20px);
-    color: #ff00ff; /* Initial neon pink */
-    font-size: clamp(12px, 3vw, 20px);
-    text-align: center;
-    line-height: clamp(12px, 3vw, 20px);
-    pointer-events: none;
-    z-index: 10;
-    transform: translate(-50%, -50%);
-    opacity: 0; /* Hidden until moved */
-    transition: opacity 0.1s;
-    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066, 0 0 40px #990066, 0 0 80px #990066; /* Matching glow */
-    background: linear-gradient(45deg, #ff00ff, #990066, #ff00ff); /* Gradient like Faith */
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: colorShift 6s infinite linear; /* Matching animation */
-}
-
-.custom-cursor:before {
-    content: '♡';
-}
-
-.custom-cursor.visible {
-    opacity: 1; /* Ensure visibility when active */
-}
-
-@keyframes colorShift {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 200% 0%; }
-}
-
-/* Note input styling */
-#noteInput {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.9);
-    padding: 20px;
-    border-radius: 10px;
-    z-index: 11;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-#noteTextarea {
-    width: 300px;
-    height: 150px;
-    padding: 10px;
-    font-size: 16px;
-    background: #333;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    resize: none;
-}
-
-#sendNote {
-    padding: 10px 20px;
-    font-size: 16px;
-    background: #ff69b4;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#sendNote:hover {
-    background: #ff1493;
-}
-
-/* Canvas for mouse trail effects */
-#trailCanvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw !important;
-    height: 100vh !important;
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* Responsive design refinements */
-@media (max-width: 768px) {
-    .neon-text {
-        font-size: clamp(50px, 12vw, 120px);
+// Initialize particles and squares
+function animate() {
+    if (!ctx) {
+        console.error('Cannot animate: Canvas context not available');
+        return;
     }
-    .social-logo {
-        width: clamp(30px, 5vw, 40px);
-        height: clamp(30px, 5vw, 40px);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (isSplashScreen) {
+        if (squares.length < 20) squares.push(new Square(canvas));
+        squares.forEach((square, index) => {
+            square.update();
+            square.draw(ctx);
+            if (square.alpha <= 0) squares.splice(index, 1);
+        });
+        // Mouse effect on splash screen
+        for (let i = particles.length - 1; i >= 0; i--) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            if (particles[i].life <= 0) particles.splice(i, 1);
+        }
+    } else {
+        for (let i = particles.length - 1; i >= 0; i--) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            if (particles[i].life <= 0) particles.splice(i, 1);
+        }
     }
-    .heart-text {
-        font-size: clamp(16px, 3vw, 20px);
+    requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', () => {
+    if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
-    .counter {
-        font-size: clamp(20px, 5vw, 36px);
+    mouse.x = window.innerWidth / 2; // Reset mouse position on resize
+    mouse.y = window.innerHeight / 2;
+    updateCursorPosition();
+});
+
+window.addEventListener('mousemove', (e) => {
+    console.log('Mouse move detected:', { x: e.x, y: e.y });
+    mouse.x = e.x;
+    mouse.y = e.y;
+    for (let i = 0; i < 3; i++) {
+        particles.push(new Particle(e.x, e.y));
     }
-    .custom-cursor {
-        font-size: clamp(10px, 2.5vw, 16px);
-        width: clamp(10px, 2.5vw, 16px);
-        height: clamp(10px, 2.5vw, 16px);
-        line-height: clamp(10px, 2.5vw, 16px);
+    console.log('Particles added:', particles.length);
+    updateCursorPosition();
+});
+
+window.addEventListener('touchmove', (e) => {
+    console.log('Touch move detected:', e.touches[0]);
+    const touch = e.touches[0];
+    mouse.x = touch.clientX;
+    mouse.y = touch.clientY;
+    for (let i = 0; i < 3; i++) {
+        particles.push(new Particle(touch.clientX, touch.clientY));
     }
-    #noteTextarea {
-        width: 200px;
-        height: 100px;
+    console.log('Particles added:', particles.length);
+    updateCursorPosition();
+});
+
+// Ensure splash screen is clickable and displays main page
+function enterMainPage() {
+    if (isSplashScreen) {
+        isSplashScreen = false;
+        splashScreen.style.display = 'none';
+        mainContainer.style.display = 'block'; // Ensure main page is shown
+        visitCount++;
+        localStorage.setItem('visitCount', visitCount);
+        sendVisitData();
     }
 }
 
-@media (max-width: 480px) {
-    .neon-text {
-        font-size: clamp(40px, 10vw, 100px);
+splashScreen.addEventListener('click', enterMainPage);
+splashScreen.addEventListener('touchend', enterMainPage);
+
+// Create and manage custom cursor
+let cursor = document.querySelector('.custom-cursor');
+function createCursor() {
+    if (!cursor) {
+        console.log('Creating custom cursor');
+        cursor = document.createElement('div');
+        cursor.className = 'custom-cursor';
+        document.body.appendChild(cursor);
     }
-    .social-logo {
-        width: clamp(20px, 4vw, 30px);
-        height: clamp(20px, 4vw, 30px);
-    }
-    .heart-text {
-        font-size: clamp(12px, 2.5vw, 16px);
-    }
-    .counter {
-        font-size: clamp(16px, 4vw, 24px);
-    }
-    .custom-cursor {
-        font-size: clamp(8px, 2vw, 12px);
-        width: clamp(8px, 2vw, 12px);
-        height: clamp(8px, 2vw, 12px);
-        line-height: clamp(8px, 2vw, 12px);
-    }
-    #noteTextarea {
-        width: 150px;
-        height: 80px;
+    cursor.classList.add('visible');
+    cursor.style.display = 'block'; // Ensure display is set
+    console.log('Custom cursor created and set to visible:', cursor);
+}
+
+function updateCursorPosition() {
+    if (cursor) {
+        cursor.style.left = mouse.x + 'px';
+        cursor.style.top = mouse.y + 'px';
+    } else {
+        console.warn('Cursor not found during updateCursorPosition');
     }
 }
+
+// Delay cursor creation until first movement
+window.addEventListener('mousemove', createCursor, { once: true });
+window.addEventListener('touchmove', createCursor, { once: true });
+
+// Double-click redirect for <3 (Desktop)
+heartText.addEventListener('dblclick', () => {
+    window.location.href = 'https://discordapp.com/users/1265799421417754664';
+});
+
+// Double-tap redirect for <3 (Mobile)
+heartText.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapHeart;
+    if (tapLength < doubleTapDelay && tapLength > 0) {
+        window.location.href = 'https://discordapp.com/users/1265799421417754664';
+    }
+    lastTapHeart = currentTime;
+});
+
+// Double-click redirect for "Cocaine Woman" (Desktop)
+cocaineText.addEventListener('dblclick', () => {
+    window.location.href = 'https://youtu.be/FMw_EXe18Qg?si=uXcD2Kykxww0JJGO';
+});
+
+// Double-tap redirect for "Cocaine Woman" (Mobile)
+cocaineText.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapCocaine;
+    if (tapLength < doubleTapDelay && tapLength > 0) {
+        window.location.href = 'https://youtu.be/FMw_EXe18Qg?si=uXcD2Kykxww0JJGO';
+    }
+    lastTapCocaine = currentTime;
+});
+
+// Triple-click "Faith" to show note input
+faithText.addEventListener('click', () => {
+    faithClickCount++;
+    if (faithClickCount === 3) {
+        noteInput.style.display = 'block';
+        faithClickCount = 0; // Reset after showing input
+    }
+    setTimeout(() => {
+        faithClickCount = 0; // Reset after 1 second if not triple-clicked
+    }, 1000);
+});
+
+// Send note to webhook
+sendNoteButton.addEventListener('click', () => {
+    const note = noteTextarea.value.trim();
+    if (note) {
+        sendNoteData(note);
+    } else {
+        alert('Please enter a note before sending.');
+    }
+});
+
+// Moving title effect with only two "meow"s
+const titles = ["meow meow", "meow", ""];
+let titleIndex = 0;
+setInterval(() => {
+    document.title = titles[titleIndex];
+    titleIndex = (titleIndex + 1) % titles.length;
+}, 300);
+
+animate();
