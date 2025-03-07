@@ -1,4 +1,4 @@
-/* Reset default styles */
+/* Reset default styles to ensure consistency across browsers */
 * {
     margin: 0;
     padding: 0;
@@ -16,24 +16,32 @@ body {
     color: #ffffff;
     overflow: hidden;
     cursor: none; /* Remove default cursor */
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
 }
 
-/* Container for main content */
+/* Container for main content with full visibility */
 .container {
     text-align: center;
     width: 100%;
-    max-width: 100%;
+    height: 100%;
     z-index: 2;
+    position: relative;
 }
 
 /* Main content styling */
 .main-content {
     padding: 20px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Neon text for "Faith" */
 .neon-text {
-    font-size: 100px;
+    font-size: clamp(40px, 10vw, 100px); /* Responsive size */
     color: #ff00ff; /* Neon pinkish-purple */
     text-shadow: 0 0 2px #cc0099, 0 0 4px #cc0099, 0 0 10px #990066, 0 0 20px #990066, 0 0 40px #990066; /* Adjusted glow */
     margin: 0;
@@ -48,12 +56,13 @@ body {
     display: flex;
     justify-content: center;
     gap: 15px;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
 }
 
 /* Social logo styling with pink outer glow */
 .social-logo {
-    width: 50px;
-    height: 50px;
+    width: clamp(30px, 6vw, 50px); /* Responsive size */
+    height: clamp(30px, 6vw, 50px);
     filter: drop-shadow(0 0 10px #ff69b4); /* Pink outer glow */
     user-select: none;
     transition: transform 0.2s;
@@ -65,7 +74,7 @@ body {
 
 /* Heart text styling */
 .heart-text {
-    font-size: 24px;
+    font-size: clamp(16px, 4vw, 24px); /* Responsive size */
     color: #ff00ff;
     margin-top: 10px;
     animation: rotateHeart 2s infinite linear, heartbeat 1s infinite;
@@ -99,14 +108,16 @@ body {
     cursor: default; /* Ensure clickable area */
 }
 
-/* Counter styling with spaces between digits */
+/* Counter styling with consistent size and spaces */
 .counter {
-    font-size: 48px;
+    font-size: clamp(24px, 6vw, 48px); /* Consistent size across devices */
     font-family: 'Courier New', Courier, monospace;
     display: flex;
     justify-content: center;
     gap: 10px; /* Space between digits */
     user-select: none;
+    position: relative;
+    z-index: 4; /* Ensure above canvas */
 }
 
 .counter span {
@@ -116,62 +127,75 @@ body {
 /* Custom cursor with ♡ symbol */
 .custom-cursor {
     position: fixed;
-    width: 20px;
-    height: 20px;
+    width: clamp(12px, 3vw, 20px);
+    height: clamp(12px, 3vw, 20px);
     color: #ff69b4; /* Bubblegum pink */
-    font-size: 20px;
+    font-size: clamp(12px, 3vw, 20px);
     text-align: center;
-    line-height: 20px;
+    line-height: clamp(12px, 3vw, 20px);
     pointer-events: none;
     z-index: 10;
     transform: translate(-50%, -50%);
+    opacity: 0; /* Hidden until moved */
+    transition: opacity 0.1s;
 }
 
 .custom-cursor:before {
     content: '♡';
 }
 
-/* Responsive design */
+/* Canvas for mouse trail effects */
+#trailCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Responsive design refinements */
 @media (max-width: 768px) {
     .neon-text {
-        font-size: 60px;
+        font-size: clamp(40px, 8vw, 60px);
     }
     .social-logo {
-        width: 40px;
-        height: 40px;
+        width: clamp(30px, 5vw, 40px);
+        height: clamp(30px, 5vw, 40px);
     }
     .heart-text {
-        font-size: 20px;
+        font-size: clamp(16px, 3vw, 20px);
     }
     .counter {
-        font-size: 36px;
+        font-size: clamp(20px, 5vw, 36px);
     }
     .custom-cursor {
-        font-size: 16px;
-        width: 16px;
-        height: 16px;
-        line-height: 16px;
+        font-size: clamp(10px, 2.5vw, 16px);
+        width: clamp(10px, 2.5vw, 16px);
+        height: clamp(10px, 2.5vw, 16px);
+        line-height: clamp(10px, 2.5vw, 16px);
     }
 }
 
 @media (max-width: 480px) {
     .neon-text {
-        font-size: 40px;
+        font-size: clamp(30px, 6vw, 40px);
     }
     .social-logo {
-        width: 30px;
-        height: 30px;
+        width: clamp(20px, 4vw, 30px);
+        height: clamp(20px, 4vw, 30px);
     }
     .heart-text {
-        font-size: 16px;
+        font-size: clamp(12px, 2.5vw, 16px);
     }
     .counter {
-        font-size: 24px;
+        font-size: clamp(16px, 4vw, 24px);
     }
     .custom-cursor {
-        font-size: 12px;
-        width: 12px;
-        height: 12px;
-        line-height: 12px;
+        font-size: clamp(8px, 2vw, 12px);
+        width: clamp(8px, 2vw, 12px);
+        height: clamp(8px, 2vw, 12px);
+        line-height: clamp(8px, 2vw, 12px);
     }
 }
