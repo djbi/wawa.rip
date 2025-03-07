@@ -3,7 +3,7 @@ class Particle {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.size = 10; // Heart size
+        this.size = 20; // Larger size for ♡ symbol
         this.life = 0.8; // Duration in seconds
         this.alpha = 1; // Opacity
     }
@@ -18,11 +18,9 @@ class Particle {
         ctx.fillStyle = `rgba(255, 105, 180, ${this.alpha})`; // Bubblegum pink
         ctx.shadowBlur = 10;
         ctx.shadowColor = '#ff69b4'; // Glowing effect
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y - this.size / 2); // Top of heart
-        ctx.bezierCurveTo(this.x - this.size / 2, this.y - this.size / 2, this.x - this.size, this.y + this.size / 3, this.x, this.y + this.size);
-        ctx.bezierCurveTo(this.x + this.size, this.y + this.size / 3, this.x + this.size / 2, this.y - this.size / 2, this.x, this.y - this.size / 2);
-        ctx.fill();
+        ctx.font = `${this.size}px Arial`;
+        ctx.textAlign = 'center';
+        ctx.fillText('♡', this.x, this.y + this.size / 2); // Adjust y for vertical centering
         ctx.shadowBlur = 0; // Reset shadow
         ctx.restore();
     }
