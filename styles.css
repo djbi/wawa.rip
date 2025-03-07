@@ -43,7 +43,7 @@ body {
     gap: 10px; /* Space between elements */
 }
 
-/* Neon text for "Faith" and "Cocaine Woman" */
+/* Neon text for "Faith" */
 .neon-text {
     font-size: clamp(60px, 15vw, 150px); /* Increased default and max size */
     color: #ff00ff; /* Neon pinkish-purple */
@@ -77,9 +77,9 @@ body {
     transform: none; /* No hover effect */
 }
 
-/* Heart text styling with redirect */
+/* Heart text styling for "<3" and "Cocaine Woman" */
 .heart-text {
-    font-size: clamp(16px, 4vw, 24px); /* Responsive size */
+    font-size: clamp(16px, 4vw, 24px); /* Same size for both */
     color: #ff00ff;
     margin-top: 10px;
     animation: rotateHeart 2s infinite linear, heartbeat 1s infinite;
