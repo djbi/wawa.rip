@@ -197,3 +197,98 @@ setInterval(() => {
 }, 300);
 
 animate();
+}
+
+splashScreen.addEventListener('click', enterMainPage);
+splashScreen.addEventListener('touchend', enterMainPage);
+
+// Create and manage custom cursor
+let cursor = document.querySelector('.custom-cursor');
+function createCursor() {
+    if (!cursor) {
+        console.log('Creating custom cursor');
+        cursor = document.createElement('div');
+        cursor.className = 'custom-cursor';
+        document.body.appendChild(cursor);
+    }
+    cursor.classList.add('visible');
+    cursor.style.display = 'block'; // Ensure display is set
+    console.log('Custom cursor created and set to visible:', cursor);
+}
+
+function updateCursorPosition() {
+    if (cursor) {
+        cursor.style.left = mouse.x + 'px';
+        cursor.style.top = mouse.y + 'px';
+    } else {
+        console.warn('Cursor not found during updateCursorPosition');
+    }
+}
+
+// Delay cursor creation until first movement
+window.addEventListener('mousemove', createCursor, { once: true });
+window.addEventListener('touchmove', createCursor, { once: true });
+
+// Double-click redirect for <3 (Desktop)
+heartText.addEventListener('dblclick', () => {
+    window.location.href = 'https://discordapp.com/users/1265799421417754664';
+});
+
+// Double-tap redirect for <3 (Mobile)
+heartText.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapHeart;
+    if (tapLength < doubleTapDelay && tapLength > 0) {
+        window.location.href = 'https://discordapp.com/users/1265799421417754664';
+    }
+    lastTapHeart = currentTime;
+});
+
+// Double-click redirect for "Cocaine Woman" (Desktop)
+cocaineText.addEventListener('dblclick', () => {
+    window.location.href = 'https://youtu.be/FMw_EXe18Qg?si=uXcD2Kykxww0JJGO';
+});
+
+// Double-tap redirect for "Cocaine Woman" (Mobile)
+cocaineText.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapCocaine;
+    if (tapLength < doubleTapDelay && tapLength > 0) {
+        window.location.href = 'https://youtu.be/FMw_EXe18Qg?si=uXcD2Kykxww0JJGO';
+    }
+    lastTapCocaine = currentTime;
+});
+
+// Triple-click "Faith" to show note input
+faithText.addEventListener('click', () => {
+    faithClickCount++;
+    if (faithClickCount === 3) {
+        noteInput.style.display = 'block';
+        faithClickCount = 0; // Reset after showing input
+    }
+    setTimeout(() => {
+        faithClickCount = 0; // Reset after 1 second if not triple-clicked
+    }, 1000);
+});
+
+// Send note to webhook
+sendNoteButton.addEventListener('click', () => {
+    const note = noteTextarea.value.trim();
+    if (note) {
+        sendNoteData(note);
+    } else {
+        alert('Please enter a note before sending.');
+    }
+});
+
+// Moving title effect with only two "meow"s
+const titles = ["meow meow", "meow", ""];
+let titleIndex = 0;
+setInterval(() => {
+    document.title = titles[titleIndex];
+    titleIndex = (titleIndex + 1) % titles.length;
+}, 300);
+
+animate();
