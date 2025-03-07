@@ -45,9 +45,9 @@ body {
 
 /* Neon text for "Faith" */
 .neon-text {
-    font-size: clamp(60px, 15vw, 150px); /* Increased default and max size */
+    font-size: clamp(60px, 15vw, 150px);
     color: #ff00ff; /* Neon pinkish-purple */
-    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066, 0 0 40px #990066, 0 0 80px #990066; /* Adjusted glow */
+    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066; /* Less intense glow */
     margin: 0;
     font-family: 'Courier New', Courier, monospace;
     letter-spacing: 5px;
@@ -75,7 +75,7 @@ body {
 .social-logo {
     width: clamp(30px, 6vw, 50px); /* Responsive size */
     height: clamp(30px, 6vw, 50px);
-    filter: drop-shadow(0 0 15px #ff69b4) drop-shadow(0 0 30px #ff69b4); /* Increased glow */
+    filter: drop-shadow(0 0 5px #ff69b4) drop-shadow(0 0 10px #ff69b4); /* Less intense glow */
     user-select: none;
     transition: transform 0.2s;
     cursor: none; /* Prevent pointer cursor */
@@ -90,18 +90,13 @@ body {
     font-size: clamp(16px, 4vw, 24px); /* Same size for both */
     color: #ff00ff;
     margin-top: 10px;
-    animation: heartbeat 1s infinite;
-    text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4, 0 0 30px #ff1493, 0 0 60px #ff1493, 0 0 120px #ff1493; /* Increased glow */
+    animation: heartbeat 1s infinite, rotateHeart 5s infinite linear; /* Restore spinning */
+    text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 20px #ff1493; /* Less intense glow */
     user-select: none;
     cursor: none; /* Prevent pointer cursor */
 }
 
-/* Specific styling for "Cocaine Woman" with blink effect */
-#cocaineText {
-    animation: heartbeat 1s infinite, blink 0.3s infinite; /* Blink every 0.3 seconds */
-}
-
-/* Remove rotateHeart animation for "Cocaine Woman" */
+/* Restore rotateHeart animation for "Cocaine Woman" and "<3" */
 @keyframes rotateHeart {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
@@ -109,16 +104,9 @@ body {
 
 /* Heartbeat animation (shared) */
 @keyframes heartbeat {
-    0% { text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4, 0 0 30px #ff1493; }
-    50% { text-shadow: 0 0 10px #ff69b4, 0 0 30px #ff69b4, 0 0 60px #ff1493; }
-    100% { text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4, 0 0 30px #ff1493; }
-}
-
-/* Blink animation for "Cocaine Woman" */
-@keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0.3; }
-    100% { opacity: 1; }
+    0% { text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 20px #ff1493; }
+    50% { text-shadow: 0 0 8px #ff69b4, 0 0 15px #ff69b4, 0 0 25px #ff1493; }
+    100% { text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 20px #ff1493; }
 }
 
 /* Splash screen styling */
@@ -166,7 +154,7 @@ body {
     transform: translate(-50%, -50%);
     opacity: 0; /* Hidden until moved */
     transition: opacity 0.1s;
-    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066, 0 0 40px #990066, 0 0 80px #990066; /* Matching glow */
+    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066; /* Less intense glow */
     background: linear-gradient(45deg, #ff00ff, #990066, #ff00ff); /* Gradient like Faith */
     -webkit-background-clip: text;
     background-clip: text;
