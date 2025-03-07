@@ -97,11 +97,20 @@ function updateCursorPosition() {
 window.addEventListener('mousemove', createCursor, { once: true });
 window.addEventListener('touchmove', createCursor, { once: true });
 
+// Redirect on <3 click
+document.querySelector('.heart-text').addEventListener('click', () => {
+    window.location.href = 'https://discordapp.com/users/1265799421417754664';
+});
+
 // Moving title effect with only two "meow"s
 const titles = ["meow meow", "meow", ""];
 let titleIndex = 0;
 setInterval(() => {
     document.title = titles[titleIndex];
+    titleIndex = (titleIndex + 1) % titles.length;
+}, 300);
+
+animate();
     titleIndex = (titleIndex + 1) % titles.length;
 }, 300);
 
