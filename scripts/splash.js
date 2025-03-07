@@ -17,12 +17,13 @@ function updateCounter() {
     digits.forEach((digit, index) => {
         const span = document.createElement('span');
         span.textContent = digit;
-        span.style.color = rainbowColors[(index + Date.now() / 100) % rainbowColors.length];
         // Ensure no two digits have the same color
-        let nextColorIndex = (index + 1) % rainbowColors.length;
-        while (nextColorIndex === (index % rainbowColors.length)) {
+        let colorIndex = (index + Math.floor(Date.now() / 100)) % rainbowColors.length;
+        let nextColorIndex = (colorIndex + 1) % rainbowColors.length;
+        while (nextColorIndex === colorIndex) {
             nextColorIndex = (nextColorIndex + 1) % rainbowColors.length;
         }
+        span.style.color = rainbowColors[colorIndex];
         visitCounter.appendChild(span);
     });
 }
