@@ -1,16 +1,15 @@
 // Main script to manage page interactions
 const canvas = document.getElementById('trailCanvas');
 const ctx = canvas.getContext('2d');
-const socialIcons = document.getElementById('socialIcons');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let particles = [];
+let particles = []; // Removed trail since cursor is now custom
 let mouse = { x: 0, y: 0 };
 let squares = [];
 let isSplashScreen = true;
 
-// Initialize particles and squares
+// Initialize animation (currently empty since trail is removed)
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (isSplashScreen) {
@@ -20,18 +19,6 @@ function animate() {
             square.draw(ctx);
             if (square.alpha <= 0) squares.splice(index, 1);
         });
-        // Mouse effect on splash screen
-        for (let i = particles.length - 1; i >= 0; i--) {
-            particles[i].update();
-            particles[i].draw(ctx);
-            if (particles[i].life <= 0) particles.splice(i, 1);
-        }
-    } else {
-        for (let i = particles.length - 1; i >= 0; i--) {
-            particles[i].update();
-            particles[i].draw(ctx);
-            if (particles[i].life <= 0) particles.splice(i, 1);
-        }
     }
     requestAnimationFrame(animate);
 }
@@ -44,9 +31,6 @@ window.addEventListener('resize', () => {
 window.addEventListener('mousemove', (e) => {
     mouse.x = e.x;
     mouse.y = e.y;
-    for (let i = 0; i < 3; i++) {
-        particles.push(new Particle(e.x, e.y));
-    }
     const cursor = document.querySelector('.custom-cursor');
     if (cursor) {
         cursor.style.left = e.x + 'px';
@@ -58,9 +42,6 @@ window.addEventListener('touchmove', (e) => {
     const touch = e.touches[0];
     mouse.x = touch.clientX;
     mouse.y = touch.clientY;
-    for (let i = 0; i < 3; i++) {
-        particles.push(new Particle(touch.clientX, touch.clientY));
-    }
     const cursor = document.querySelector('.custom-cursor');
     if (cursor) {
         cursor.style.left = touch.clientX + 'px';
@@ -72,7 +53,6 @@ window.addEventListener('touchmove', (e) => {
 function enterMainPage() {
     isSplashScreen = false;
     splashScreen.style.display = 'none';
-    mainContainer.style.display = 'block';
     visitCount++;
     localStorage.setItem('visitCount', visitCount);
     sendVisitData();
@@ -93,10 +73,5 @@ setInterval(() => {
     document.title = titles[titleIndex];
     titleIndex = (titleIndex + 1) % titles.length;
 }, 300);
-
-// Redirect on <3 click
-document.querySelector('.heart-text').addEventListener('click', () => {
-    window.location.href = 'https://discordapp.com/users/1265799421417754664';
-});
 
 animate();
