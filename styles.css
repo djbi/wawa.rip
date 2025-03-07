@@ -1,9 +1,11 @@
+/* Reset default styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Body styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #000000;
@@ -20,6 +22,7 @@ body {
     touch-action: none;
 }
 
+/* Container styling */
 .container {
     text-align: center;
     width: 100%;
@@ -28,6 +31,7 @@ body {
     position: relative;
 }
 
+/* Main content styling */
 .main-content {
     padding: 20px;
     width: 100%;
@@ -39,10 +43,11 @@ body {
     gap: 10px;
 }
 
+/* Neon text for "Faith" with enhanced glow */
 .neon-text {
     font-size: clamp(60px, 15vw, 150px);
     color: #ff00ff;
-    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066, 0 0 40px #990066, 0 0 80px #990066;
+    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066, 0 0 40px #990066, 0 0 80px #990066; /* Increased glow */
     margin: 0;
     font-family: 'Courier New', Courier, monospace;
     letter-spacing: 5px;
@@ -50,64 +55,65 @@ body {
     cursor: none;
 }
 
+/* Heart text styling for "<3" and "Cocaine Woman" with enhanced glow */
 .heart-text {
     font-size: clamp(16px, 4vw, 24px);
     color: #ff00ff;
     margin-top: 10px;
     animation: heartbeat 1s infinite;
-    text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4, 0 0 30px #ff1493, 0 0 60px #ff1493, 0 0 120px #ff1493;
+    text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4, 0 0 30px #ff1493, 0 0 60px #ff1493, 0 0 120px #ff1493; /* Increased glow */
     user-select: none;
     cursor: none;
 }
 
+/* Specific styling for "Cocaine Woman" with blink effect */
 #cocaineText {
-    animation: heartbeat 1s infinite, blink 0.3s infinite;
+    animation: blink 0.3s infinite; /* Blink every 0.3 seconds */
 }
 
+/* Remove rotateHeart animation for "Cocaine Woman" */
 @keyframes rotateHeart {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
 
+/* Heartbeat animation (shared) */
 @keyframes heartbeat {
     0% { text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4, 0 0 30px #ff1493; }
     50% { text-shadow: 0 0 10px #ff69b4, 0 0 30px #ff69b4, 0 0 60px #ff1493; }
     100% { text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4, 0 0 30px #ff1493; }
 }
 
+/* Blink animation for "Cocaine Woman" */
 @keyframes blink {
     0% { opacity: 1; }
     50% { opacity: 0.3; }
     100% { opacity: 1; }
 }
 
+/* Social icons container */
 .social-icons {
     margin: 20px 0;
     display: flex;
     justify-content: center;
     gap: 15px;
     flex-wrap: wrap;
-    cursor: none;
 }
 
-.social-link {
-    cursor: none;
-    display: inline-block;
-}
-
+/* Social logo styling with enhanced glow */
 .social-logo {
     width: clamp(30px, 6vw, 50px);
     height: clamp(30px, 6vw, 50px);
-    filter: drop-shadow(0 0 15px #ff69b4) drop-shadow(0 0 30px #ff69b4);
+    filter: drop-shadow(0 0 15px #ff69b4) drop-shadow(0 0 30px #ff69b4); /* Increased glow */
     user-select: none;
     transition: transform 0.2s;
-    cursor: none;
 }
 
 .social-logo:hover {
     transform: none;
 }
 
+/* Splash screen styling */
 .splash-screen {
     position: fixed;
     top: 0;
@@ -122,6 +128,7 @@ body {
     cursor: default;
 }
 
+/* Counter styling */
 .counter {
     font-size: clamp(24px, 6vw, 48px);
     font-family: 'Courier New', Courier, monospace;
@@ -137,6 +144,7 @@ body {
     display: inline-block;
 }
 
+/* Custom cursor with enhanced glow */
 .custom-cursor {
     position: fixed;
     width: clamp(12px, 3vw, 20px);
@@ -150,7 +158,7 @@ body {
     transform: translate(-50%, -50%);
     opacity: 0;
     transition: opacity 0.1s;
-    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066, 0 0 40px #990066, 0 0 80px #990066;
+    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066, 0 0 40px #990066, 0 0 80px #990066; /* Increased glow */
     background: linear-gradient(45deg, #ff00ff, #990066, #ff00ff);
     -webkit-background-clip: text;
     background-clip: text;
@@ -167,6 +175,7 @@ body {
     100% { background-position: 200% 0%; }
 }
 
+/* Note input styling */
 #noteInput {
     position: fixed;
     top: 50%;
@@ -207,6 +216,7 @@ body {
     background: #ff1493;
 }
 
+/* Canvas styling */
 #trailCanvas {
     position: fixed;
     top: 0;
@@ -217,6 +227,7 @@ body {
     z-index: 1;
 }
 
+/* Responsive design */
 @media (max-width: 768px) {
     .neon-text { font-size: clamp(50px, 12vw, 120px); }
     .social-logo { width: clamp(30px, 5vw, 40px); height: clamp(30px, 5vw, 40px); }
