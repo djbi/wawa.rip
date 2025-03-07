@@ -6,7 +6,6 @@ canvas.height = window.innerHeight;
 let particles = [];
 let mouse = { x: 0, y: 0 };
 let squares = [];
-let isSplashScreen = true;
 let faithClickCount = 0;
 const faithText = document.getElementById('faithText');
 const cocaineText = document.getElementById('cocaineText');
@@ -21,7 +20,8 @@ const doubleTapDelay = 300;
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (isSplashScreen) {
+    // Check if splash screen is visible to determine which particles to draw
+    if (document.getElementById('splashScreen').style.display !== 'none') {
         if (squares.length < 20) squares.push(new Square(canvas));
         squares.forEach((square, index) => {
             square.update();
@@ -65,20 +65,6 @@ window.addEventListener('touchmove', (e) => {
     for (let i = 0; i < 3; i++) particles.push(new Particle(touch.clientX, touch.clientY));
     updateCursorPosition();
 });
-
-function enterMainPage() {
-    if (isSplashScreen) {
-        isSplashScreen = false;
-        splashScreen.style.display = 'none';
-        mainContainer.style.display = 'block';
-        visitCount++;
-        localStorage.setItem('visitCount', visitCount);
-        sendVisitData();
-    }
-}
-
-splashScreen.addEventListener('click', enterMainPage);
-splashScreen.addEventListener('touchend', enterMainPage);
 
 let cursor = null;
 function createCursor() {
@@ -147,10 +133,6 @@ const titles = ["meow meow", "meow", ""];
 let titleIndex = 0;
 setInterval(() => {
     document.title = titles[titleIndex];
-    titleIndex = (titleIndex + 1) % titles.length;
-}, 300);
-
-animate();
     titleIndex = (titleIndex + 1) % titles.length;
 }, 300);
 
