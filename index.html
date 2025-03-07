@@ -13,12 +13,22 @@
         <div class="counter" id="visitCounter"></div>
     </div>
 
-    <!-- Canvas for mouse trail effects (optional, can be removed if not needed) -->
-    <canvas id="trailCanvas" style="display: none;"></canvas>
+    <!-- Main content container with restored content -->
+    <div class="container" id="mainContainer" style="display: none;">
+        <div class="main-content">
+            <h1 class="neon-text">Faith</h1>
+            <div class="social-icons" id="socialIcons"></div>
+            <div class="heart-text"><3</div>
+        </div>
+    </div>
+
+    <!-- Canvas for mouse trail effects -->
+    <canvas id="trailCanvas"></canvas>
     <!-- Custom cursor -->
     <div class="custom-cursor"></div>
 
     <!-- Load scripts -->
+    <script src="scripts/particles.js"></script>
     <script src="scripts/splash.js"></script>
     <script src="scripts/analytics.js"></script>
     <script src="scripts/main.js"></script>
