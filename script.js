@@ -5,6 +5,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 let particles = [];
+let mouse = { x: 0, y: 0 };
 
 class Particle {
     constructor(x, y) {
@@ -50,9 +51,37 @@ window.addEventListener('resize', () => {
 });
 
 window.addEventListener('mousemove', (e) => {
-    for (let i = 0; i < 5; i++) { // Create 5 particles per mouse move
+    mouse.x = e.x;
+    mouse.y = e.y;
+    for (let i = 0; i < 5; i++) {
         particles.push(new Particle(e.x, e.y));
     }
+    // Update custom cursor position
+    const cursor = document.querySelector('.custom-cursor');
+    if (cursor) {
+        cursor.style.left = e.x + 'px';
+        cursor.style.top = e.y + 'px';
+    }
 });
+
+// Touch events for mobile
+window.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    mouse.x = touch.clientX;
+    mouse.y = touch.clientY;
+    for (let i = 0; i < 5; i++) {
+        particles.push(new Particle(touch.clientX, touch.clientY));
+    }
+    const cursor = document.querySelector('.custom-cursor');
+    if (cursor) {
+        cursor.style.left = touch.clientX + 'px';
+        cursor.style.top = touch.clientY + 'px';
+    }
+});
+
+// Create custom cursor
+const cursor = document.createElement('div');
+cursor.className = 'custom-cursor';
+document.body.appendChild(cursor);
 
 animate();
