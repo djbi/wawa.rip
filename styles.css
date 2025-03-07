@@ -31,26 +31,15 @@ body {
     padding: 20px;
 }
 
-/* Neon text for "Faith" with color transition */
+/* Neon text for "Faith" with adjusted glow */
 .neon-text {
     font-size: 100px;
-    color: #ff69b4; /* Initial bubblegum pink */
-    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #cc0099, 0 0 40px #990066, 0 0 80px #990066;
+    color: #ff00ff; /* Neon pinkish-purple */
+    text-shadow: 0 0 2px #cc0099, 0 0 4px #cc0099, 0 0 10px #990066, 0 0 20px #990066, 0 0 40px #990066; /* Less inner, more outer glow */
     margin: 0;
     font-family: 'Courier New', Courier, monospace;
     letter-spacing: 5px;
     user-select: none;
-    background: linear-gradient(to right, #ff69b4, #8a2be2, #ff69b4);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: colorShift 6s infinite linear;
-}
-
-@keyframes colorShift {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 100% 0%; }
 }
 
 /* Social icons container */
@@ -61,16 +50,17 @@ body {
     gap: 15px;
 }
 
-/* Social logo styling */
+/* Social logo styling with pink outer glow */
 .social-logo {
     width: 50px;
     height: 50px;
-    filter: drop-shadow(0 0 5px #00ffff);
+    filter: drop-shadow(0 0 10px #ff69b4); /* Pink outer glow */
     user-select: none;
+    transition: transform 0.2s;
 }
 
 .social-logo:hover {
-    transform: none;
+    transform: none; /* No hover effect */
 }
 
 /* Heart text styling */
@@ -168,34 +158,22 @@ body {
     z-index: 1;
 }
 
-/* Custom cursor with more defined heart shape */
+/* Custom cursor with ♡ symbol */
 .custom-cursor {
     position: fixed;
     width: 20px;
     height: 20px;
-    background: none;
+    color: #ff69b4; /* Bubblegum pink */
+    font-size: 20px;
+    text-align: center;
+    line-height: 20px;
     pointer-events: none;
     z-index: 10;
     transform: translate(-50%, -50%);
 }
 
-.custom-cursor:before,
-.custom-cursor:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 10px;
-    height: 16px;
-    background: #FFC1CC;
-    border-radius: 5px 5px 0 0;
-    transform: rotate(-45deg);
-    transform-origin: 0 100%;
-}
-
-.custom-cursor:after {
-    left: 10px;
-    transform: rotate(45deg);
-    transform-origin: 100% 100%;
+.custom-cursor:before {
+    content: '♡';
 }
 
 /* Hide unused elements */
@@ -227,6 +205,12 @@ body {
         width: 40px;
         height: 64px;
     }
+    .custom-cursor {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -251,5 +235,11 @@ body {
     .heart-counter:after {
         width: 30px;
         height: 48px;
+    }
+    .custom-cursor {
+        font-size: 12px;
+        width: 12px;
+        height: 12px;
+        line-height: 12px;
     }
 }
