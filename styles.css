@@ -1,11 +1,9 @@
-/* Reset default styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Body styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #000000;
@@ -22,7 +20,6 @@ body {
     touch-action: none;
 }
 
-/* Container styling */
 .container {
     text-align: center;
     width: 100%;
@@ -31,7 +28,6 @@ body {
     position: relative;
 }
 
-/* Main content styling */
 .main-content {
     padding: 20px;
     width: 100%;
@@ -43,7 +39,6 @@ body {
     gap: 10px;
 }
 
-/* Neon text for "Faith" */
 .neon-text {
     font-size: clamp(60px, 15vw, 150px);
     color: #ff00ff;
@@ -55,7 +50,6 @@ body {
     cursor: none;
 }
 
-/* Heart text styling for "<3" and "Cocaine Woman" */
 .heart-text {
     font-size: clamp(16px, 4vw, 24px);
     color: #ff00ff;
@@ -66,62 +60,54 @@ body {
     cursor: none;
 }
 
-/* Specific styling for "Cocaine Woman" */
 #cocaineText {
     animation: heartbeat 1s infinite, blink 0.3s infinite;
 }
 
-/* Remove rotateHeart animation for "Cocaine Woman" */
 @keyframes rotateHeart {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
 
-/* Heartbeat animation */
 @keyframes heartbeat {
     0% { text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4, 0 0 30px #ff1493; }
     50% { text-shadow: 0 0 10px #ff69b4, 0 0 30px #ff69b4, 0 0 60px #ff1493; }
     100% { text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4, 0 0 30px #ff1493; }
 }
 
-/* Blink animation for "Cocaine Woman" */
 @keyframes blink {
     0% { opacity: 1; }
     50% { opacity: 0.3; }
     100% { opacity: 1; }
 }
 
-/* Social icons container */
 .social-icons {
     margin: 20px 0;
     display: flex;
     justify-content: center;
     gap: 15px;
     flex-wrap: wrap;
-    cursor: none; /* Prevent cursor change */
+    cursor: none;
 }
 
-/* Social link styling */
 .social-link {
-    cursor: none; /* Prevent pointer cursor */
-    display: inline-block; /* Ensure proper rendering */
+    cursor: none;
+    display: inline-block;
 }
 
-/* Social logo styling */
 .social-logo {
     width: clamp(30px, 6vw, 50px);
     height: clamp(30px, 6vw, 50px);
     filter: drop-shadow(0 0 15px #ff69b4) drop-shadow(0 0 30px #ff69b4);
     user-select: none;
     transition: transform 0.2s;
-    cursor: none; /* Prevent pointer cursor */
+    cursor: none;
 }
 
 .social-logo:hover {
     transform: none;
 }
 
-/* Splash screen styling */
 .splash-screen {
     position: fixed;
     top: 0;
@@ -136,7 +122,6 @@ body {
     cursor: default;
 }
 
-/* Counter styling */
 .counter {
     font-size: clamp(24px, 6vw, 48px);
     font-family: 'Courier New', Courier, monospace;
@@ -152,7 +137,6 @@ body {
     display: inline-block;
 }
 
-/* Custom cursor */
 .custom-cursor {
     position: fixed;
     width: clamp(12px, 3vw, 20px);
@@ -183,7 +167,6 @@ body {
     100% { background-position: 200% 0%; }
 }
 
-/* Note input styling */
 #noteInput {
     position: fixed;
     top: 50%;
@@ -224,7 +207,6 @@ body {
     background: #ff1493;
 }
 
-/* Canvas styling */
 #trailCanvas {
     position: fixed;
     top: 0;
@@ -235,7 +217,6 @@ body {
     z-index: 1;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
     .neon-text { font-size: clamp(50px, 12vw, 120px); }
     .social-logo { width: clamp(30px, 5vw, 40px); height: clamp(30px, 5vw, 40px); }
