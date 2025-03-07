@@ -3,82 +3,60 @@ body {
     background-color: #000000; /* Black background */
     margin: 0;
     padding: 0;
-    color: #ffffff; /* White text for readability on black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #ffffff;
 }
 
 .container {
-    max-width: 1000px;
-    margin: 20px auto;
-    display: flex;
-    gap: 20px;
-    align-items: stretch;
-}
-
-.profile-card {
-    background: #1a1a1a; /* Dark gray for contrast */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(255,255,255,0.1);
     text-align: center;
-    width: 300px;
+    width: 100%;
 }
 
-.profile-pic {
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
+.main-content {
+    padding: 20px;
 }
 
-.bio {
-    color: #cccccc; /* Light gray for bio text */
-    font-size: 14px;
+.neon-text {
+    font-size: 100px; /* Large text like "GRAHAM" */
+    color: #ff00ff; /* Neon pinkish-purple */
+    text-shadow: 
+        0 0 5px #ff00ff,
+        0 0 10px #ff00ff,
+        0 0 20px #ff00ff,
+        0 0 40px #ff1493,
+        0 0 80px #ff1493;
+    margin: 0;
+    animation: flicker 1.5s infinite alternate;
+    font-family: 'Courier New', Courier, monospace; /* Monospace for retro feel */
+    letter-spacing: 5px;
 }
 
-.social-links a {
-    display: block;
+@keyframes flicker {
+    0% { opacity: 0.9; }
+    100% { opacity: 1; }
+}
+
+.sub-text {
+    font-size: 24px;
+    color: #00ffff; /* Cyan like "i don't lose" */
     margin: 10px 0;
-    text-decoration: none;
-    color: #1a73e8;
-    font-weight: bold;
+    text-transform: lowercase;
 }
 
-.social-links a:hover {
-    text-decoration: underline;
-}
-
-.middle-text {
-    flex: 1;
+.social-icons {
+    margin: 20px 0;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
-}
-
-.glow-text {
-    font-size: 72px; /* Bigger text */
-    color: #ff69b4; /* Bubble gum pink */
-    text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff1493;
-    animation: glow 1.5s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    from {
-        text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 15px #ff1493;
-    }
-    to {
-        text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff1493;
-    }
-}
-
-.logo-links {
-    margin-top: 20px;
-    display: flex;
     gap: 15px;
 }
 
 .social-logo {
     width: 40px;
     height: 40px;
+    filter: drop-shadow(0 0 5px #00ffff);
     transition: transform 0.2s;
 }
 
@@ -86,42 +64,23 @@ body {
     transform: scale(1.1);
 }
 
-.posts {
-    flex: 1;
-    background: #1a1a1a; /* Dark gray for contrast */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(255,255,255,0.1);
-}
-
-#new-post {
-    width: 100%;
-    height: 60px;
+.contact-text {
+    font-size: 16px;
+    color: #00ffff;
     margin: 10px 0;
-    padding: 10px;
-    border: 1px solid #333;
-    border-radius: 5px;
-    background-color: #222;
-    color: #fff;
 }
 
-button {
-    background-color: #1a73e8;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+.extra-text {
+    font-size: 16px;
+    color: #00ffff;
+    margin: 10px 0;
+    font-style: italic;
 }
 
-button:hover {
-    background-color: #1557b0;
+/* Remove previous styles not needed */
+.profile-card, .posts, #new-post, button, .post {
+    display: none; /* Remove old layout elements */
 }
-
-.post {
-    border-bottom: 1px solid #333;
-    padding: 10px 0;
-    color: #cccccc; /* Light gray for post text */
 }
         font-size: 24px;
     }
