@@ -33,3 +33,7 @@ async function sendNoteData(note) {
 }
 
 sendVisitData();
+    }
+}
+
+sendVisitData();
