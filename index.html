@@ -8,32 +8,19 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Splash screen with counter inside heart -->
+    <!-- Splash screen with only the counter -->
     <div class="splash-screen" id="splashScreen">
-        <div class="heart-counter" id="visitCounter"></div>
+        <div class="counter" id="visitCounter"></div>
     </div>
 
-    <!-- Main content container -->
-    <div class="container" id="mainContainer" style="display: none;">
-        <div class="main-content">
-            <h1 class="neon-text">Faith</h1>
-            <div class="social-icons" id="socialIcons">
-                <!-- Logos will be dynamically inserted by logos.js -->
-            </div>
-            <div class="heart-text"><3</div>
-        </div>
-    </div>
-
-    <!-- Canvas for mouse trail effects -->
-    <canvas id="trailCanvas"></canvas>
+    <!-- Canvas for mouse trail effects (optional, can be removed if not needed) -->
+    <canvas id="trailCanvas" style="display: none;"></canvas>
     <!-- Custom cursor -->
     <div class="custom-cursor"></div>
 
     <!-- Load scripts -->
-    <script src="scripts/particles.js"></script>
     <script src="scripts/splash.js"></script>
     <script src="scripts/analytics.js"></script>
-    <script src="scripts/logos.js"></script>
     <script src="scripts/main.js"></script>
 </body>
 </html>
