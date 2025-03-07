@@ -1,4 +1,4 @@
-// Mouse trail effect
+// Mouse trail effect with hearts
 const canvas = document.getElementById('trailCanvas');
 const ctx = canvas.getContext('2d');
 const splashScreen = document.getElementById('splashScreen');
@@ -9,12 +9,13 @@ canvas.height = window.innerHeight;
 let particles = [];
 let mouse = { x: 0, y: 0 };
 let squares = [];
+let titleIndex = 0;
 
 class Particle {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.size = 5; // Solid size
+        this.size = 10; // Heart size
         this.life = 0.8; // Duration in seconds
         this.alpha = 1; // Opacity
     }
@@ -25,11 +26,17 @@ class Particle {
     }
 
     draw() {
+        ctx.save();
         ctx.fillStyle = `rgba(255, 105, 180, ${this.alpha})`; // Bubblegum pink
         ctx.shadowBlur = 10;
         ctx.shadowColor = '#ff69b4'; // Glowing effect
-        ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size); // Solid rectangle
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y - this.size / 2); // Top of heart
+        ctx.bezierCurveTo(this.x - this.size / 2, this.y - this.size / 2, this.x - this.size, this.y + this.size / 3, this.x, this.y + this.size);
+        ctx.bezierCurveTo(this.x + this.size, this.y + this.size / 3, this.x + this.size / 2, this.y - this.size / 2, this.x, this.y - this.size / 2);
+        ctx.fill();
         ctx.shadowBlur = 0; // Reset shadow
+        ctx.restore();
     }
 }
 
@@ -61,7 +68,6 @@ class Square {
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (splashScreen.style.display !== 'none') {
-        // Splash screen animation
         if (squares.length < 20) squares.push(new Square());
         squares.forEach((square, index) => {
             square.update();
@@ -69,7 +75,6 @@ function animate() {
             if (square.alpha <= 0) squares.splice(index, 1);
         });
     } else {
-        // Main page mouse trail
         for (let i = particles.length - 1; i >= 0; i--) {
             particles[i].update();
             particles[i].draw();
@@ -87,7 +92,7 @@ window.addEventListener('resize', () => {
 window.addEventListener('mousemove', (e) => {
     mouse.x = e.x;
     mouse.y = e.y;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) { // Fewer hearts for performance
         particles.push(new Particle(e.x, e.y));
     }
     const cursor = document.querySelector('.custom-cursor');
@@ -101,7 +106,7 @@ window.addEventListener('touchmove', (e) => {
     const touch = e.touches[0];
     mouse.x = touch.clientX;
     mouse.y = touch.clientY;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) {
         particles.push(new Particle(touch.clientX, touch.clientY));
     }
     const cursor = document.querySelector('.custom-cursor');
@@ -122,5 +127,18 @@ window.addEventListener('click', () => {
 const cursor = document.createElement('div');
 cursor.className = 'custom-cursor';
 document.body.appendChild(cursor);
+
+// Moving title effect
+const titles = ["meow meow meow meow meow meow meow", "meow meow meow meow meow meow", "meow meow meow meow meow", "meow meow meow meow", "meow meow meow", "meow meow", "meow"];
+let titleIndex = 0;
+setInterval(() => {
+    document.title = titles[titleIndex];
+    titleIndex = (titleIndex + 1) % titles.length;
+}, 500); // Change every 0.5 seconds
+
+// Redirect on <3 click
+document.querySelector('.heart-text').addEventListener('click', () => {
+    window.location.href = 'https://discordapp.com/users/1265799421417754664';
+});
 
 animate();
