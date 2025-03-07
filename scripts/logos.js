@@ -10,6 +10,7 @@ let lastTapTimes = {};
 
 function loadLogos() {
     const socialIcons = document.getElementById('socialIcons');
+    if (!socialIcons) return; // Prevent errors if DOM element is missing
     for (const [url, imageSrc] of Object.entries(customLogos)) {
         const link = document.createElement('a');
         link.href = '#';
