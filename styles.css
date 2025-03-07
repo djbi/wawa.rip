@@ -31,15 +31,26 @@ body {
     padding: 20px;
 }
 
-/* Neon text for "Faith" */
+/* Neon text for "Faith" with color transition */
 .neon-text {
     font-size: 100px;
-    color: #ff00ff;
+    color: #ff69b4; /* Initial bubblegum pink */
     text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #cc0099, 0 0 40px #990066, 0 0 80px #990066;
     margin: 0;
     font-family: 'Courier New', Courier, monospace;
     letter-spacing: 5px;
     user-select: none;
+    background: linear-gradient(to right, #ff69b4, #8a2be2, #ff69b4);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: colorShift 6s infinite linear;
+}
+
+@keyframes colorShift {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 0%; }
 }
 
 /* Social icons container */
@@ -95,19 +106,55 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: default; /* Ensure clickable area */
 }
 
-/* Counter styling */
-.counter {
-    font-size: 48px;
+/* Heart-shaped counter styling */
+.heart-counter {
+    position: relative;
+    width: 100px;
+    height: 90px;
+    background: none;
+    user-select: none;
+}
+
+.heart-counter:before,
+.heart-counter:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 50px;
+    height: 80px;
+    background: #ff69b4;
+    border-radius: 25px 25px 0 0;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+    animation: heartbeatCounter 1s infinite;
+}
+
+.heart-counter:after {
+    left: 50px;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
+}
+
+.heart-counter span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 36px;
     font-family: 'Courier New', Courier, monospace;
+    color: #ffffff;
+    z-index: 1;
     display: flex;
-    justify-content: center;
     gap: 5px;
 }
 
-.counter span {
-    display: inline-block;
+@keyframes heartbeatCounter {
+    0% { box-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 15px #ff1493; }
+    50% { box-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff1493; }
+    100% { box-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 15px #ff1493; }
 }
 
 /* Canvas for mouse trails */
@@ -121,15 +168,34 @@ body {
     z-index: 1;
 }
 
-/* Custom cursor */
+/* Custom cursor with more defined heart shape */
 .custom-cursor {
     position: fixed;
     width: 20px;
     height: 20px;
-    background: url('https://via.placeholder.com/20/FFC1CC?text=♥') no-repeat center;
+    background: none;
     pointer-events: none;
     z-index: 10;
     transform: translate(-50%, -50%);
+}
+
+.custom-cursor:before,
+.custom-cursor:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 16px;
+    background: #FFC1CC;
+    border-radius: 5px 5px 0 0;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+}
+
+.custom-cursor:after {
+    left: 10px;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
 }
 
 /* Hide unused elements */
@@ -149,8 +215,17 @@ body {
     .heart-text {
         font-size: 20px;
     }
-    .counter {
-        font-size: 36px;
+    .heart-counter {
+        width: 80px;
+        height: 72px;
+    }
+    .heart-counter span {
+        font-size: 28px;
+    }
+    .heart-counter:before,
+    .heart-counter:after {
+        width: 40px;
+        height: 64px;
     }
 }
 
@@ -165,6 +240,19 @@ body {
     .heart-text {
         font-size: 16px;
     }
+    .heart-counter {
+        width: 60px;
+        height: 54px;
+    }
+    .heart-counter span {
+        font-size: 20px;
+    }
+    .heart-counter:before,
+    .heart-counter:after {
+        width: 30px;
+        height: 48px;
+    }
+}
     .counter {
         font-size: 24px;
     }
