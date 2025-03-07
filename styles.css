@@ -1,8 +1,9 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
+    background-color: #000000; /* Black background */
     margin: 0;
     padding: 0;
+    color: #ffffff; /* White text for readability on black */
 }
 
 .container {
@@ -14,10 +15,10 @@ body {
 }
 
 .profile-card {
-    background: white;
+    background: #1a1a1a; /* Dark gray for contrast */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(255,255,255,0.1);
     text-align: center;
     width: 300px;
 }
@@ -29,7 +30,7 @@ body {
 }
 
 .bio {
-    color: #666;
+    color: #cccccc; /* Light gray for bio text */
     font-size: 14px;
 }
 
@@ -48,12 +49,13 @@ body {
 .middle-text {
     flex: 1;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
 .glow-text {
-    font-size: 36px;
+    font-size: 72px; /* Bigger text */
     color: #ff69b4; /* Bubble gum pink */
     text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff1493;
     animation: glow 1.5s ease-in-out infinite alternate;
@@ -68,12 +70,28 @@ body {
     }
 }
 
+.logo-links {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.social-logo {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.2s;
+}
+
+.social-logo:hover {
+    transform: scale(1.1);
+}
+
 .posts {
     flex: 1;
-    background: white;
+    background: #1a1a1a; /* Dark gray for contrast */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(255,255,255,0.1);
 }
 
 #new-post {
@@ -81,8 +99,10 @@ body {
     height: 60px;
     margin: 10px 0;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #333;
     border-radius: 5px;
+    background-color: #222;
+    color: #fff;
 }
 
 button {
@@ -99,26 +119,10 @@ button:hover {
 }
 
 .post {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #333;
     padding: 10px 0;
-}/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .icons {
-        flex-wrap: wrap;
-        justify-content: center;
-        display: flex !important; /* Ensure icons are visible on mobile */
-        visibility: visible !important;
-    }
-    .icons img {
-        width: 30px;
-        height: 30px;
-        margin: 5px;
-        display: inline-block !important;
-    }
-    h1 {
-        font-size: 80px;
-    }
-    .love-text {
+    color: #cccccc; /* Light gray for post text */
+}
         font-size: 24px;
     }
 }
