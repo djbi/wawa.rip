@@ -40,9 +40,10 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 10px; /* Space between elements */
 }
 
-/* Neon text for "Faith" with increased size */
+/* Neon text for "Faith" and "Cocaine Woman" */
 .neon-text {
     font-size: clamp(60px, 15vw, 150px); /* Increased default and max size */
     color: #ff00ff; /* Neon pinkish-purple */
@@ -51,6 +52,7 @@ body {
     font-family: 'Courier New', Courier, monospace;
     letter-spacing: 5px;
     user-select: none;
+    cursor: none; /* Prevent pointer cursor */
 }
 
 /* Social icons container */
@@ -83,7 +85,7 @@ body {
     animation: rotateHeart 2s infinite linear, heartbeat 1s infinite;
     text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 15px #ff1493;
     user-select: none;
-    cursor: pointer; /* Indicate clickable */
+    cursor: none; /* Prevent pointer cursor */
 }
 
 @keyframes rotateHeart {
