@@ -10,9 +10,16 @@ let squares = [];
 let isSplashScreen = true;
 let faithClickCount = 0;
 const faithText = document.getElementById('faithText');
+const cocaineText = document.getElementById('cocaineText');
+const heartText = document.querySelector('.heart-text');
 const noteInput = document.getElementById('noteInput');
 const noteTextarea = document.getElementById('noteTextarea');
 const sendNoteButton = document.getElementById('sendNote');
+
+// Variables for double-tap detection on mobile
+let lastTapHeart = 0;
+let lastTapCocaine = 0;
+const doubleTapDelay = 300; // 300ms window for double-tap
 
 // Initialize particles and squares
 function animate() {
@@ -104,9 +111,36 @@ function updateCursorPosition() {
 window.addEventListener('mousemove', createCursor, { once: true });
 window.addEventListener('touchmove', createCursor, { once: true });
 
-// Redirect on <3 click
-document.querySelector('.heart-text').addEventListener('click', () => {
+// Double-click redirect for <3 (Desktop)
+heartText.addEventListener('dblclick', () => {
     window.location.href = 'https://discordapp.com/users/1265799421417754664';
+});
+
+// Double-tap redirect for <3 (Mobile)
+heartText.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapHeart;
+    if (tapLength < doubleTapDelay && tapLength > 0) {
+        window.location.href = 'https://discordapp.com/users/1265799421417754664';
+    }
+    lastTapHeart = currentTime;
+});
+
+// Double-click redirect for "Cocaine Woman" (Desktop)
+cocaineText.addEventListener('dblclick', () => {
+    window.location.href = 'https://youtu.be/FMw_EXe18Qg?si=uXcD2Kykxww0JJGO';
+});
+
+// Double-tap redirect for "Cocaine Woman" (Mobile)
+cocaineText.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapCocaine;
+    if (tapLength < doubleTapDelay && tapLength > 0) {
+        window.location.href = 'https://youtu.be/FMw_EXe18Qg?si=uXcD2Kykxww0JJGO';
+    }
+    lastTapCocaine = currentTime;
 });
 
 // Triple-click "Faith" to show note input
