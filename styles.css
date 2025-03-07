@@ -42,9 +42,9 @@ body {
     align-items: center;
 }
 
-/* Neon text for "Faith" with glow */
+/* Neon text for "Faith" with increased size */
 .neon-text {
-    font-size: clamp(40px, 10vw, 100px); /* Responsive size */
+    font-size: clamp(60px, 15vw, 150px); /* Increased default and max size */
     color: #ff00ff; /* Neon pinkish-purple */
     text-shadow: 0 0 2px #cc0099, 0 0 4px #cc0099, 0 0 10px #990066, 0 0 20px #990066, 0 0 40px #990066; /* Adjusted glow */
     margin: 0;
@@ -159,6 +159,47 @@ body {
     100% { background-position: 200% 0%; }
 }
 
+/* Note input styling */
+#noteInput {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 11;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#noteTextarea {
+    width: 300px;
+    height: 150px;
+    padding: 10px;
+    font-size: 16px;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    resize: none;
+}
+
+#sendNote {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #ff69b4;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#sendNote:hover {
+    background: #ff1493;
+}
+
 /* Canvas for mouse trail effects */
 #trailCanvas {
     position: fixed;
@@ -173,7 +214,7 @@ body {
 /* Responsive design refinements */
 @media (max-width: 768px) {
     .neon-text {
-        font-size: clamp(40px, 8vw, 60px);
+        font-size: clamp(50px, 12vw, 120px);
     }
     .social-logo {
         width: clamp(30px, 5vw, 40px);
@@ -191,11 +232,15 @@ body {
         height: clamp(10px, 2.5vw, 16px);
         line-height: clamp(10px, 2.5vw, 16px);
     }
+    #noteTextarea {
+        width: 200px;
+        height: 100px;
+    }
 }
 
 @media (max-width: 480px) {
     .neon-text {
-        font-size: clamp(30px, 6vw, 40px);
+        font-size: clamp(40px, 10vw, 100px);
     }
     .social-logo {
         width: clamp(20px, 4vw, 30px);
@@ -212,5 +257,9 @@ body {
         width: clamp(8px, 2vw, 12px);
         height: clamp(8px, 2vw, 12px);
         line-height: clamp(8px, 2vw, 12px);
+    }
+    #noteTextarea {
+        width: 150px;
+        height: 80px;
     }
 }
