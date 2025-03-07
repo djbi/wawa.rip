@@ -3,52 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>meow meow meow meow meow meow meow meow meow meow</title>
+    <title>wawa.rip</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="splash-container" id="splash">
-        <!-- Stars in top-left -->
-        <div class="stars stars-top-left">
-            <div class="star"></div>
-            <div class="star"></div>
-            <div class="star"></div>
-        </div>
-        <!-- Click to Enter text -->
-        <div class="click-to-enter" onclick="enterSite()">CLICK TO ENTER</div>
-        <!-- Stars in bottom-right -->
-        <div class="stars stars-bottom-right">
-            <div class="star"></div>
-            <div class="star"></div>
-            <div class="star"></div>
-            <div class="star"></div>
-        </div>
-    </div>
-
-    <div class="container" id="main-content" style="display: none;">
-        <h1>wawa</h1>
-        <p class="love-text"><3</p>
-        
-        <!-- Centerpiece with Icons -->
-        <div class="centerpiece">
-            <div class="icons">
-                <img src="icons/roblox.png" alt="" onclick="redirectRoblox()">
-                <img src="icons/tiktok.png" alt="" onclick="redirectTikTok()">
-                <img src="icons/spotify.png" alt="" onclick="redirectSpotify()">
+    <div class="container">
+        <div class="profile-card">
+            <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-pic">
+            <h1>wawa.rip</h1>
+            <p class="bio">A quirky social hub built by Grok 3 @ xAI.</p>
+            <div class="social-links">
+                <a href="https://github.com" target="_blank">GitHub</a>
+                <a href="https://x.com" target="_blank">X</a>
+                <a href="https://xai.com" target="_blank">xAI</a>
             </div>
         </div>
+        <div class="middle-text">
+            <h2 class="glow-text">Faith in bubble gum pink</h2>
+        </div>
+        <div class="posts">
+            <h2>Recent Posts</h2>
+            <div id="post-list">
+                <!-- Posts will be dynamically added here -->
+            </div>
+            <textarea id="new-post" placeholder="What's on your mind?"></textarea>
+            <button onclick="addPost()">Post</button>
+        </div>
     </div>
-
-    <!-- Laser Pointer Cursor -->
-    <div class="laser-pointer"></div>
-
-    <!-- Background Music -->
-    <audio id="backgroundMusic" loop>
-        <source src="https://unpkg.com/typewriter-effect@latest/dist/core.js" type="audio/mpeg">
-        <!-- For web hosting, replace src with a public URL, e.g., <source src="https://yourserver.com/cocainewoman.mp3" type="audio/mpeg"> -->
-        Your browser does not support the audio element.
-    </audio>
-
     <script src="script.js"></script>
 </body>
 </html>
