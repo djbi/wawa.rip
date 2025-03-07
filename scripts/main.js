@@ -1,6 +1,7 @@
 // Main script to manage page interactions
 const canvas = document.getElementById('trailCanvas');
 const ctx = canvas.getContext('2d');
+const socialIcons = document.getElementById('socialIcons');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
