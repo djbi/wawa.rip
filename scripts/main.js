@@ -85,8 +85,8 @@ const cursor = document.createElement('div');
 cursor.className = 'custom-cursor';
 document.body.appendChild(cursor);
 
-// Moving title effect
-const titles = ["meow meow meow meow meow meow meow", "meow meow meow meow meow meow", "meow meow meow meow meow", "meow meow meow meow", "meow meow meow", "meow meow", "meow"];
+// Moving title effect with only two "meow"s
+const titles = ["meow meow", "meow", ""];
 let titleIndex = 0;
 setInterval(() => {
     document.title = titles[titleIndex];
