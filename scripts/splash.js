@@ -1,6 +1,5 @@
 // Initialize splash screen elements and counter
 const splashScreen = document.getElementById('splashScreen');
-const mainContainer = document.getElementById('mainContainer');
 const visitCounter = document.getElementById('visitCounter');
 
 // Counter starting at 86
@@ -10,7 +9,7 @@ localStorage.setItem('visitCount', visitCount);
 // Rainbow colors for counter digits
 const rainbowColors = ['#ff0000', '#ff8000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#8000ff'];
 
-// Function to update counter display with rainbow colors
+// Function to update counter display with rainbow colors and spaces
 function updateCounter() {
     const digits = visitCount.toString().split('');
     visitCounter.innerHTML = '';
@@ -27,6 +26,10 @@ function updateCounter() {
         visitCounter.appendChild(span);
     });
 }
+
+// Animate counter colors
+setInterval(updateCounter, 100); // Update every 0.1 seconds for fast color change
+updateCounter(); // Initial display
 
 // Animate counter colors
 setInterval(updateCounter, 100); // Update every 0.1 seconds for fast color change
