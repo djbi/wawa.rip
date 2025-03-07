@@ -15,7 +15,7 @@ body {
 .container {
     text-align: center;
     width: 100%;
-    z-index: 1; /* Ensure content is above canvas */
+    z-index: 2; /* Above splash and canvas */
 }
 
 .main-content {
@@ -24,7 +24,7 @@ body {
 
 .neon-text {
     font-size: 100px; /* Large text */
-    color: #ff00ff; /* Keep text color as neon pinkish-purple */
+    color: #ff00ff; /* Neon pinkish-purple */
     text-shadow: 
         0 0 5px #cc0099, /* Darker pink glow */
         0 0 10px #cc0099,
@@ -32,15 +32,16 @@ body {
         0 0 40px #990066,
         0 0 80px #990066;
     margin: 0;
-    animation: flicker 1.5s infinite alternate;
-    font-family: 'Courier New', Courier, monospace; /* Monospace for retro feel */
+    animation: moveText 5s infinite linear; /* Move horizontally */
+    font-family: 'Courier New', Courier, monospace;
     letter-spacing: 5px;
     user-select: none; /* Make text unselectable */
 }
 
-@keyframes flicker {
-    0% { opacity: 0.9; }
-    100% { opacity: 1; }
+@keyframes moveText {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
 }
 
 .social-icons {
@@ -54,6 +55,7 @@ body {
     width: 50px; /* 50x50 pixels */
     height: 50px;
     filter: drop-shadow(0 0 5px #00ffff);
+    user-select: none; /* Make logos unselectable */
 }
 
 .social-logo:hover {
@@ -64,8 +66,12 @@ body {
     font-size: 24px;
     color: #ff00ff;
     margin-top: 10px;
-    transform: rotate(-90deg);
+    transform: rotate(90deg); /* Corrected to 90 degrees */
     animation: blink 0.1s infinite; /* Blink every 0.1 seconds */
+    text-shadow: 
+        0 0 5px #ff69b4, /* Bubblegum pink glow */
+        0 0 10px #ff69b4,
+        0 0 15px #ff1493;
     user-select: none; /* Make text unselectable */
 }
 
@@ -73,8 +79,17 @@ body {
     50% { opacity: 0; }
 }
 
-.profile-card, .posts, #new-post, button, .post, .sub-text, .contact-text, .extra-text {
-    display: none;
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    z-index: 3; /* Above everything */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #trailCanvas {
@@ -84,10 +99,9 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none; /* Allow clicks to pass through */
-    z-index: 0; /* Behind content */
+    z-index: 1; /* Behind content, above splash */
 }
 
-/* Custom laser cursor */
 .custom-cursor {
     position: fixed;
     width: 20px;
@@ -96,4 +110,8 @@ body {
     pointer-events: none;
     z-index: 10;
     transform: translate(-50%, -50%);
+}
+
+.profile-card, .posts, #new-post, button, .post, .sub-text, .contact-text, .extra-text {
+    display: none;
 }
