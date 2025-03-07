@@ -9,6 +9,7 @@ body {
     min-height: 100vh;
     color: #ffffff;
     overflow: hidden; /* Prevent scrollbars from mouse trail */
+    cursor: none; /* Hide default cursor */
 }
 
 .container {
@@ -23,17 +24,18 @@ body {
 
 .neon-text {
     font-size: 100px; /* Large text */
-    color: #ff00ff; /* Neon pinkish-purple */
+    color: #ff00ff; /* Keep text color as neon pinkish-purple */
     text-shadow: 
-        0 0 5px #ff00ff,
-        0 0 10px #ff00ff,
-        0 0 20px #ff00ff,
-        0 0 40px #ff1493,
-        0 0 80px #ff1493;
+        0 0 5px #cc0099, /* Darker pink glow */
+        0 0 10px #cc0099,
+        0 0 20px #cc0099,
+        0 0 40px #990066,
+        0 0 80px #990066;
     margin: 0;
     animation: flicker 1.5s infinite alternate;
     font-family: 'Courier New', Courier, monospace; /* Monospace for retro feel */
     letter-spacing: 5px;
+    user-select: none; /* Make text unselectable */
 }
 
 @keyframes flicker {
@@ -52,23 +54,29 @@ body {
     width: 50px; /* 50x50 pixels */
     height: 50px;
     filter: drop-shadow(0 0 5px #00ffff);
-    transition: transform 0.2s;
 }
 
 .social-logo:hover {
-    transform: scale(1.1);
+    transform: none; /* Remove hover scale effect */
 }
 
-/* Hide unused elements */
-.sub-text, .contact-text, .extra-text {
+.heart-text {
+    font-size: 24px;
+    color: #ff00ff;
+    margin-top: 10px;
+    transform: rotate(-90deg);
+    animation: blink 0.1s infinite; /* Blink every 0.1 seconds */
+    user-select: none; /* Make text unselectable */
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.profile-card, .posts, #new-post, button, .post, .sub-text, .contact-text, .extra-text {
     display: none;
 }
 
-.profile-card, .posts, #new-post, button, .post {
-    display: none;
-}
-
-/* Canvas for mouse trail */
 #trailCanvas {
     position: fixed;
     top: 0;
@@ -77,4 +85,15 @@ body {
     height: 100%;
     pointer-events: none; /* Allow clicks to pass through */
     z-index: 0; /* Behind content */
+}
+
+/* Custom laser cursor */
+.custom-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: url('https://via.placeholder.com/20/FF00FF?text=+') no-repeat center; /* Placeholder laser image */
+    pointer-events: none;
+    z-index: 10;
+    transform: translate(-50%, -50%);
 }
