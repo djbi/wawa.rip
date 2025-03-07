@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Ensure responsive design for mobile and desktop -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Ensure responsive design and proper scaling on all devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>meow meow</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Splash screen with only the counter -->
+    <!-- Splash screen with counter -->
     <div class="splash-screen" id="splashScreen">
         <div class="counter" id="visitCounter"></div>
     </div>
 
-    <!-- Main content container with restored content -->
+    <!-- Main content container -->
     <div class="container" id="mainContainer" style="display: none;">
         <div class="main-content">
             <h1 class="neon-text">Faith</h1>
@@ -25,7 +25,7 @@
     <!-- Canvas for mouse trail effects -->
     <canvas id="trailCanvas"></canvas>
     <!-- Custom cursor -->
-    <div class="custom-cursor"></div>
+    <div class="custom-cursor" style="display: none;"></div>
 
     <!-- Load scripts -->
     <script src="scripts/particles.js"></script>
