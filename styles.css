@@ -17,6 +17,9 @@ body {
     overflow: hidden;
     cursor: none; /* Remove default cursor */
     -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+    -webkit-user-select: none; /* Prevent selection on mobile */
+    user-select: none; /* Prevent selection on desktop */
+    touch-action: none; /* Improve touch interaction on mobile */
 }
 
 /* Container for main content with full visibility */
@@ -39,7 +42,7 @@ body {
     align-items: center;
 }
 
-/* Neon text for "Faith" */
+/* Neon text for "Faith" with glow */
 .neon-text {
     font-size: clamp(40px, 10vw, 100px); /* Responsive size */
     color: #ff00ff; /* Neon pinkish-purple */
@@ -72,7 +75,7 @@ body {
     transform: none; /* No hover effect */
 }
 
-/* Heart text styling */
+/* Heart text styling with redirect */
 .heart-text {
     font-size: clamp(16px, 4vw, 24px); /* Responsive size */
     color: #ff00ff;
@@ -80,6 +83,7 @@ body {
     animation: rotateHeart 2s infinite linear, heartbeat 1s infinite;
     text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 15px #ff1493;
     user-select: none;
+    cursor: pointer; /* Indicate clickable */
 }
 
 @keyframes rotateHeart {
@@ -124,12 +128,12 @@ body {
     display: inline-block;
 }
 
-/* Custom cursor with ♡ symbol */
+/* Custom cursor with glow and color change matching "Faith" */
 .custom-cursor {
     position: fixed;
     width: clamp(12px, 3vw, 20px);
     height: clamp(12px, 3vw, 20px);
-    color: #ff69b4; /* Bubblegum pink */
+    color: #ff00ff; /* Initial neon pink */
     font-size: clamp(12px, 3vw, 20px);
     text-align: center;
     line-height: clamp(12px, 3vw, 20px);
@@ -138,10 +142,21 @@ body {
     transform: translate(-50%, -50%);
     opacity: 0; /* Hidden until moved */
     transition: opacity 0.1s;
+    text-shadow: 0 0 2px #cc0099, 0 0 4px #cc0099, 0 0 10px #990066, 0 0 20px #990066, 0 0 40px #990066; /* Matching glow */
+    background: linear-gradient(45deg, #ff00ff, #990066, #ff00ff); /* Gradient like Faith */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: colorShift 6s infinite linear; /* Matching animation */
 }
 
 .custom-cursor:before {
     content: '♡';
+}
+
+@keyframes colorShift {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
 }
 
 /* Canvas for mouse trail effects */
