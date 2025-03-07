@@ -1,6 +1,7 @@
 // Initialize splash screen elements and counter
 const splashScreen = document.getElementById('splashScreen');
 const visitCounter = document.getElementById('visitCounter');
+const mainContainer = document.getElementById('mainContainer');
 
 // Counter starting at 86
 let visitCount = localStorage.getItem('visitCount') ? parseInt(localStorage.getItem('visitCount')) : 86;
@@ -31,6 +32,15 @@ function updateCounter() {
 setInterval(updateCounter, 100); // Update every 0.1 seconds for fast color change
 updateCounter(); // Initial display
 
-// Animate counter colors
-setInterval(updateCounter, 100); // Update every 0.1 seconds for fast color change
-updateCounter(); // Initial display
+// Ensure click to enter works
+function enterMainPage() {
+    isSplashScreen = false;
+    splashScreen.style.display = 'none';
+    mainContainer.style.display = 'block'; // Ensure main page is shown
+    visitCount++;
+    localStorage.setItem('visitCount', visitCount);
+    sendVisitData();
+}
+
+splashScreen.addEventListener('click', enterMainPage);
+splashScreen.addEventListener('touchend', enterMainPage);
