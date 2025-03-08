@@ -18,6 +18,8 @@ body {
     cursor: none; /* Remove default cursor */
     -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
     -webkit-user-select: none; /* Prevent selection on mobile */
+    -moz-user-select: none; /* Prevent selection on Firefox */
+    -ms-user-select: none; /* Prevent selection on IE/Edge */
     user-select: none; /* Prevent selection on desktop */
     touch-action: none; /* Improve touch interaction on mobile */
 }
@@ -26,16 +28,19 @@ body {
 .container {
     text-align: center;
     width: 100%;
-    height: 100%;
+    height: 100vh; /* Full viewport height */
     z-index: 2;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center content vertically and horizontally */
 }
 
 /* Main content styling */
 .main-content {
     padding: 20px;
     width: 100%;
-    height: 100%;
+    max-width: 800px; /* Optional: Limit width for larger screens */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,9 +48,8 @@ body {
     gap: 10px; /* Space between elements */
 }
 
-/* Neon text for "Faith" */
+/* Neon text for "Faith" and "Cocaine Woman" */
 .neon-text {
-    font-size: clamp(60px, 15vw, 150px);
     color: #ff00ff; /* Neon pinkish-purple */
     text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066; /* Less intense glow */
     margin: 0;
@@ -53,6 +57,17 @@ body {
     letter-spacing: 5px;
     user-select: none;
     cursor: none; /* Prevent pointer cursor */
+}
+
+/* Specific styling for "Faith" */
+#faithText {
+    font-size: clamp(60px, 15vw, 150px);
+}
+
+/* Specific styling for "Cocaine Woman" */
+.cocaine-text {
+    font-size: clamp(30px, 8vw, 60px); /* Smaller than Faith */
+    animation: rotateHeart 5s infinite linear; /* Retain spinning */
 }
 
 /* Social icons container */
@@ -85,9 +100,9 @@ body {
     transform: none; /* No hover effect */
 }
 
-/* Heart text styling for "<3" and "Cocaine Woman" */
+/* Heart text styling for "<3" */
 .heart-text {
-    font-size: clamp(16px, 4vw, 24px); /* Same size for both */
+    font-size: clamp(16px, 4vw, 24px);
     color: #ff00ff;
     margin-top: 10px;
     animation: heartbeat 1s infinite, rotateHeart 5s infinite linear; /* Spinning enabled */
@@ -96,7 +111,7 @@ body {
     cursor: none; /* Prevent pointer cursor */
 }
 
-/* Restore rotateHeart animation for "Cocaine Woman" and "<3" */
+/* Restore rotateHeart animation */
 @keyframes rotateHeart {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
@@ -126,10 +141,11 @@ body {
 
 /* Counter styling with consistent size and spaces */
 .counter {
-    font-size: clamp(24px, 6vw, 48px); /* Consistent size across devices */
+    font-size: clamp(36px, 8vw, 72px); /* Bigger size */
     font-family: 'Courier New', Courier, monospace;
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 10px; /* Space between digits */
     user-select: none;
     position: relative;
@@ -229,8 +245,11 @@ body {
 
 /* Responsive design refinements */
 @media (max-width: 768px) {
-    .neon-text {
+    .neon-text#faithText {
         font-size: clamp(50px, 12vw, 120px);
+    }
+    .neon-text.cocaine-text {
+        font-size: clamp(25px, 6vw, 50px);
     }
     .social-logo {
         width: clamp(30px, 5vw, 40px);
@@ -240,7 +259,7 @@ body {
         font-size: clamp(16px, 3vw, 20px);
     }
     .counter {
-        font-size: clamp(20px, 5vw, 36px);
+        font-size: clamp(30px, 6vw, 60px);
     }
     .custom-cursor {
         font-size: clamp(10px, 2.5vw, 16px);
@@ -255,8 +274,11 @@ body {
 }
 
 @media (max-width: 480px) {
-    .neon-text {
+    .neon-text#faithText {
         font-size: clamp(40px, 10vw, 100px);
+    }
+    .neon-text.cocaine-text {
+        font-size: clamp(20px, 5vw, 40px);
     }
     .social-logo {
         width: clamp(20px, 4vw, 30px);
@@ -266,7 +288,7 @@ body {
         font-size: clamp(12px, 2.5vw, 16px);
     }
     .counter {
-        font-size: clamp(16px, 4vw, 24px);
+        font-size: clamp(24px, 5vw, 48px);
     }
     .custom-cursor {
         font-size: clamp(8px, 2vw, 12px);
