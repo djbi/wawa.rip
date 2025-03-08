@@ -25,7 +25,7 @@ body {
 .container {
     width: 100vw; /* Full viewport width */
     height: 100vh; /* Full viewport height */
-    position: absolute; /* Absolute positioning to center */
+    position: fixed; /* Fixed positioning to ensure centering */
     top: 0;
     left: 0;
     display: flex;
@@ -38,11 +38,11 @@ body {
 .main-content {
     padding: 20px;
     width: 90%; /* Slightly narrower to avoid edge issues */
-    max-width: 900px; /* Increased max-width for better spacing */
+    max-width: 900px; /* Max width for larger screens */
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center; /* Center content */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
     gap: 15px; /* Increased gap for readability */
     text-align: center;
 }
@@ -92,14 +92,30 @@ body {
     display: inline-block;
 }
 
-/* Social logo styling - ensured visibility with strong pink glow */
+/* Social logo styling - pink glow and hover rainbow effect */
 .social-logo {
     width: 50px; /* Fixed size for consistency */
     height: 50px;
     filter: drop-shadow(0 0 10px #ff69b4) drop-shadow(0 0 20px #ff69b4) drop-shadow(0 0 30px #ff1493); /* Strong pink glow */
     user-select: none;
     cursor: none;
-    transition: transform 0.2s;
+    transition: filter 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.social-link:hover .social-logo {
+    filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #ff00ff) drop-shadow(0 0 30px #00ffff)
+           drop-shadow(0 0 40px #ff00ff) drop-shadow(0 0 50px #ff69b4) drop-shadow(0 0 60px #8000ff);
+    animation: rainbowGlow 2s infinite linear; /* Animated rainbow effect */
+}
+
+/* Rainbow glow animation */
+@keyframes rainbowGlow {
+    0% { filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #ff00ff) drop-shadow(0 0 30px #00ffff); }
+    20% { filter: drop-shadow(0 0 10px #ff00ff) drop-shadow(0 0 20px #00ffff) drop-shadow(0 0 30px #ff0000); }
+    40% { filter: drop-shadow(0 0 10px #00ffff) drop-shadow(0 0 20px #ff0000) drop-shadow(0 0 30px #ff00ff); }
+    60% { filter: drop-shadow(0 0 10px #ff69b4) drop-shadow(0 0 20px #8000ff) drop-shadow(0 0 30px #ff00ff); }
+    80% { filter: drop-shadow(0 0 10px #8000ff) drop-shadow(0 0 20px #ff69b4) drop-shadow(0 0 30px #00ffff); }
+    100% { filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #ff00ff) drop-shadow(0 0 30px #00ffff); }
 }
 
 /* Heart text styling for "<3" */
@@ -254,7 +270,7 @@ body {
         font-size: clamp(10px, 3vw, 30px);
     }
     .social-logo {
-        width: 40px; /* Slightly smaller but consistent */
+        width: 40px;
         height: 40px;
     }
     .heart-text {
@@ -280,7 +296,7 @@ body {
         font-size: clamp(8px, 2.5vw, 24px);
     }
     .social-logo {
-        width: 35px; /* Consistent size on mobile */
+        width: 35px;
         height: 35px;
     }
     .heart-text {
