@@ -18,7 +18,7 @@ body {
     -moz-user-select: none; /* Prevent selection on Firefox */
     -ms-user-select: none; /* Prevent selection on IE/Edge */
     user-select: none; /* Prevent selection on desktop */
-    touch-action: none; /* Improve touch interaction on mobile */
+    touch-action: manipulation; /* Improve touch interaction on mobile */
 }
 
 /* Container for main content with full visibility */
@@ -36,12 +36,13 @@ body {
 .main-content {
     padding: 20px;
     width: 100%;
-    max-width: 800px; /* Optional: Limit width for larger screens */
+    max-width: 800px; /* Limit width for larger screens */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px; /* Space between elements */
+    text-align: center; /* Ensure text alignment */
 }
 
 /* Neon text for "Faith" and "Cocaine Woman" */
@@ -70,8 +71,7 @@ body {
 
 /* Specific styling for "Cocaine Woman" */
 .cocaine-text {
-    font-size: clamp(30px, 8vw, 60px); /* Smaller than Faith */
-    /* No spinning */
+    font-size: clamp(20px, 6vw, 40px); /* Smaller size */
 }
 
 /* Social icons container */
@@ -141,6 +141,7 @@ body {
     justify-content: center;
     align-items: center;
     cursor: default; /* Ensure clickable area */
+    touch-action: none; /* Prevent default touch behaviors */
 }
 
 /* Counter styling with consistent size and spaces */
@@ -253,7 +254,7 @@ body {
         font-size: clamp(50px, 12vw, 120px);
     }
     .neon-text.cocaine-text {
-        font-size: clamp(25px, 6vw, 50px);
+        font-size: clamp(16px, 4vw, 30px); /* Even smaller on tablet */
     }
     .social-logo {
         width: clamp(30px, 5vw, 40px);
@@ -282,7 +283,7 @@ body {
         font-size: clamp(40px, 10vw, 100px);
     }
     .neon-text.cocaine-text {
-        font-size: clamp(20px, 5vw, 40px);
+        font-size: clamp(12px, 3vw, 24px); /* Even smaller on mobile */
     }
     .social-logo {
         width: clamp(20px, 4vw, 30px);
