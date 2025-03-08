@@ -1,1 +1,33 @@
-
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Demo</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        <header>
+            <h1>Social Hub</h1>
+        </header>
+        
+        <!-- Post Creation Section -->
+        <section class="post-form">
+            <textarea id="postInput" placeholder="Share your thoughts..."></textarea>
+            <button onclick="createPost()">Share</button>
+        </section>
+        
+        <!-- Posts Display Section -->
+        <section id="postsContainer"></section>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
