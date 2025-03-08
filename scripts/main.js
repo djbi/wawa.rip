@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Variables for double-tap detection on mobile
     let lastTapHeart = 0;
     let lastTapCocaine = 0;
+    let lastTapFaith = 0;
     const doubleTapDelay = 300; // 300ms window for double-tap
 
     // Initialize particles and squares
@@ -140,6 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (typeof sendVisitData === 'function') {
                     sendVisitData();
                 }
+                // Load logos after main container is visible
+                if (typeof loadLogos === 'function') {
+                    loadLogos();
+                }
             } else {
                 console.error('Splash screen or main container not found during transition');
             }
@@ -149,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const splashScreen = document.getElementById('splashScreen');
     if (splashScreen) {
         splashScreen.addEventListener('click', enterMainPage);
-        splashScreen.addEventListener('touchend', enterMainPage);
+        splashScreen.addEventListener('touchstart', enterMainPage); // Use touchstart for better mobile responsiveness
     }
 
     // Fallback: Automatically transition after 5 seconds if no interaction
@@ -192,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lastTapCocaine = currentTime;
     });
 
-    // Triple-click "Faith" to show note input
+    // Triple-click "Faith" to show note input (Desktop)
     faithText.addEventListener('click', () => {
         faithClickCount++;
         if (faithClickCount === 3) {
@@ -204,8 +209,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     });
 
+    // Triple-tap "Faith" to show note input (Mobile)
+    faithText.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTapFaith;
+        if (tapLength < doubleTapDelay && tapLength > 0) {
+            faithClickCount++;
+            if (faithClickCount === 3) {
+                noteInput.style.display = 'block';
+                faithClickCount = 0; // Reset after showing input
+            }
+        } else {
+            faithClickCount = 1; // Reset if taps are too far apart
+        }
+        lastTapFaith = currentTime;
+        setTimeout(() => {
+            faithClickCount = 0; // Reset after 1 second if not triple-tapped
+        }, 1000);
+    });
+
     // Send note to webhook
     sendNoteButton.addEventListener('click', () => {
+        const note = noteTextarea.value.trim();
+        if (note) {
+            sendNoteData(note);
+        } else {
+            alert('Please enter a note before sending.');
+        }
+    });
+
+    // Send note on mobile
+    sendNoteButton.addEventListener('touchend', (e) => {
+        e.preventDefault();
         const note = noteTextarea.value.trim();
         if (note) {
             sendNoteData(note);
