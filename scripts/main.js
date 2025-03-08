@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.height = window.innerHeight;
 
     let particles = [];
-    let mouse = { x: 0, y: 0 };
+    let mouse = { x: null, y: null }; // Initialize as null
     let squares = [];
     let faithClickCount = 0;
     const faithText = document.getElementById('faithText');
@@ -27,6 +27,27 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!faithText || !cocaineText || !heartText || !noteInput || !noteTextarea || !sendNoteButton) {
         console.error('Main elements not found:', { faithText, cocaineText, heartText, noteInput, noteTextarea, sendNoteButton });
         return;
+    }
+
+    // Create and initialize custom cursor immediately
+    let cursor = document.querySelector('.custom-cursor');
+    if (!cursor) {
+        console.log('Creating custom cursor');
+        cursor = document.createElement('div');
+        cursor.className = 'custom-cursor';
+        document.body.appendChild(cursor);
+    }
+    cursor.classList.add('visible');
+    cursor.style.display = 'block'; // Ensure display is set
+    console.log('Custom cursor initialized:', cursor);
+
+    function updateCursorPosition() {
+        if (cursor && mouse.x !== null && mouse.y !== null) {
+            cursor.style.left = mouse.x + 'px';
+            cursor.style.top = mouse.y + 'px';
+        } else {
+            console.warn('Cursor or mouse position not available:', { cursor, mouse });
+        }
     }
 
     // Variables for double-tap detection on mobile
@@ -68,8 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-        mouse.x = window.innerWidth / 2; // Reset mouse position on resize
-        mouse.y = window.innerHeight / 2;
+        if (mouse.x === null && mouse.y === null) {
+            mouse.x = window.innerWidth / 2;
+            mouse.y = window.innerHeight / 2;
+        }
         updateCursorPosition();
     });
 
@@ -85,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('touchmove', (e) => {
+        e.preventDefault(); // Prevent scrolling
         console.log('Touch move detected:', e.touches[0]);
         const touch = e.touches[0];
         mouse.x = touch.clientX;
@@ -95,6 +119,11 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Particles added:', particles.length);
         updateCursorPosition();
     });
+
+    // Initialize mouse position
+    mouse.x = window.innerWidth / 2;
+    mouse.y = window.innerHeight / 2;
+    updateCursorPosition();
 
     // Ensure splash screen is clickable and displays main page
     function enterMainPage() {
@@ -130,33 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
             enterMainPage();
         }
     }, 5000);
-
-    // Create and manage custom cursor
-    let cursor = document.querySelector('.custom-cursor');
-    function createCursor() {
-        if (!cursor) {
-            console.log('Creating custom cursor');
-            cursor = document.createElement('div');
-            cursor.className = 'custom-cursor';
-            document.body.appendChild(cursor);
-        }
-        cursor.classList.add('visible');
-        cursor.style.display = 'block'; // Ensure display is set
-        console.log('Custom cursor created and set to visible:', cursor);
-    }
-
-    function updateCursorPosition() {
-        if (cursor) {
-            cursor.style.left = mouse.x + 'px';
-            cursor.style.top = mouse.y + 'px';
-        } else {
-            console.warn('Cursor not found during updateCursorPosition');
-        }
-    }
-
-    // Delay cursor creation until first movement
-    window.addEventListener('mousemove', createCursor, { once: true });
-    window.addEventListener('touchmove', createCursor, { once: true });
 
     // Double-click redirect for <3 (Desktop)
     heartText.addEventListener('dblclick', () => {
