@@ -141,10 +141,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (typeof sendVisitData === 'function') {
                     sendVisitData();
                 }
-                // Load logos after main container is visible
-                if (typeof loadLogos === 'function') {
-                    loadLogos();
-                }
+                // Delay logo loading to ensure main container is fully rendered
+                setTimeout(() => {
+                    if (typeof window.loadLogos === 'function') {
+                        console.log('Loading logos after transition');
+                        window.loadLogos();
+                    }
+                }, 100); // 100ms delay
             } else {
                 console.error('Splash screen or main container not found during transition');
             }
@@ -259,7 +262,14 @@ document.addEventListener('DOMContentLoaded', () => {
         titleIndex = (titleIndex + 1) % titles.length;
     }
     setInterval(updateTitle, 300); // Update every 300ms
-    updateTitle(); // Initial call
+    updateTitle(); // Initial call to ensure it starts
+    // Add a safeguard to ensure the interval runs
+    setTimeout(() => {
+        if (document.title === 'meow meow') {
+            console.warn('Title animation stuck, restarting');
+            updateTitle();
+        }
+    }, 1000); // Check after 1 second
 
     animate();
 });
