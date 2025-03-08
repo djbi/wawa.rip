@@ -12,7 +12,7 @@ body {
     min-height: 100vh;
     color: #ffffff;
     overflow: hidden;
-    cursor: none; /* Remove default cursor */
+    cursor: none !important; /* Force hide default cursor */
     -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
     -webkit-user-select: none; /* Prevent selection on mobile */
     -moz-user-select: none; /* Prevent selection on Firefox */
@@ -142,7 +142,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: default; /* Ensure clickable area */
+    cursor: none !important; /* Force hide default cursor */
     touch-action: none; /* Prevent default touch behaviors */
 }
 
@@ -168,16 +168,14 @@ body {
     position: fixed;
     width: clamp(12px, 3vw, 20px);
     height: clamp(12px, 3vw, 20px);
-    color: #ff00ff; /* Initial neon pink */
     font-size: clamp(12px, 3vw, 20px);
     text-align: center;
     line-height: clamp(12px, 3vw, 20px);
     pointer-events: none;
-    z-index: 10;
+    z-index: 1000; /* High z-index to ensure visibility */
     transform: translate(-50%, -50%);
-    opacity: 0; /* Hidden until moved */
-    transition: opacity 0.1s;
-    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066; /* Less intense glow */
+    opacity: 1; /* Always visible */
+    text-shadow: 0 0 5px #cc0099, 0 0 10px #cc0099, 0 0 20px #990066; /* Glow effect */
     background: linear-gradient(45deg, #ff00ff, #990066, #ff00ff); /* Gradient like Faith */
     -webkit-background-clip: text;
     background-clip: text;
@@ -189,8 +187,10 @@ body {
     content: '♡';
 }
 
+/* Ensure visibility on mobile */
 .custom-cursor.visible {
-    opacity: 1; /* Ensure visibility when active */
+    display: block !important;
+    opacity: 1 !important;
 }
 
 @keyframes colorShift {
@@ -207,7 +207,7 @@ body {
     background: rgba(0, 0, 0, 0.9);
     padding: 20px;
     border-radius: 10px;
-    z-index: 11;
+    z-index: 1100; /* Above cursor */
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -232,7 +232,7 @@ body {
     color: #fff;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
+    cursor: none; /* Prevent pointer cursor */
 }
 
 #sendNote:hover {
