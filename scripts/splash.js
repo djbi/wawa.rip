@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateCounter, 100); // Update every 0.1 seconds for fast color change
     updateCounter(); // Initial display
 
-    // Ensure click to enter works
+    // Ensure click to enter works anywhere on the splash screen
     function enterMainPage() {
         console.log('enterMainPage called');
         isSplashScreen = false;
@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Attach event listeners to the entire splash screen
     splashScreen.addEventListener('click', enterMainPage);
     splashScreen.addEventListener('touchend', enterMainPage);
 
