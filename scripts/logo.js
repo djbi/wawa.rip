@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('socialIcons element not found');
             return;
         }
+        console.log('Loading social logos...');
+        socialIcons.innerHTML = ''; // Clear any existing content
         for (const [url, imageSrc] of Object.entries(customLogos)) {
             const link = document.createElement('a');
             link.href = '#'; // Prevent default link behavior
@@ -30,6 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
             img.className = 'social-logo';
             img.style.maxWidth = '100%';
             img.style.maxHeight = '100%';
+            // Add error handling for image loading
+            img.onerror = () => console.error(`Failed to load image for ${url}: ${imageSrc}`);
+            img.onload = () => console.log(`Loaded image for ${url}: ${imageSrc}`);
             link.appendChild(img);
             socialIcons.appendChild(link);
 
