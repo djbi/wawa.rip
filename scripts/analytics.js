@@ -4,10 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const webhookUrl = 'https://discord.com/api/webhooks/1347623621870223390/MnshZJcOQ7UZ03aDFq8OrA1VfbmcXYK-dp8WhZqRborySSHnIbtZ1bzKgC4haBFKewED';
 
-    // Send visit count to Discord
     window.sendVisitData = async function() {
         try {
-            const message = `*Visit Count: ${visitCount}*`;
+            const message = `*Visit Count: ${window.visitCount}*`;
             const response = await fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -20,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Send note to Discord
     window.sendNoteData = async function(note) {
         try {
             const message = `*Note: ${note}*`;
@@ -40,6 +38,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Send initial visit data
     sendVisitData();
 });
