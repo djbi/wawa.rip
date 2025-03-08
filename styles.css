@@ -23,10 +23,12 @@ body {
 
 /* Container for main content with full visibility */
 .container {
-    width: 100%;
-    min-height: 100vh; /* Full viewport height */
+    width: 100vw; /* Explicit full width */
+    height: 100vh; /* Explicit full height */
     z-index: 2;
-    position: relative;
+    position: absolute; /* Remove relative positioning conflict */
+    top: 0;
+    left: 0;
     display: flex;
     justify-content: center;
     align-items: center; /* Center content vertically and horizontally */
@@ -133,8 +135,8 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background: #000000;
     z-index: 3;
     display: flex;
