@@ -29,10 +29,11 @@ body {
     top: 0;
     left: 0;
     display: flex;
-    justify-content: flex-end; /* Align to the right */
+    justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     z-index: 2;
-    padding-right: 20px; /* Add right padding for spacing */
+    /* Fallback centering method */
+    text-align: center;
 }
 
 /* Main content styling */
@@ -42,9 +43,13 @@ body {
     max-width: 900px; /* Max width for larger screens */
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* Align content to the right */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
     gap: 15px; /* Increased gap for readability */
-    text-align: right; /* Right-align text */
+    text-align: center; /* Center-align text */
+    /* Additional centering method */
+    position: relative;
+    margin: 0 auto; /* Fallback for centering */
 }
 
 /* Neon text styling for "Faith" and "Cocaine Woman" */
@@ -80,7 +85,7 @@ body {
 .social-icons {
     margin: 20px 0;
     display: flex;
-    justify-content: flex-end; /* Align logos to the right */
+    justify-content: center; /* Center logos */
     gap: 15px;
     flex-wrap: wrap;
     cursor: none;
