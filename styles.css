@@ -92,11 +92,11 @@ body {
     display: inline-block;
 }
 
-/* Social logo styling - ensured visibility */
+/* Social logo styling - ensured visibility with strong pink glow */
 .social-logo {
-    width: clamp(30px, 6vw, 60px); /* Larger and responsive */
-    height: clamp(30px, 6vw, 60px);
-    filter: drop-shadow(0 0 5px #ff69b4) drop-shadow(0 0 10px #ff69b4);
+    width: 50px; /* Fixed size for consistency */
+    height: 50px;
+    filter: drop-shadow(0 0 10px #ff69b4) drop-shadow(0 0 20px #ff69b4) drop-shadow(0 0 30px #ff1493); /* Strong pink glow */
     user-select: none;
     cursor: none;
     transition: transform 0.2s;
@@ -248,14 +248,14 @@ body {
 /* Responsive design for tablets */
 @media (max-width: 768px) {
     #faithText {
-        font-size: clamp(50px, 12vw, 180px); /* Slightly larger on tablets */
+        font-size: clamp(50px, 12vw, 180px);
     }
     .cocaine-text {
         font-size: clamp(10px, 3vw, 30px);
     }
     .social-logo {
-        width: clamp(25px, 5vw, 50px);
-        height: clamp(25px, 5vw, 50px);
+        width: 40px; /* Slightly smaller but consistent */
+        height: 40px;
     }
     .heart-text {
         font-size: clamp(10px, 2.5vw, 20px);
@@ -274,14 +274,14 @@ body {
 /* Responsive design for mobile phones */
 @media (max-width: 480px) {
     #faithText {
-        font-size: clamp(40px, 10vw, 160px); /* Larger on mobile */
+        font-size: clamp(40px, 10vw, 160px);
     }
     .cocaine-text {
         font-size: clamp(8px, 2.5vw, 24px);
     }
     .social-logo {
-        width: clamp(20px, 4vw, 40px);
-        height: clamp(20px, 4vw, 40px);
+        width: 35px; /* Consistent size on mobile */
+        height: 35px;
     }
     .heart-text {
         font-size: clamp(8px, 2vw, 16px);
