@@ -43,7 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCounter(); // Initial display
 
     // Ensure click to enter works anywhere on the splash screen
-    function enterMainPage() {
+    function enterMainPage(e) {
+        e.preventDefault(); // Prevent default behaviors
         console.log('enterMainPage called');
         isSplashScreen = false;
         splashScreen.style.display = 'none';
@@ -53,17 +54,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof sendVisitData === 'function') {
             sendVisitData();
         }
+        // Trigger logo loading after main container is visible
+        if (typeof loadLogos === 'function') {
+            loadLogos();
+        }
     }
 
     // Attach event listeners to the entire splash screen
     splashScreen.addEventListener('click', enterMainPage);
-    splashScreen.addEventListener('touchend', enterMainPage);
+    splashScreen.addEventListener('touchstart', enterMainPage); // Use touchstart for better mobile responsiveness
 
     // Fallback: Automatically transition after 5 seconds if no interaction
     setTimeout(() => {
         if (isSplashScreen && splashScreen.style.display !== 'none') {
             console.log('Fallback: Automatically transitioning after 5 seconds');
-            enterMainPage();
+            enterMainPage(new Event('auto'));
         }
     }, 5000);
 });
