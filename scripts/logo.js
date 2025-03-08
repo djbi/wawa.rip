@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastTapTimes = {};
 
     // Function to populate social icons with double-click/tap redirects
-    function loadLogos() {
+    window.loadLogos = function() { // Make loadLogos globally accessible
         const socialIcons = document.getElementById('socialIcons');
         if (!socialIcons) {
             console.error('socialIcons element not found');
@@ -57,7 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 lastTapTimes[linkId] = currentTime;
             });
         }
-    }
+    };
 
-    loadLogos();
+    // Initial attempt to load logos (may not work if main container is hidden)
+    if (document.getElementById('mainContainer').style.display === 'block') {
+        loadLogos();
+    }
 });
