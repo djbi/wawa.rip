@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Use locally hosted images with explicit relative paths
     const customLogos = {
         'https://www.tiktok.com/@faith.meows?_t=ZN-8uT1pCNKhvC&_r=1': {
-            src: './images/tiktok.png', // Explicit relative path
+            src: './images/tiktok.png', // Adjusted path
             fallback: 'https://via.placeholder.com/50?text=TikTok'
         },
         'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi': {
