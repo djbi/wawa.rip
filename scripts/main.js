@@ -12,22 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Initialize elements
-    const faithText = document.getElementById('faithText');
-    const cocaineText = document.getElementById('cocaineText');
-    const heartText = document.querySelector('.heart-text');
-    const noteInput = document.getElementById('noteInput');
-    const noteTextarea = document.getElementById('noteTextarea');
-    const sendNoteButton = document.getElementById('sendNote');
-
-    if (!faithText || !cocaineText || !heartText || !noteInput || !noteTextarea || !sendNoteButton) {
-        console.error('Main elements not found');
-        return;
-    }
-
     let particles = [];
     let squares = [];
-    let faithClickCount = 0;
 
     // Animation loop for particles and squares
     function animate() {
@@ -68,49 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-    });
-
-    // Triple-click on Faith to show note input (Desktop)
-    faithText.addEventListener('click', () => {
-        faithClickCount++;
-        console.log('Faith clicked, count:', faithClickCount);
-        if (faithClickCount === 3) {
-            noteInput.style.display = 'block';
-            faithClickCount = 0;
-        }
-        setTimeout(() => {
-            if (faithClickCount !== 0) {
-                faithClickCount = 0;
-                console.log('Faith click count reset');
-            }
-        }, 1000);
-    });
-
-    // Double-click on Cocaine Woman to redirect (Desktop)
-    cocaineText.addEventListener('dblclick', () => {
-        console.log('Double-clicked Cocaine Woman');
-        window.location.href = 'https://youtu.be/FMw_EXe18Qg?si=uXcD2Kykxww0JJGO';
-    });
-
-    // Double-click on <3 to redirect (Desktop)
-    heartText.addEventListener('dblclick', () => {
-        console.log('Double-clicked heart');
-        window.location.href = 'https://discordapp.com/users/1265799421417754664';
-    });
-
-    // Send note on desktop
-    sendNoteButton.addEventListener('click', () => {
-        const note = noteTextarea.value.trim();
-        if (note) {
-            if (typeof window.sendNoteData === 'function') {
-                window.sendNoteData(note);
-            } else {
-                console.error('sendNoteData not found');
-                alert('Failed to send note.');
-            }
-        } else {
-            alert('Please enter a note.');
-        }
     });
 
     // Title animation
