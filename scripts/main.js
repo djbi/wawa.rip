@@ -23,38 +23,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const noteInput = document.getElementById('noteInput');
     const noteTextarea = document.getElementById('noteTextarea');
     const sendNoteButton = document.getElementById('sendNote');
+    const cursor = document.getElementById('customCursor');
 
-    if (!faithText || !cocaineText || !heartText || !noteInput || !noteTextarea || !sendNoteButton) {
-        console.error('Main elements not found:', { faithText, cocaineText, heartText, noteInput, noteTextarea, sendNoteButton });
+    if (!faithText || !cocaineText || !heartText || !noteInput || !noteTextarea || !sendNoteButton || !cursor) {
+        console.error('Main elements not found:', { faithText, cocaineText, heartText, noteInput, noteTextarea, sendNoteButton, cursor });
         return;
     }
 
-    // Create and initialize custom cursor immediately
-    let cursor = document.querySelector('.custom-cursor');
-    if (!cursor) {
-        console.log('Creating custom cursor');
-        cursor = document.createElement('div');
-        cursor.className = 'custom-cursor';
-        document.body.appendChild(cursor);
-    }
+    // Initialize custom cursor
     cursor.classList.add('visible');
     cursor.style.display = 'block'; // Ensure display is set
     console.log('Custom cursor initialized:', cursor);
 
-    function updateCursorPosition() {
-        if (cursor && mouse.x !== null && mouse.y !== null) {
-            cursor.style.left = mouse.x + 'px';
-            cursor.style.top = mouse.y + 'px';
+    function updateCursorPosition(x, y) {
+        if (cursor && x !== null && y !== null) {
+            cursor.style.left = x + 'px';
+            cursor.style.top = y + 'px';
+            cursor.style.display = 'block'; // Ensure it’s visible
+            cursor.style.opacity = '1'; // Ensure opacity is set
         } else {
-            console.warn('Cursor or mouse position not available:', { cursor, mouse });
+            console.warn('Cursor or position not available:', { cursor, x, y });
         }
     }
 
-    // Variables for double-tap detection on mobile
+    // Variables for double-tap and triple-tap detection
     let lastTapHeart = 0;
     let lastTapCocaine = 0;
     let lastTapFaith = 0;
     const doubleTapDelay = 300; // 300ms window for double-tap
+    const tripleTapDelay = 300; // 300ms window for triple-tap
 
     // Initialize particles and squares
     function animate() {
@@ -93,38 +90,43 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mouse.x === null && mouse.y === null) {
             mouse.x = window.innerWidth / 2;
             mouse.y = window.innerHeight / 2;
+            updateCursorPosition(mouse.x, mouse.y);
         }
-        updateCursorPosition();
     });
 
     window.addEventListener('mousemove', (e) => {
-        console.log('Mouse move detected:', { x: e.x, y: e.y });
-        mouse.x = e.x;
-        mouse.y = e.y;
+        console.log('Mouse move detected:', { x: e.clientX, y: e.clientY });
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
         for (let i = 0; i < 3; i++) {
-            particles.push(new Particle(e.x, e.y));
+            particles.push(new Particle(e.clientX, e.clientY));
         }
-        console.log('Particles added:', particles.length);
-        updateCursorPosition();
+        updateCursorPosition(e.clientX, e.clientY);
     });
 
     window.addEventListener('touchmove', (e) => {
         e.preventDefault(); // Prevent scrolling
-        console.log('Touch move detected:', e.touches[0]);
         const touch = e.touches[0];
+        console.log('Touch move detected:', { x: touch.clientX, y: touch.clientY });
         mouse.x = touch.clientX;
         mouse.y = touch.clientY;
         for (let i = 0; i < 3; i++) {
             particles.push(new Particle(touch.clientX, touch.clientY));
         }
-        console.log('Particles added:', particles.length);
-        updateCursorPosition();
+        updateCursorPosition(touch.clientX, touch.clientY);
+    });
+
+    window.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        mouse.x = touch.clientX;
+        mouse.y = touch.clientY;
+        updateCursorPosition(touch.clientX, touch.clientY);
     });
 
     // Initialize mouse position
     mouse.x = window.innerWidth / 2;
     mouse.y = window.innerHeight / 2;
-    updateCursorPosition();
+    updateCursorPosition(mouse.x, mouse.y);
 
     // Ensure splash screen is clickable and displays main page
     function enterMainPage() {
@@ -203,12 +205,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Triple-click "Faith" to show note input (Desktop)
     faithText.addEventListener('click', () => {
         faithClickCount++;
+        console.log('Faith clicked, count:', faithClickCount);
         if (faithClickCount === 3) {
             noteInput.style.display = 'block';
             faithClickCount = 0; // Reset after showing input
         }
         setTimeout(() => {
-            faithClickCount = 0; // Reset after 1 second if not triple-clicked
+            if (faithClickCount !== 0) {
+                faithClickCount = 0; // Reset after 1 second if not triple-clicked
+                console.log('Faith click count reset');
+            }
         }, 1000);
     });
 
@@ -217,37 +223,52 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const currentTime = new Date().getTime();
         const tapLength = currentTime - lastTapFaith;
-        if (tapLength < doubleTapDelay && tapLength > 0) {
+        console.log('Faith tapped, tapLength:', tapLength, 'count:', faithClickCount + 1);
+        if (tapLength < tripleTapDelay && tapLength > 0) {
             faithClickCount++;
             if (faithClickCount === 3) {
                 noteInput.style.display = 'block';
                 faithClickCount = 0; // Reset after showing input
+                console.log('Note input shown on mobile');
             }
         } else {
             faithClickCount = 1; // Reset if taps are too far apart
         }
         lastTapFaith = currentTime;
         setTimeout(() => {
-            faithClickCount = 0; // Reset after 1 second if not triple-tapped
+            if (faithClickCount !== 0) {
+                faithClickCount = 0; // Reset after 1 second if not triple-tapped
+                console.log('Faith tap count reset');
+            }
         }, 1000);
     });
 
-    // Send note to webhook
+    // Send note to webhook (Desktop)
     sendNoteButton.addEventListener('click', () => {
         const note = noteTextarea.value.trim();
         if (note) {
-            sendNoteData(note);
+            if (typeof window.sendNoteData === 'function') {
+                window.sendNoteData(note);
+            } else {
+                console.error('sendNoteData function not found');
+                alert('Failed to send note. Please try again.');
+            }
         } else {
             alert('Please enter a note before sending.');
         }
     });
 
-    // Send note on mobile
+    // Send note to webhook (Mobile)
     sendNoteButton.addEventListener('touchend', (e) => {
         e.preventDefault();
         const note = noteTextarea.value.trim();
         if (note) {
-            sendNoteData(note);
+            if (typeof window.sendNoteData === 'function') {
+                window.sendNoteData(note);
+            } else {
+                console.error('sendNoteData function not found');
+                alert('Failed to send note. Please try again.');
+            }
         } else {
             alert('Please enter a note before sending.');
         }
@@ -263,7 +284,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     setInterval(updateTitle, 300); // Update every 300ms
     updateTitle(); // Initial call to ensure it starts
-    // Add a safeguard to ensure the interval runs
     setTimeout(() => {
         if (document.title === 'meow meow') {
             console.warn('Title animation stuck, restarting');
