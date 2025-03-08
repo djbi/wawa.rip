@@ -29,10 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const span = document.createElement('span');
             span.textContent = digit;
             let colorIndex = (index + Math.floor(Date.now() / 100)) % rainbowColors.length;
-            let nextColorIndex = (colorIndex + 1) % rainbowColors.length;
-            while (nextColorIndex === colorIndex) {
-                nextColorIndex = (nextColorIndex + 1) % rainbowColors.length;
-            }
             span.style.color = rainbowColors[colorIndex];
             visitCounter.appendChild(span);
         });
@@ -54,10 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof sendVisitData === 'function') {
             sendVisitData();
         }
-        // Trigger logo loading after main container is visible
-        if (typeof loadLogos === 'function') {
-            loadLogos();
-        }
+        // Delay logo loading to ensure main container is fully rendered
+        setTimeout(() => {
+            if (typeof window.loadLogos === 'function') {
+                console.log('Loading logos after transition');
+                window.loadLogos();
+            }
+        }, 100); // 100ms delay
     }
 
     // Attach event listeners to the entire splash screen
