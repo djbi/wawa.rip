@@ -217,10 +217,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Moving title effect with only two "meow"s
     const titles = ["meow meow", "meow", ""];
     let titleIndex = 0;
-    setInterval(() => {
+    function updateTitle() {
+        console.log('Updating title to:', titles[titleIndex]);
         document.title = titles[titleIndex];
         titleIndex = (titleIndex + 1) % titles.length;
-    }, 300);
+    }
+    setInterval(updateTitle, 300); // Update every 300ms
+    updateTitle(); // Initial call
 
     animate();
 });
