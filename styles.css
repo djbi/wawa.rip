@@ -25,26 +25,26 @@ body {
 .container {
     width: 100vw; /* Full viewport width */
     height: 100vh; /* Full viewport height */
-    position: fixed; /* Fixed positioning to ensure centering */
+    position: fixed; /* Fixed positioning */
     top: 0;
     left: 0;
     display: flex;
-    justify-content: center; /* Center horizontally */
+    justify-content: flex-end; /* Align to the right */
     align-items: center; /* Center vertically */
     z-index: 2;
+    padding-right: 20px; /* Add right padding for spacing */
 }
 
 /* Main content styling */
 .main-content {
     padding: 20px;
-    width: 90%; /* Slightly narrower to avoid edge issues */
+    width: 90%; /* Slightly narrower */
     max-width: 900px; /* Max width for larger screens */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
+    align-items: flex-end; /* Align content to the right */
     gap: 15px; /* Increased gap for readability */
-    text-align: center;
+    text-align: right; /* Right-align text */
 }
 
 /* Neon text styling for "Faith" and "Cocaine Woman" */
@@ -80,7 +80,7 @@ body {
 .social-icons {
     margin: 20px 0;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end; /* Align logos to the right */
     gap: 15px;
     flex-wrap: wrap;
     cursor: none;
@@ -90,32 +90,6 @@ body {
 .social-link {
     cursor: none;
     display: inline-block;
-}
-
-/* Social logo styling - pink glow and hover rainbow effect */
-.social-logo {
-    width: 50px; /* Fixed size for consistency */
-    height: 50px;
-    filter: drop-shadow(0 0 10px #ff69b4) drop-shadow(0 0 20px #ff69b4) drop-shadow(0 0 30px #ff1493); /* Strong pink glow */
-    user-select: none;
-    cursor: none;
-    transition: filter 0.3s ease; /* Smooth transition for hover effect */
-}
-
-.social-link:hover .social-logo {
-    filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #ff00ff) drop-shadow(0 0 30px #00ffff)
-           drop-shadow(0 0 40px #ff00ff) drop-shadow(0 0 50px #ff69b4) drop-shadow(0 0 60px #8000ff);
-    animation: rainbowGlow 2s infinite linear; /* Animated rainbow effect */
-}
-
-/* Rainbow glow animation */
-@keyframes rainbowGlow {
-    0% { filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #ff00ff) drop-shadow(0 0 30px #00ffff); }
-    20% { filter: drop-shadow(0 0 10px #ff00ff) drop-shadow(0 0 20px #00ffff) drop-shadow(0 0 30px #ff0000); }
-    40% { filter: drop-shadow(0 0 10px #00ffff) drop-shadow(0 0 20px #ff0000) drop-shadow(0 0 30px #ff00ff); }
-    60% { filter: drop-shadow(0 0 10px #ff69b4) drop-shadow(0 0 20px #8000ff) drop-shadow(0 0 30px #ff00ff); }
-    80% { filter: drop-shadow(0 0 10px #8000ff) drop-shadow(0 0 20px #ff69b4) drop-shadow(0 0 30px #00ffff); }
-    100% { filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #ff00ff) drop-shadow(0 0 30px #00ffff); }
 }
 
 /* Heart text styling for "<3" */
