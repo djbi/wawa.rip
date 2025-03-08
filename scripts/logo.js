@@ -2,22 +2,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('logos.js loaded');
 
-    // Use alternative image sources (publicly accessible)
+    // New logo sources from simpleicons.org (publicly accessible)
     const customLogos = {
         'https://www.tiktok.com/@faith.meows?_t=ZN-8uT1pCNKhvC&_r=1': {
-            src: 'https://img.icons8.com/color/48/000000/tiktok.png',
+            src: 'https://cdn.simpleicons.org/tiktok/000000',
             fallback: 'https://via.placeholder.com/50?text=TikTok'
         },
         'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi': {
-            src: 'https://img.icons8.com/color/48/000000/spotify.png',
+            src: 'https://cdn.simpleicons.org/spotify/000000',
             fallback: 'https://via.placeholder.com/50?text=Spotify'
         },
         'https://www.roblox.com/share?code=44cb54032142d34787f1f2ad3aff1033&type=Profile&source=ProfileShare&stamp=1741364262991': {
-            src: 'https://img.icons8.com/color/48/000000/roblox.png',
+            src: 'https://cdn.simpleicons.org/roblox/000000',
             fallback: 'https://via.placeholder.com/50?text=Roblox'
         },
         'https://github.com/djbi': {
-            src: 'https://img.icons8.com/color/48/000000/github.png',
+            src: 'https://cdn.simpleicons.org/github/000000',
             fallback: 'https://via.placeholder.com/50?text=GitHub'
         }
     };
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         socialIcons.innerHTML = '';
         for (const [url, { src, fallback }] of Object.entries(customLogos)) {
             const link = document.createElement('a');
-            link.href = '#';
+            link.href = url; // Direct link for redirection
             link.className = 'social-link';
             const img = document.createElement('img');
             img.src = src;
@@ -52,25 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
             link.appendChild(img);
             socialIcons.appendChild(link);
 
-            // Double-click for desktop
-            link.addEventListener('dblclick', (e) => {
+            // Single-click for desktop (simplified from double-click)
+            link.addEventListener('click', (e) => {
                 e.preventDefault();
-                console.log(`Double-clicked social link: ${url}`);
+                console.log(`Clicked social link: ${url}`);
                 window.location.href = url;
             });
 
-            // Double-tap for mobile
+            // Single-tap for mobile (simplified from double-tap)
             link.addEventListener('touchend', (e) => {
                 e.preventDefault();
-                const currentTime = new Date().getTime();
-                const linkId = url;
-                lastTapTimes[linkId] = lastTapTimes[linkId] || 0;
-                const tapLength = currentTime - lastTapTimes[linkId];
-                if (tapLength < doubleTapDelay && tapLength > 0) {
-                    console.log(`Double-tapped social link: ${url}`);
-                    window.location.href = url;
-                }
-                lastTapTimes[linkId] = currentTime;
+                console.log(`Tapped social link: ${url}`);
+                window.location.href = url;
             });
         }
     };
