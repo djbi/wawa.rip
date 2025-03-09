@@ -16,15 +16,24 @@
         }
         #ip-address {
             font-size: 2em;
-            /* Prevent text selection */
             user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
         }
         .digit {
-            transition: color 0.5s ease;
-            display: inline-block; /* Ensures proper rendering */
+            display: inline-block;
+            text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+            }
+            to {
+                text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+            }
         }
     </style>
 </head>
@@ -32,11 +41,20 @@
     <div id="ip-address">Loading your IP...</div>
 
     <script>
-        // List of distinct colors
+        // Neon colors
         const colors = [
-            '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4',
-            '#FFEEAD', '#D4A5A5', '#9B59B6', '#3498DB',
-            '#E74C3C', '#2ECC71', '#F1C40F', '#E67E22'
+            '#FF00FF', // Neon Magenta
+            '#00FFFF', // Neon Cyan
+            '#FF00AA', // Neon Pink
+            '#00FF00', // Neon Green
+            '#FFFF00', // Neon Yellow
+            '#FF6600', // Neon Orange
+            '#FF0099', // Neon Hot Pink
+            '#00CCFF', // Neon Sky Blue
+            '#FF3366', // Neon Coral
+            '#33FF33', // Neon Lime
+            '#FFCC00', // Neon Gold
+            '#FF0066'  // Neon Rose
         ];
 
         function getRandomColor(excludeColors = []) {
@@ -44,28 +62,36 @@
             return availableColors[Math.floor(Math.random() * availableColors.length)];
         }
 
+        function updateColors() {
+            const digits = document.getElementsByClassName('digit');
+            const usedColors = new Set();
+            
+            Array.from(digits).forEach(digit => {
+                let newColor;
+                do {
+                    newColor = getRandomColor(Array.from(usedColors));
+                } while (digit.style.color === newColor);
+                
+                digit.style.color = newColor;
+                usedColors.add(newColor);
+            });
+        }
+
         function displayIP(ip) {
             const ipContainer = document.getElementById('ip-address');
             ipContainer.innerHTML = '';
             
-            // Split IP into individual characters
             const chars = ip.split('');
-            
-            // Track used colors for this iteration
-            let usedColors = [];
-            
             chars.forEach(char => {
                 const span = document.createElement('span');
                 span.className = 'digit';
                 span.textContent = char;
-                
-                // Get a unique color for this digit
-                const color = getRandomColor(usedColors);
-                span.style.color = color;
-                usedColors.push(color);
-                
+                span.style.color = getRandomColor();
                 ipContainer.appendChild(span);
             });
+            
+            // Start continuous color changing
+            setInterval(updateColors, 1000);
         }
 
         // Fetch IP and initial display
@@ -73,11 +99,6 @@
             .then(response => response.json())
             .then(data => {
                 displayIP(data.ip);
-                
-                // Change colors every 2 seconds
-                setInterval(() => {
-                    displayIP(data.ip);
-                }, 2000);
             })
             .catch(error => {
                 document.getElementById('ip-address').textContent = 'Unable to fetch IP';
