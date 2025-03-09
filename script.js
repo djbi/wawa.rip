@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ipDisplay = document.getElementById('ip-display');
     const ipDisplayCoin = document.getElementById('ip-display-coin');
     const ipDisplayClicker = document.getElementById('ip-display-clicker');
+    const sidebar = document.getElementById('sidebar');
 
     // Neon colors for IP address effect
     const colors = [
@@ -130,9 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Cycle browser title
+    // Cycle browser title to "meow meow"
     function cycleTitle() {
-        const titleText = "meow meow to meow to wawa.rip";
+        const titleText = "meow meow";
         let index = 0;
         setInterval(() => {
             const start = index % titleText.length;
@@ -143,51 +144,83 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     }
 
-    // Upgrade definitions
+    // Function to format large numbers
+    function formatNumber(num) {
+        if (num >= 1e33) return (num / 1e33).toFixed(2) + ' De';
+        if (num >= 1e30) return (num / 1e30).toFixed(2) + ' No';
+        if (num >= 1e27) return (num / 1e27).toFixed(2) + ' Oc';
+        if (num >= 1e24) return (num / 1e24).toFixed(2) + ' Sp';
+        if (num >= 1e21) return (num / 1e21).toFixed(2) + ' Sx';
+        if (num >= 1e18) return (num / 1e18).toFixed(2) + ' Qt';
+        if (num >= 1e15) return (num / 1e15).toFixed(2) + ' Qn';
+        if (num >= 1e12) return (num / 1e12).toFixed(2) + ' T';
+        if (num >= 1e9) return (num / 1e9).toFixed(2) + ' B';
+        if (num >= 1e6) return (num / 1e6).toFixed(2) + ' M';
+        if (num >= 1e3) return (num / 1e3).toFixed(2) + ' K';
+        return num.toFixed(2);
+    }
+
+    // Upgrade definitions (ordered by cost)
     const upgrades = {
-        'power-tap': { button: document.getElementById('power-tap'), countDisplay: document.getElementById('power-tap-count'), value: 1, count: 0, costBase: 10, costMultiplier: 1, effect: () => clickValue += 5 },
-        'swift-finger': { button: document.getElementById('swift-finger'), countDisplay: document.getElementById('swift-finger-count'), value: 1, count: 0, costBase: 25, costMultiplier: 1, effect: () => clickMultiplier += 0.1 },
-        'ghost-clicker': { button: document.getElementById('ghost-clicker'), countDisplay: document.getElementById('ghost-clicker-count'), value: 0, count: 0, costBase: 50, costMultiplier: 50, effect: () => autoClickValue += 2 },
-        'time-warp': { button: document.getElementById('time-warp'), countDisplay: document.getElementById('time-warp-count'), value: 0, count: 0, costBase: 100, costMultiplier: 100, effect: () => autoSpeed += 2 },
-        'lucky-streak': { button: document.getElementById('lucky-streak'), countDisplay: document.getElementById('lucky-streak-count'), value: 0, count: 0, costBase: 200, costMultiplier: 200, effect: () => luckBonus += 1 },
-        'golden-poop': { button: document.getElementById('golden-poop'), countDisplay: document.getElementById('golden-poop-count'), value: 0, count: 0, costBase: 500, costMultiplier: 500, effect: () => goldenPoopBonus += 1 },
-        'poop-storm': { button: document.getElementById('poop-storm'), countDisplay: document.getElementById('poop-storm-count'), value: 1, count: 0, costBase: 1000, costMultiplier: 1000, effect: () => poopStormMultiplier += 0.05 },
-        'toilet-upgrade': { button: document.getElementById('toilet-upgrade'), countDisplay: document.getElementById('toilet-upgrade-count'), value: 0, count: 0, costBase: 20000, costMultiplier: 20000, effect: () => toiletUpgrade += 1 },
-        'poop-king': { button: document.getElementById('poop-king'), countDisplay: document.getElementById('poop-king-count'), value: 0, count: 0, costBase: 50000, costMultiplier: 50000, effect: () => poopKing += 1 },
-        'stink-bomb': { button: document.getElementById('stink-bomb'), countDisplay: document.getElementById('stink-bomb-count'), value: 0, count: 0, costBase: 100000, costMultiplier: 100000, effect: () => stinkBomb += 1 },
-        'flush-power': { button: document.getElementById('flush-power'), countDisplay: document.getElementById('flush-power-count'), value: 1, count: 0, costBase: 1500, costMultiplier: 1500, effect: () => clickValue += 3 },
-        'plunger-master': { button: document.getElementById('plunger-master'), countDisplay: document.getElementById('plunger-master-count'), value: 1, count: 0, costBase: 3000, costMultiplier: 3000, effect: () => clickValue += 5 },
-        'sewer-rush': { button: document.getElementById('sewer-rush'), countDisplay: document.getElementById('sewer-rush-count'), value: 0, count: 0, costBase: 5000, costMultiplier: 5000, effect: () => autoClickValue += 1 },
-        'poop-cannon': { button: document.getElementById('poop-cannon'), countDisplay: document.getElementById('poop-cannon-count'), value: 1, count: 0, costBase: 10000, costMultiplier: 10000, effect: () => clickValue += 10 },
-        'flush-frenzy': { button: document.getElementById('flush-frenzy'), countDisplay: document.getElementById('flush-frenzy-count'), value: 0, count: 0, costBase: 15000, costMultiplier: 15000, effect: () => autoClickValue += 2 },
-        'toilet-titan': { button: document.getElementById('toilet-titan'), countDisplay: document.getElementById('toilet-titan-count'), value: 1, count: 0, costBase: 25000, costMultiplier: 25000, effect: () => clickValue += 15 },
-        'stink-wave': { button: document.getElementById('stink-wave'), countDisplay: document.getElementById('stink-wave-count'), value: 0, count: 0, costBase: 30000, costMultiplier: 30000, effect: () => luckBonus += 2 },
-        'poop-blaster': { button: document.getElementById('poop-blaster'), countDisplay: document.getElementById('poop-blaster-count'), value: 1, count: 0, costBase: 40000, costMultiplier: 40000, effect: () => clickValue += 20 },
-        'septic-surge': { button: document.getElementById('septic-surge'), countDisplay: document.getElementById('septic-surge-count'), value: 0, count: 0, costBase: 60000, costMultiplier: 60000, effect: () => autoClickValue += 3 },
-        'flush-fury': { button: document.getElementById('flush-fury'), countDisplay: document.getElementById('flush-fury-count'), value: 1, count: 0, costBase: 80000, costMultiplier: 80000, effect: () => clickValue += 25 },
-        'swift-multiplier': { button: document.getElementById('swift-multiplier'), countDisplay: document.getElementById('swift-multiplier-count'), value: 1, count: 0, costBase: 500, costMultiplier: 500, effect: () => swiftMultiplier += 0.05 },
-        'hyper-multiplier': { button: document.getElementById('hyper-multiplier'), countDisplay: document.getElementById('hyper-multiplier-count'), value: 1, count: 0, costBase: 1000, costMultiplier: 1000, effect: () => hyperMultiplier += 0.1 },
-        'cosmic-multiplier': { button: document.getElementById('cosmic-multiplier'), countDisplay: document.getElementById('cosmic-multiplier-count'), value: 1, count: 0, costBase: 2000, costMultiplier: 2000, effect: () => cosmicMultiplier += 0.15 },
-        'toilet-flush': { button: document.getElementById('toilet-flush'), countDisplay: document.getElementById('toilet-flush-count'), value: 1, count: 0, costBase: 5000, costMultiplier: 5000, effect: () => toiletFlush += 0.1 },
-        'golden-flush': { button: document.getElementById('golden-flush'), countDisplay: document.getElementById('golden-flush-count'), value: 1, count: 0, costBase: 10000, costMultiplier: 10000, effect: () => goldenFlush += 0.2 },
-        'stormy-flush': { button: document.getElementById('stormy-flush'), countDisplay: document.getElementById('stormy-flush-count'), value: 1, count: 0, costBase: 20000, costMultiplier: 20000, effect: () => stormyFlush += 0.25 },
-        'kingly-boost': { button: document.getElementById('kingly-boost'), countDisplay: document.getElementById('kingly-boost-count'), value: 1, count: 0, costBase: 50000, costMultiplier: 50000, effect: () => kinglyBoost += 0.3 },
-        'bomb-burst': { button: document.getElementById('bomb-burst'), countDisplay: document.getElementById('bomb-burst-count'), value: 1, count: 0, costBase: 100000, costMultiplier: 100000, effect: () => bombBurst += 0.4 },
-        'sewer-boost': { button: document.getElementById('sewer-boost'), countDisplay: document.getElementById('sewer-boost-count'), value: 1, count: 0, costBase: 120000, costMultiplier: 120000, effect: () => sewerBoost += 0.5 },
-        'plunger-flush': { button: document.getElementById('plunger-flush'), countDisplay: document.getElementById('plunger-flush-count'), value: 1, count: 0, costBase: 150000, costMultiplier: 150000, effect: () => plungerFlush += 0.6 },
-        'stink-multiplier': { button: document.getElementById('stink-multiplier'), countDisplay: document.getElementById('stink-multiplier-count'), value: 1, count: 0, costBase: 200000, costMultiplier: 200000, effect: () => stinkMultiplier += 0.7 },
-        'cannon-boost': { button: document.getElementById('cannon-boost'), countDisplay: document.getElementById('cannon-boost-count'), value: 1, count: 0, costBase: 250000, costMultiplier: 250000, effect: () => cannonBoost += 0.8 },
-        'frenzy-multiplier': { button: document.getElementById('frenzy-multiplier'), countDisplay: document.getElementById('frenzy-multiplier-count'), value: 1, count: 0, costBase: 300000, costMultiplier: 300000, effect: () => frenzyMultiplier += 0.9 },
-        'titan-boost': { button: document.getElementById('titan-boost'), countDisplay: document.getElementById('titan-boost-count'), value: 1, count: 0, costBase: 350000, costMultiplier: 350000, effect: () => titanBoost += 1.0 },
-        'wave-multiplier': { button: document.getElementById('wave-multiplier'), countDisplay: document.getElementById('wave-multiplier-count'), value: 1, count: 0, costBase: 400000, costMultiplier: 400000, effect: () => waveMultiplier += 1.1 },
-        'blaster-boost': { button: document.getElementById('blaster-boost'), countDisplay: document.getElementById('blaster-boost-count'), value: 1, count: 0, costBase: 450000, costMultiplier: 450000, effect: () => blasterBoost += 1.2 },
-        'surge-multiplier': { button: document.getElementById('surge-multiplier'), countDisplay: document.getElementById('surge-multiplier-count'), value: 1, count: 0, costBase: 500000, costMultiplier: 500000, effect: () => surgeMultiplier += 1.3 },
-        'fury-boost': { button: document.getElementById('fury-boost'), countDisplay: document.getElementById('fury-boost-count'), value: 1, count: 0, costBase: 600000, costMultiplier: 600000, effect: () => furyBoost += 1.4 },
-        'poop-vortex': { button: document.getElementById('poop-vortex'), countDisplay: document.getElementById('poop-vortex-count'), value: 1, count: 0, costBase: 700000, costMultiplier: 700000, effect: () => poopVortex += 1.5 },
-        'flush-chaos': { button: document.getElementById('flush-chaos'), countDisplay: document.getElementById('flush-chaos-count'), value: 1, count: 0, costBase: 800000, costMultiplier: 800000, effect: () => flushChaos += 1.6 },
-        'septic-storm': { button: document.getElementById('septic-storm'), countDisplay: document.getElementById('septic-storm-count'), value: 1, count: 0, costBase: 900000, costMultiplier: 900000, effect: () => septicStorm += 1.7 },
-        'prestige-btn': { button: document.getElementById('prestige-btn'), countDisplay: document.getElementById('prestige-btn-count'), value: 0, count: 0, costBase: 1e12, costMultiplier: 1e12, effect: () => prestigeLevel += 1 }
+        'power-tap': { button: document.getElementById('power-tap'), countDisplay: document.getElementById('power-tap-count'), value: 1, count: 0, costBase: 10, costMultiplier: 1.5, effect: () => clickValue += 0.5 },
+        'swift-finger': { button: document.getElementById('swift-finger'), countDisplay: document.getElementById('swift-finger-count'), value: 1, count: 0, costBase: 25, costMultiplier: 1.5, effect: () => clickMultiplier += 0.01 },
+        'flush-power': { button: document.getElementById('flush-power'), countDisplay: document.getElementById('flush-power-count'), value: 1, count: 0, costBase: 50, costMultiplier: 1.5, effect: () => clickValue += 0.3 },
+        'ghost-clicker': { button: document.getElementById('ghost-clicker'), countDisplay: document.getElementById('ghost-clicker-count'), value: 0, count: 0, costBase: 100, costMultiplier: 2, effect: () => autoClickValue += 0.2 },
+        'plunger-master': { button: document.getElementById('plunger-master'), countDisplay: document.getElementById('plunger-master-count'), value: 1, count: 0, costBase: 150, costMultiplier: 1.5, effect: () => clickValue += 0.5 },
+        'lucky-streak': { button: document.getElementById('lucky-streak'), countDisplay: document.getElementById('lucky-streak-count'), value: 0, count: 0, costBase: 200, costMultiplier: 2, effect: () => luckBonus += 0.1 },
+        'sewer-rush': { button: document.getElementById('sewer-rush'), countDisplay: document.getElementById('sewer-rush-count'), value: 0, count: 0, costBase: 250, costMultiplier: 2, effect: () => autoClickValue += 0.1 },
+        'golden-poop': { button: document.getElementById('golden-poop'), countDisplay: document.getElementById('golden-poop-count'), value: 0, count: 0, costBase: 500, costMultiplier: 2, effect: () => goldenPoopBonus += 0.01 },
+        'swift-multiplier': { button: document.getElementById('swift-multiplier'), countDisplay: document.getElementById('swift-multiplier-count'), value: 1, count: 0, costBase: 750, costMultiplier: 2, effect: () => swiftMultiplier += 0.005 },
+        'poop-cannon': { button: document.getElementById('poop-cannon'), countDisplay: document.getElementById('poop-cannon-count'), value: 1, count: 0, costBase: 1000, costMultiplier: 2, effect: () => clickValue += 1 },
+        'flush-frenzy': { button: document.getElementById('flush-frenzy'), countDisplay: document.getElementById('flush-frenzy-count'), value: 0, count: 0, costBase: 1500, costMultiplier: 2, effect: () => autoClickValue += 0.2 },
+        'hyper-multiplier': { button: document.getElementById('hyper-multiplier'), countDisplay: document.getElementById('hyper-multiplier-count'), value: 1, count: 0, costBase: 2000, costMultiplier: 2, effect: () => hyperMultiplier += 0.01 },
+        'toilet-upgrade': { button: document.getElementById('toilet-upgrade'), countDisplay: document.getElementById('toilet-upgrade-count'), value: 0, count: 0, costBase: 2500, costMultiplier: 2, effect: () => toiletUpgrade += 0.01 },
+        'cosmic-multiplier': { button: document.getElementById('cosmic-multiplier'), countDisplay: document.getElementById('cosmic-multiplier-count'), value: 1, count: 0, costBase: 3000, costMultiplier: 2, effect: () => cosmicMultiplier += 0.015 },
+        'toilet-titan': { button: document.getElementById('toilet-titan'), countDisplay: document.getElementById('toilet-titan-count'), value: 1, count: 0, costBase: 3500, costMultiplier: 2, effect: () => clickValue += 1.5 },
+        'stink-wave': { button: document.getElementById('stink-wave'), countDisplay: document.getElementById('stink-wave-count'), value: 0, count: 0, costBase: 4000, costMultiplier: 2, effect: () => luckBonus += 0.2 },
+        'poop-king': { button: document.getElementById('poop-king'), countDisplay: document.getElementById('poop-king-count'), value: 0, count: 0, costBase: 5000, costMultiplier: 2, effect: () => poopKing += 0.01 },
+        'toilet-flush': { button: document.getElementById('toilet-flush'), countDisplay: document.getElementById('toilet-flush-count'), value: 1, count: 0, costBase: 6000, costMultiplier: 2, effect: () => toiletFlush += 0.01 },
+        'septic-surge': { button: document.getElementById('septic-surge'), countDisplay: document.getElementById('septic-surge-count'), value: 0, count: 0, costBase: 7000, costMultiplier: 2, effect: () => autoClickValue += 0.3 },
+        'golden-flush': { button: document.getElementById('golden-flush'), countDisplay: document.getElementById('golden-flush-count'), value: 1, count: 0, costBase: 8000, costMultiplier: 2, effect: () => goldenFlush += 0.02 },
+        'poop-blaster': { button: document.getElementById('poop-blaster'), countDisplay: document.getElementById('poop-blaster-count'), value: 1, count: 0, costBase: 9000, costMultiplier: 2, effect: () => clickValue += 2 },
+        'stormy-flush': { button: document.getElementById('stormy-flush'), countDisplay: document.getElementById('stormy-flush-count'), value: 1, count: 0, costBase: 10000, costMultiplier: 2, effect: () => stormyFlush += 0.025 },
+        'flush-fury': { button: document.getElementById('flush-fury'), countDisplay: document.getElementById('flush-fury-count'), value: 1, count: 0, costBase: 12000, costMultiplier: 2, effect: () => clickValue += 2.5 },
+        'kingly-boost': { button: document.getElementById('kingly-boost'), countDisplay: document.getElementById('kingly-boost-count'), value: 1, count: 0, costBase: 15000, costMultiplier: 2, effect: () => kinglyBoost += 0.03 },
+        'bomb-burst': { button: document.getElementById('bomb-burst'), countDisplay: document.getElementById('bomb-burst-count'), value: 1, count: 0, costBase: 20000, costMultiplier: 2, effect: () => bombBurst += 0.04 },
+        'stink-bomb': { button: document.getElementById('stink-bomb'), countDisplay: document.getElementById('stink-bomb-count'), value: 0, count: 0, costBase: 25000, costMultiplier: 2, effect: () => stinkBomb += 0.01 },
+        'sewer-boost': { button: document.getElementById('sewer-boost'), countDisplay: document.getElementById('sewer-boost-count'), value: 1, count: 0, costBase: 30000, costMultiplier: 2, effect: () => sewerBoost += 0.05 },
+        'poop-storm': { button: document.getElementById('poop-storm'), countDisplay: document.getElementById('poop-storm-count'), value: 1, count: 0, costBase: 35000, costMultiplier: 2, effect: () => poopStormMultiplier += 0.005 },
+        'plunger-flush': { button: document.getElementById('plunger-flush'), countDisplay: document.getElementById('plunger-flush-count'), value: 1, count: 0, costBase: 40000, costMultiplier: 2, effect: () => plungerFlush += 0.06 },
+        'stink-multiplier': { button: document.getElementById('stink-multiplier'), countDisplay: document.getElementById('stink-multiplier-count'), value: 1, count: 0, costBase: 50000, costMultiplier: 2, effect: () => stinkMultiplier += 0.07 },
+        'cannon-boost': { button: document.getElementById('cannon-boost'), countDisplay: document.getElementById('cannon-boost-count'), value: 1, count: 0, costBase: 60000, costMultiplier: 2, effect: () => cannonBoost += 0.08 },
+        'frenzy-multiplier': { button: document.getElementById('frenzy-multiplier'), countDisplay: document.getElementById('frenzy-multiplier-count'), value: 1, count: 0, costBase: 70000, costMultiplier: 2, effect: () => frenzyMultiplier += 0.09 },
+        'titan-boost': { button: document.getElementById('titan-boost'), countDisplay: document.getElementById('titan-boost-count'), value: 1, count: 0, costBase: 80000, costMultiplier: 2, effect: () => titanBoost += 0.1 },
+        'wave-multiplier': { button: document.getElementById('wave-multiplier'), countDisplay: document.getElementById('wave-multiplier-count'), value: 1, count: 0, costBase: 90000, costMultiplier: 2, effect: () => waveMultiplier += 0.11 },
+        'blaster-boost': { button: document.getElementById('blaster-boost'), countDisplay: document.getElementById('blaster-boost-count'), value: 1, count: 0, costBase: 100000, costMultiplier: 2, effect: () => blasterBoost += 0.12 },
+        'surge-multiplier': { button: document.getElementById('surge-multiplier'), countDisplay: document.getElementById('surge-multiplier-count'), value: 1, count: 0, costBase: 120000, costMultiplier: 2, effect: () => surgeMultiplier += 0.13 },
+        'fury-boost': { button: document.getElementById('fury-boost'), countDisplay: document.getElementById('fury-boost-count'), value: 1, count: 0, costBase: 150000, costMultiplier: 2, effect: () => furyBoost += 0.14 },
+        'poop-vortex': { button: document.getElementById('poop-vortex'), countDisplay: document.getElementById('poop-vortex-count'), value: 1, count: 0, costBase: 200000, costMultiplier: 2, effect: () => poopVortex += 0.15 },
+        'flush-chaos': { button: document.getElementById('flush-chaos'), countDisplay: document.getElementById('flush-chaos-count'), value: 1, count: 0, costBase: 250000, costMultiplier: 2, effect: () => flushChaos += 0.16 },
+        'septic-storm': { button: document.getElementById('septic-storm'), countDisplay: document.getElementById('septic-storm-count'), value: 1, count: 0, costBase: 300000, costMultiplier: 2, effect: () => septicStorm += 0.17 },
+        'prestige-btn': { button: document.getElementById('prestige-btn'), countDisplay: document.getElementById('prestige-btn-count'), value: 0, count: 0, costBase: 1e12, costMultiplier: 1e12, effect: () => prestige() }
     };
+
+    // Dynamically add upgrade containers to sidebar
+    function populateUpgrades() {
+        sidebar.innerHTML = ''; // Clear existing content
+        for (const key in upgrades) {
+            const container = document.createElement('div');
+            container.className = 'upgrade-container';
+            container.innerHTML = `
+                <button class="upgrade-btn" id="${key}"><span><span class="icon"></span>${upgrades[key].button.textContent.split('<')[0]}</span><span class="cost"><span>${formatNumber(upgrades[key].costBase)}</span><div class="cost-icon"></div></span></button>
+                <button class="max-btn" data-upgrade="${key}">Max</button>
+                <span class="upgrade-count" id="${key}-count">0</span>
+            `;
+            sidebar.appendChild(container);
+            upgrades[key].button = container.querySelector(`#${key}`);
+            upgrades[key].countDisplay = container.querySelector(`#${key}-count`);
+        }
+    }
 
     // Clicker game variables
     let score = 0;
@@ -223,14 +256,58 @@ document.addEventListener('DOMContentLoaded', () => {
     let flushChaos = 1;
     let septicStorm = 1;
     let prestigeLevel = 0;
-    let clicksRequired = 1;
     let canClick = false;
+
+    // Prestige function
+    function prestige() {
+        if (score >= upgrades['prestige-btn'].costBase * Math.pow(100, prestigeLevel)) {
+            score = 0;
+            clickValue = 1;
+            autoClickValue = 0;
+            clickMultiplier = 1;
+            autoSpeed = 0;
+            luckBonus = 0;
+            goldenPoopBonus = 0;
+            poopStormMultiplier = 1;
+            toiletUpgrade = 0;
+            poopKing = 0;
+            stinkBomb = 0;
+            swiftMultiplier = 1;
+            hyperMultiplier = 1;
+            cosmicMultiplier = 1;
+            toiletFlush = 1;
+            goldenFlush = 1;
+            stormyFlush = 1;
+            kinglyBoost = 1;
+            bombBurst = 1;
+            sewerBoost = 1;
+            plungerFlush = 1;
+            stinkMultiplier = 1;
+            cannonBoost = 1;
+            frenzyMultiplier = 1;
+            titanBoost = 1;
+            waveMultiplier = 1;
+            blasterBoost = 1;
+            surgeMultiplier = 1;
+            furyBoost = 1;
+            poopVortex = 1;
+            flushChaos = 1;
+            septicStorm = 1;
+            for (const key in upgrades) {
+                upgrades[key].count = 0;
+                upgrades[key].value = key.includes('multiplier') || key.includes('boost') || key.includes('flush') || key.includes('storm') || key.includes('vortex') || key.includes('chaos') ? 1 : 0;
+            }
+            prestigeLevel++;
+            updateScore();
+        }
+    }
 
     // Calculate total multiplier
     function calculateTotalMultiplier() {
         try {
-            const multiplier = clickMultiplier * poopStormMultiplier * swiftMultiplier * hyperMultiplier * cosmicMultiplier * toiletFlush * goldenFlush * stormyFlush * kinglyBoost * bombBurst * sewerBoost * plungerFlush * stinkMultiplier * cannonBoost * frenzyMultiplier * titanBoost * waveMultiplier * blasterBoost * surgeMultiplier * furyBoost * poopVortex * flushChaos * septicStorm * (goldenPoopBonus > 0 ? 1.2 : 1) * (toiletUpgrade > 0 ? 1.1 : 1) * (poopKing > 0 ? 1.3 : 1) * (stinkBomb > 0 ? 1.2 : 1);
-            return parseFloat(multiplier.toFixed(2));
+            const prestigeMultiplier = Math.pow(2.50, prestigeLevel);
+            const baseMultiplier = clickMultiplier * poopStormMultiplier * swiftMultiplier * hyperMultiplier * cosmicMultiplier * toiletFlush * goldenFlush * stormyFlush * kinglyBoost * bombBurst * sewerBoost * plungerFlush * stinkMultiplier * cannonBoost * frenzyMultiplier * titanBoost * waveMultiplier * blasterBoost * surgeMultiplier * furyBoost * poopVortex * flushChaos * septicStorm * (goldenPoopBonus > 0 ? 1.01 : 1) * (toiletUpgrade > 0 ? 1.01 : 1) * (poopKing > 0 ? 1.01 : 1) * (stinkBomb > 0 ? 1.01 : 1);
+            return parseFloat((prestigeMultiplier * baseMultiplier).toFixed(2));
         } catch (error) {
             console.error('Error calculating multiplier:', error);
             return 1;
@@ -240,18 +317,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update score and UI
     function updateScore() {
         try {
-            clickerScore.textContent = `Poop: ${Math.floor(score)}`;
+            clickerScore.textContent = `Poop: ${formatNumber(Math.floor(score))}`;
             const totalMultiplier = calculateTotalMultiplier();
-            multiplierCounter.textContent = `Multiplier: x${totalMultiplier}`;
-            const perSecondValue = autoClickValue * totalMultiplier;
-            perSecond.textContent = `Poop per second: ${perSecondValue.toFixed(1)}`;
+            multiplierCounter.textContent = `Multiplier: x${totalMultiplier.toFixed(2)} (Prestige x${Math.pow(2.50, prestigeLevel).toFixed(2)})`;
+            const perSecondValue = (autoClickValue + (canClick ? clickValue : 0)) * totalMultiplier;
+            perSecond.textContent = `Poop per second: ${formatNumber(perSecondValue.toFixed(1))}`;
             for (const key in upgrades) {
                 if (key === 'prestige-btn') {
-                    upgrades[key].button.querySelector('.cost span').textContent = Math.floor(upgrades[key].costBase * Math.pow(100, prestigeLevel));
-                    upgrades[key].button.innerHTML = `<span><span class="icon"></span>Prestige</span><span class="cost"><span>${(upgrades[key].costBase * Math.pow(100, prestigeLevel)).toLocaleString()}</span><div class="cost-icon"></div></span>`;
+                    upgrades[key].button.querySelector('.cost span').textContent = formatNumber(Math.floor(upgrades[key].costBase * Math.pow(100, prestigeLevel)));
+                    upgrades[key].button.innerHTML = `<span><span class="icon"></span>Prestige</span><span class="cost"><span>${formatNumber(Math.floor(upgrades[key].costBase * Math.pow(100, prestigeLevel)))}</span><div class="cost-icon"></div></span>`;
                 } else {
                     const cost = upgrades[key].value > 0 ? Math.floor((upgrades[key].value - 1) * upgrades[key].costMultiplier + upgrades[key].costBase) : Math.floor(upgrades[key].count * upgrades[key].costMultiplier + upgrades[key].costBase);
-                    upgrades[key].button.querySelector('.cost span').textContent = cost;
+                    upgrades[key].button.querySelector('.cost span').textContent = formatNumber(cost);
                 }
                 upgrades[key].countDisplay.textContent = upgrades[key].count;
             }
@@ -273,9 +350,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     upgrade.effect();
                     upgrade.count++;
                     if (upgrade.value > 0) {
-                        upgrade.value = upgradeKey.includes('multiplier') || upgradeKey.includes('boost') || upgradeKey.includes('flush') || upgradeKey.includes('storm') || upgradeKey.includes('vortex') || upgradeKey.includes('chaos') ? upgrade.value + (upgradeKey === 'swift-finger' ? 0.1 : upgradeKey === 'poop-storm' ? 0.05 : upgradeKey === 'swift-multiplier' ? 0.05 : upgradeKey === 'hyper-multiplier' ? 0.1 : upgradeKey === 'cosmic-multiplier' ? 0.15 : upgradeKey === 'toilet-flush' ? 0.1 : upgradeKey === 'golden-flush' ? 0.2 : upgradeKey === 'stormy-flush' ? 0.25 : upgradeKey === 'kingly-boost' ? 0.3 : upgradeKey === 'bomb-burst' ? 0.4 : upgradeKey === 'sewer-boost' ? 0.5 : upgradeKey === 'plunger-flush' ? 0.6 : upgradeKey === 'stink-multiplier' ? 0.7 : upgradeKey === 'cannon-boost' ? 0.8 : upgradeKey === 'frenzy-multiplier' ? 0.9 : upgradeKey === 'titan-boost' ? 1.0 : upgradeKey === 'wave-multiplier' ? 1.1 : upgradeKey === 'blaster-boost' ? 1.2 : upgradeKey === 'surge-multiplier' ? 1.3 : upgradeKey === 'fury-boost' ? 1.4 : upgradeKey === 'poop-vortex' ? 1.5 : upgradeKey === 'flush-chaos' ? 1.6 : 1.7) : upgrade.value + (upgradeKey === 'power-tap' ? 5 : upgradeKey === 'flush-power' ? 3 : upgradeKey === 'plunger-master' ? 5 : upgradeKey === 'poop-cannon' ? 10 : upgradeKey === 'toilet-titan' ? 15 : upgradeKey === 'poop-blaster' ? 20 : 25);
+                        upgrade.value = upgradeKey.includes('multiplier') || upgradeKey.includes('boost') || upgradeKey.includes('flush') || upgradeKey.includes('storm') || upgradeKey.includes('vortex') || upgradeKey.includes('chaos') ? upgrade.value + (upgradeKey === 'swift-finger' ? 0.01 : upgradeKey === 'poop-storm' ? 0.005 : upgradeKey === 'swift-multiplier' ? 0.005 : upgradeKey === 'hyper-multiplier' ? 0.01 : upgradeKey === 'cosmic-multiplier' ? 0.015 : upgradeKey === 'toilet-flush' ? 0.01 : upgradeKey === 'golden-flush' ? 0.02 : upgradeKey === 'stormy-flush' ? 0.025 : upgradeKey === 'kingly-boost' ? 0.03 : upgradeKey === 'bomb-burst' ? 0.04 : upgradeKey === 'sewer-boost' ? 0.05 : upgradeKey === 'plunger-flush' ? 0.06 : upgradeKey === 'stink-multiplier' ? 0.07 : upgradeKey === 'cannon-boost' ? 0.08 : upgradeKey === 'frenzy-multiplier' ? 0.09 : upgradeKey === 'titan-boost' ? 0.1 : upgradeKey === 'wave-multiplier' ? 0.11 : upgradeKey === 'blaster-boost' ? 0.12 : upgradeKey === 'surge-multiplier' ? 0.13 : upgradeKey === 'fury-boost' ? 0.14 : upgradeKey === 'poop-vortex' ? 0.15 : upgradeKey === 'flush-chaos' ? 0.16 : 0.17) : upgrade.value + (upgradeKey === 'power-tap' ? 0.5 : upgradeKey === 'flush-power' ? 0.3 : upgradeKey === 'plunger-master' ? 0.5 : upgradeKey === 'poop-cannon' ? 1 : upgradeKey === 'toilet-titan' ? 1.5 : upgradeKey === 'poop-blaster' ? 2 : 2.5);
                     } else {
-                        upgrade.count = upgradeKey === 'ghost-clicker' ? autoClickValue / 2 : upgradeKey === 'time-warp' ? autoSpeed / 2 : upgradeKey === 'lucky-streak' ? luckBonus : upgradeKey === 'golden-poop' ? goldenPoopBonus : upgradeKey === 'toilet-upgrade' ? toiletUpgrade : upgradeKey === 'poop-king' ? poopKing : upgradeKey === 'stink-bomb' ? stinkBomb : upgradeKey === 'sewer-rush' ? autoClickValue : upgradeKey === 'flush-frenzy' ? autoClickValue / 2 : upgradeKey === 'stink-wave' ? luckBonus / 2 : upgradeKey === 'septic-surge' ? autoClickValue / 3 : upgrade.count + 1;
+                        upgrade.count = upgradeKey === 'ghost-clicker' ? autoClickValue / 0.2 : upgradeKey === 'time-warp' ? autoSpeed / 2 : upgradeKey === 'lucky-streak' ? luckBonus / 0.1 : upgradeKey === 'golden-poop' ? goldenPoopBonus / 0.01 : upgradeKey === 'toilet-upgrade' ? toiletUpgrade / 0.01 : upgradeKey === 'poop-king' ? poopKing / 0.01 : upgradeKey === 'stink-bomb' ? stinkBomb / 0.01 : upgradeKey === 'sewer-rush' ? autoClickValue / 0.1 : upgradeKey === 'flush-frenzy' ? autoClickValue / 0.2 : upgradeKey === 'stink-wave' ? luckBonus / 0.2 : upgradeKey === 'septic-surge' ? autoClickValue / 0.3 : upgrade.count + 1;
                     }
                     cost = upgrade.value > 0 ? Math.floor((upgrade.value - 1) * upgrade.costMultiplier + upgrade.costBase) : Math.floor(upgrade.count * upgrade.costMultiplier + upgrade.costBase);
                     purchased++;
@@ -290,9 +367,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     upgrade.effect();
                     upgrade.count++;
                     if (upgrade.value > 0) {
-                        upgrade.value = upgradeKey.includes('multiplier') || upgradeKey.includes('boost') || upgradeKey.includes('flush') || upgradeKey.includes('storm') || upgradeKey.includes('vortex') || upgradeKey.includes('chaos') ? upgrade.value + (upgradeKey === 'swift-finger' ? 0.1 : upgradeKey === 'poop-storm' ? 0.05 : upgradeKey === 'swift-multiplier' ? 0.05 : upgradeKey === 'hyper-multiplier' ? 0.1 : upgradeKey === 'cosmic-multiplier' ? 0.15 : upgradeKey === 'toilet-flush' ? 0.1 : upgradeKey === 'golden-flush' ? 0.2 : upgradeKey === 'stormy-flush' ? 0.25 : upgradeKey === 'kingly-boost' ? 0.3 : upgradeKey === 'bomb-burst' ? 0.4 : upgradeKey === 'sewer-boost' ? 0.5 : upgradeKey === 'plunger-flush' ? 0.6 : upgradeKey === 'stink-multiplier' ? 0.7 : upgradeKey === 'cannon-boost' ? 0.8 : upgradeKey === 'frenzy-multiplier' ? 0.9 : upgradeKey === 'titan-boost' ? 1.0 : upgradeKey === 'wave-multiplier' ? 1.1 : upgradeKey === 'blaster-boost' ? 1.2 : upgradeKey === 'surge-multiplier' ? 1.3 : upgradeKey === 'fury-boost' ? 1.4 : upgradeKey === 'poop-vortex' ? 1.5 : upgradeKey === 'flush-chaos' ? 1.6 : 1.7) : upgrade.value + (upgradeKey === 'power-tap' ? 5 : upgradeKey === 'flush-power' ? 3 : upgradeKey === 'plunger-master' ? 5 : upgradeKey === 'poop-cannon' ? 10 : upgradeKey === 'toilet-titan' ? 15 : upgradeKey === 'poop-blaster' ? 20 : 25);
+                        upgrade.value = upgradeKey.includes('multiplier') || upgradeKey.includes('boost') || upgradeKey.includes('flush') || upgradeKey.includes('storm') || upgradeKey.includes('vortex') || upgradeKey.includes('chaos') ? upgrade.value + (upgradeKey === 'swift-finger' ? 0.01 : upgradeKey === 'poop-storm' ? 0.005 : upgradeKey === 'swift-multiplier' ? 0.005 : upgradeKey === 'hyper-multiplier' ? 0.01 : upgradeKey === 'cosmic-multiplier' ? 0.015 : upgradeKey === 'toilet-flush' ? 0.01 : upgradeKey === 'golden-flush' ? 0.02 : upgradeKey === 'stormy-flush' ? 0.025 : upgradeKey === 'kingly-boost' ? 0.03 : upgradeKey === 'bomb-burst' ? 0.04 : upgradeKey === 'sewer-boost' ? 0.05 : upgradeKey === 'plunger-flush' ? 0.06 : upgradeKey === 'stink-multiplier' ? 0.07 : upgradeKey === 'cannon-boost' ? 0.08 : upgradeKey === 'frenzy-multiplier' ? 0.09 : upgradeKey === 'titan-boost' ? 0.1 : upgradeKey === 'wave-multiplier' ? 0.11 : upgradeKey === 'blaster-boost' ? 0.12 : upgradeKey === 'surge-multiplier' ? 0.13 : upgradeKey === 'fury-boost' ? 0.14 : upgradeKey === 'poop-vortex' ? 0.15 : upgradeKey === 'flush-chaos' ? 0.16 : 0.17) : upgrade.value + (upgradeKey === 'power-tap' ? 0.5 : upgradeKey === 'flush-power' ? 0.3 : upgradeKey === 'plunger-master' ? 0.5 : upgradeKey === 'poop-cannon' ? 1 : upgradeKey === 'toilet-titan' ? 1.5 : upgradeKey === 'poop-blaster' ? 2 : 2.5);
                     } else {
-                        upgrade.count = upgradeKey === 'ghost-clicker' ? autoClickValue / 2 : upgradeKey === 'time-warp' ? autoSpeed / 2 : upgradeKey === 'lucky-streak' ? luckBonus : upgradeKey === 'golden-poop' ? goldenPoopBonus : upgradeKey === 'toilet-upgrade' ? toiletUpgrade : upgradeKey === 'poop-king' ? poopKing : upgradeKey === 'stink-bomb' ? stinkBomb : upgradeKey === 'sewer-rush' ? autoClickValue : upgradeKey === 'flush-frenzy' ? autoClickValue / 2 : upgradeKey === 'stink-wave' ? luckBonus / 2 : upgradeKey === 'septic-surge' ? autoClickValue / 3 : upgrade.count + 1;
+                        upgrade.count = upgradeKey === 'ghost-clicker' ? autoClickValue / 0.2 : upgradeKey === 'time-warp' ? autoSpeed / 2 : upgradeKey === 'lucky-streak' ? luckBonus / 0.1 : upgradeKey === 'golden-poop' ? goldenPoopBonus / 0.01 : upgradeKey === 'toilet-upgrade' ? toiletUpgrade / 0.01 : upgradeKey === 'poop-king' ? poopKing / 0.01 : upgradeKey === 'stink-bomb' ? stinkBomb / 0.01 : upgradeKey === 'sewer-rush' ? autoClickValue / 0.1 : upgradeKey === 'flush-frenzy' ? autoClickValue / 0.2 : upgradeKey === 'stink-wave' ? luckBonus / 0.2 : upgradeKey === 'septic-surge' ? autoClickValue / 0.3 : upgrade.count + 1;
                     }
                 }
             }
@@ -322,12 +399,10 @@ document.addEventListener('DOMContentLoaded', () => {
     headsBtn.addEventListener('click', () => gameOver('Heads'));
     tailsBtn.addEventListener('click', () => gameOver('Tails'));
 
-    // Redirect to clicker screen on IP address click
     ipDisplay.addEventListener('click', () => {
         goToClickerScreen();
     });
 
-    // Redirect to clicker screen on eye icon click (remove previous creepy image behavior)
     eyeIcon.addEventListener('click', () => {
         goToClickerScreen();
     });
@@ -359,6 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize game
     fetchIP();
     updateVisitCount();
+    populateUpgrades(); // Populate upgrades in order
     cycleTitle();
     updateScore();
 
