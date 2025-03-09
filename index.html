@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coin Flip with IP Clicker</title>
+    <title>Poop Clicker</title>
     <style>
         body {
-            background-color: black;
+            background-color: #1a1a1a;
             margin: 0;
             height: 100vh;
             display: flex;
@@ -19,11 +19,22 @@
             overflow: hidden;
             font-family: Arial, sans-serif;
         }
-        #container {
+        #enter-screen, #coin-screen, #clicker-screen {
             text-align: center;
-            position: relative;
+            position: absolute;
             width: 100%;
             height: 100%;
+            top: 0;
+            left: 0;
+        }
+        #enter-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #coin-screen, #clicker-screen {
+            display: none;
         }
         #ip-display {
             position: absolute;
@@ -38,7 +49,17 @@
             text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
             animation: glow 1.5s infinite alternate;
         }
-        #coin {
+        #enter-btn {
+            color: white;
+            font-size: 2em;
+            cursor: pointer;
+        }
+        #coin-choice {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .coin-btn {
             width: 100px;
             height: 100px;
             border-radius: 50%;
@@ -46,7 +67,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2em;
+            font-size: 1.5em;
             cursor: pointer;
         }
         #visit-counter {
@@ -60,11 +81,11 @@
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
-            cursor: pointer;
         }
         #eye-icon {
             width: 16px;
             height: 16px;
+            cursor: pointer;
         }
         #count {
             color: #FF69B4;
@@ -72,30 +93,344 @@
             animation: counterGlow 2s infinite alternate;
         }
         #clicker-game {
-            display: none;
-            color: white;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            flex-direction: row;
+        }
+        #clicker-main {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: url('https://i.imgur.com/5yY2k9W.png') no-repeat center center;
+            background-size: cover;
+            position: relative;
         }
         #clicker-ip {
             font-size: 2em;
             cursor: pointer;
             margin-bottom: 20px;
+            color: #8B4513;
+            text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700;
+        }
+        #multiplier-counter {
+            font-size: 1em; /* Reduced size */
+            color: white;
+            text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700;
+            margin-bottom: 10px;
         }
         #clicker-score {
-            font-size: 1.5em;
-            margin-bottom: 20px;
+            font-size: 2em;
+            color: white;
+            text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700;
+            margin-bottom: 10px;
         }
-        .upgrade-btn {
-            background-color: #333;
+        #per-second {
+            font-size: 1em;
+            color: white;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+        }
+        #sidebar {
+            flex: 1;
+            background-color: #2a2a4a;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .upgrade-btn, .multiplier-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             color: white;
             border: none;
             padding: 10px;
-            margin: 5px;
+            margin: 5px 0;
             cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+            text-align: left;
+            transition: transform 0.2s;
+        }
+        .upgrade-btn:hover, .multiplier-btn:hover {
+            transform: scale(1.05);
+        }
+        .upgrade-btn span:first-child, .multiplier-btn span:first-child {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .upgrade-btn .icon, .multiplier-btn .icon {
+            width: 24px;
+            height: 24px;
+            text-align: center;
+            line-height: 24px;
+            font-weight: bold;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .multiplier-btn {
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: pulse 2s infinite;
+        }
+        .multiplier-btn .icon {
+            border-radius: 5px;
+            transform: rotate(45deg);
+        }
+        .multiplier-btn .icon::before {
+            display: inline-block;
+            transform: rotate(-45deg);
+        }
+        .upgrade-max-btn {
+            background-color: #FF4500;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        .upgrade-max-btn:hover {
+            background-color: #FF8C00;
+        }
+        #power-tap {
+            background: linear-gradient(45deg, #FF4500, #FF8C00);
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+        }
+        #power-tap .icon::before { content: "💪"; }
+        #swift-finger {
+            background: radial-gradient(circle, #00CED1, #20B2AA);
+            border: 3px dashed #00FFFF;
+            border-radius: 15px;
+        }
+        #swift-finger .icon::before { content: "👇"; }
+        #ghost-clicker {
+            background: linear-gradient(90deg, #9400D3, #8A2BE2);
+            border: 2px double #FF00FF;
+            border-radius: 5px;
+        }
+        #ghost-clicker .icon::before { content: "👻"; }
+        #time-warp {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: 3px dotted #FFFF00;
+            border-radius: 20px;
+        }
+        #time-warp .icon::before { content: "⏳"; }
+        #lucky-streak {
+            background: radial-gradient(circle, #32CD32, #228B22);
+            border: 2px solid #00FF00;
+            border-radius: 10px;
+        }
+        #lucky-streak .icon::before { content: "🍀"; }
+        #golden-poop {
+            background: linear-gradient(45deg, #FF69B4, #FF1493);
+            border: 3px solid #FFD700;
+            border-radius: 8px;
+        }
+        #golden-poop .icon::before { content: "💰"; }
+        #poop-storm {
+            background: linear-gradient(135deg, #4682B4, #1E90FF);
+            border: 2px dashed #00BFFF;
+            border-radius: 12px;
+        }
+        #poop-storm .icon::before { content: "🌩️"; }
+        #toilet-upgrade {
+            background: radial-gradient(circle, #ADFF2F, #9ACD32);
+            border: 3px double #7FFF00;
+            border-radius: 15px;
+        }
+        #toilet-upgrade .icon::before { content: "🚽"; }
+        #poop-king {
+            background: linear-gradient(45deg, #DAA520, #B8860B);
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+        }
+        #poop-king .icon::before { content: "👑"; }
+        #stink-bomb {
+            background: linear-gradient(90deg, #CD5C5C, #DC143C);
+            border: 3px dotted #FF4500;
+            border-radius: 20px;
+        }
+        #stink-bomb .icon::before { content: "💣"; }
+        #swift-multiplier {
+            background: linear-gradient(45deg, #FF1493, #C71585);
+        }
+        #swift-multiplier .icon::before { content: "✨"; }
+        #hyper-multiplier {
+            background: linear-gradient(45deg, #00FF7F, #3CB371);
+        }
+        #hyper-multiplier .icon::before { content: "⚡"; }
+        #cosmic-multiplier {
+            background: linear-gradient(45deg, #8A2BE2, #6A5ACD);
+        }
+        #cosmic-multiplier .icon::before { content: "🌠"; }
+        #toilet-flush {
+            background: linear-gradient(135deg, #00CED1, #48D1CC);
+        }
+        #toilet-flush .icon::before { content: "💧"; }
+        #golden-flush {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+        }
+        #golden-flush .icon::before { content: "💎"; }
+        #stormy-flush {
+            background: linear-gradient(90deg, #4682B4, #1E90FF);
+        }
+        #stormy-flush .icon::before { content: "⚡"; }
+        #kingly-boost {
+            background: linear-gradient(45deg, #DAA520, #B8860B);
+        }
+        #kingly-boost .icon::before { content: "👑"; }
+        #bomb-burst {
+            background: linear-gradient(90deg, #CD5C5C, #DC143C);
+        }
+        #bomb-burst .icon::before { content: "💥"; }
+        #poop-plunger {
+            background: linear-gradient(45deg, #00FF7F, #3CB371);
+            border: 2px solid #00FF00;
+            border-radius: 10px;
+        }
+        #poop-plunger .icon::before { content: "🚾"; }
+        #stinky-splash {
+            background: radial-gradient(circle, #CD5C5C, #DC143C);
+            border: 3px dashed #FF4500;
+            border-radius: 15px;
+        }
+        #stinky-splash .icon::before { content: "💦"; }
+        #flush-master {
+            background: linear-gradient(135deg, #1E90FF, #4682B4);
+            border: 2px double #00BFFF;
+            border-radius: 12px;
+        }
+        #flush-master .icon::before { content: "🔧"; }
+        #poop-emperor {
+            background: radial-gradient(circle, #DAA520, #B8860B);
+            border: 3px solid #FFD700;
+            border-radius: 10px;
+        }
+        #poop-emperor .icon::before { content: "👑"; }
+        #toxic-cloud {
+            background: linear-gradient(90deg, #9400D3, #8A2BE2);
+            border: 2px dotted #FF00FF;
+            border-radius: 20px;
+        }
+        #toxic-cloud .icon::before { content: "☁️"; }
+        #golden-throne {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: 3px dashed #FFFF00;
+            border-radius: 15px;
+        }
+        #golden-throne .icon::before { content: "👑"; }
+        #storm-surge {
+            background: radial-gradient(circle, #4682B4, #1E90FF);
+            border: 2px solid #00BFFF;
+            border-radius: 10px;
+        }
+        #storm-surge .icon::before { content: "🌊"; }
+        #poop-bomb {
+            background: linear-gradient(45deg, #CD5C5C, #DC143C);
+            border: 3px double #FF4500;
+            border-radius: 12px;
+        }
+        #poop-bomb .icon::before { content: "💣"; }
+        #flush-king {
+            background: linear-gradient(135deg, #00CED1, #20B2AA);
+            border: 2px dashed #00FFFF;
+            border-radius: 15px;
+        }
+        #flush-king .icon::before { content: "🚽"; }
+        #stink-wave {
+            background: radial-gradient(circle, #FF4500, #FF8C00);
+            border: 3px dotted #FFD700;
+            border-radius: 20px;
+        }
+        #stink-wave .icon::before { content: "🌫️"; }
+        #royal-flush {
+            background: linear-gradient(90deg, #DAA520, #B8860B);
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+        }
+        #royal-flush .icon::before { content: "👑"; }
+        #poop-tsunami {
+            background: linear-gradient(45deg, #1E90FF, #4682B4);
+            border: 3px dashed #00BFFF;
+            border-radius: 15px;
+        }
+        #poop-tsunami .icon::before { content: "🌊"; }
+        #golden-wave {
+            background: radial-gradient(circle, #FFD700, #FFA500);
+            border: 2px double #FFFF00;
+            border-radius: 12px;
+        }
+        #golden-wave .icon::before { content: "💰"; }
+        #toxic-surge {
+            background: linear-gradient(135deg, #9400D3, #8A2BE2);
+            border: 3px dotted #FF00FF;
+            border-radius: 20px;
+        }
+        #toxic-surge .icon::before { content: "☢️"; }
+        #prestige-btn {
+            background: linear-gradient(45deg, #DC143C, #B22222);
+            border: 3px solid #FFD700;
+            border-radius: 10px;
+        }
+        #prestige-btn .icon::before { content: "⭐"; }
+        .cost {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .cost-icon {
+            width: 20px;
+            height: 20px;
+            background: url('https://i.imgur.com/coin.png') no-repeat center center;
+            background-size: contain;
+        }
+        @media (max-width: 768px) {
+            #clicker-game {
+                flex-direction: column;
+            }
+            #clicker-main {
+                flex: 1;
+                height: 60%;
+            }
+            #sidebar {
+                flex: 1;
+                height: 40%;
+                padding: 5px;
+            }
+            #clicker-ip {
+                font-size: 1.5em;
+            }
+            #clicker-score, #multiplier-counter {
+                font-size: 1.2em;
+            }
+            #per-second {
+                font-size: 0.8em;
+                bottom: 10px;
+                left: 10px;
+            }
+            .upgrade-btn, .multiplier-btn {
+                font-size: 0.9em;
+                padding: 6px;
+            }
+            .upgrade-btn .icon, .multiplier-btn .icon {
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+            }
+            .upgrade-max-btn {
+                padding: 3px 8px;
+                font-size: 0.7em;
+            }
+            .cost-icon {
+                width: 16px;
+                height: 16px;
+            }
         }
         @keyframes glow {
             from { text-shadow: 0 0 5px currentColor, 0 0 10px currentColor; }
@@ -110,6 +445,11 @@
             50% { background-color: white; }
             100% { background-color: black; }
         }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 1); }
+            100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+        }
         #creepy-image {
             display: none;
             position: absolute;
@@ -122,37 +462,128 @@
     </style>
 </head>
 <body>
-    <div id="container">
+    <div id="enter-screen">
         <div id="ip-display">Loading your IP...</div>
-        <div id="coin">Flip Me</div>
+        <div id="enter-btn">Click to Enter</div>
         <div id="visit-counter">
             <svg id="eye-icon" viewBox="0 0 24 24" fill="white">
                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
             </svg>
             <span id="count">567</span>
         </div>
-        <div id="clicker-game">
-            <div id="clicker-ip">Click Me</div>
-            <div id="clicker-score">Score: 0</div>
-            <button class="upgrade-btn" id="upgrade-click">Upgrade Click (Cost: 10)</button>
-            <button class="upgrade-btn" id="upgrade-auto">Auto Clicker (Cost: 50)</button>
-        </div>
-        <img id="creepy-image" src="https://th.bing.com/th/id/R.782d96615b2c2a6ed8520457e7fdb641?rik=2RIXD3DU8hJ0WA&pid=ImgRaw&r=0" alt="Creepy Image">
-        <audio id="scream-audio" src="scream.mp3"></audio>
     </div>
+    <div id="coin-screen">
+        <div id="ip-display-coin">Loading your IP...</div>
+        <div id="coin-choice">
+            <div class="coin-btn" id="heads-btn">Heads</div>
+            <div class="coin-btn" id="tails-btn">Tails</div>
+        </div>
+    </div>
+    <div id="clicker-screen">
+        <div id="ip-display-clicker">Loading your IP...</div>
+        <div id="clicker-game">
+            <div id="clicker-main">
+                <div id="multiplier-counter">Multiplier: x1</div>
+                <div id="clicker-score">Poop: 0</div>
+                <div id="clicker-ip">Click Me</div>
+                <div id="per-second">Poop per second: 0</div>
+            </div>
+            <div id="sidebar">
+                <button class="upgrade-btn" id="power-tap"><span><span class="icon"></span>Power Tap <span class="level-counter" id="power-tap-counter">0</span></span><span class="cost"><span>10</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('power-tap')">Max</button></button>
+                <button class="upgrade-btn" id="swift-finger"><span><span class="icon"></span>Swift Finger <span class="level-counter" id="swift-finger-counter">0</span></span><span class="cost"><span>25</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('swift-finger')">Max</button></button>
+                <button class="upgrade-btn" id="ghost-clicker"><span><span class="icon"></span>Ghost Clicker <span class="level-counter" id="ghost-clicker-counter">0</span></span><span class="cost"><span>50</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('ghost-clicker')">Max</button></button>
+                <button class="upgrade-btn" id="time-warp"><span><span class="icon"></span>Time Warp <span class="level-counter" id="time-warp-counter">0</span></span><span class="cost"><span>100</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('time-warp')">Max</button></button>
+                <button class="upgrade-btn" id="lucky-streak"><span><span class="icon"></span>Lucky Streak <span class="level-counter" id="lucky-streak-counter">0</span></span><span class="cost"><span>200</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('lucky-streak')">Max</button></button>
+                <button class="upgrade-btn" id="golden-poop"><span><span class="icon"></span>Golden Poop <span class="level-counter" id="golden-poop-counter">0</span></span><span class="cost"><span>500</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('golden-poop')">Max</button></button>
+                <button class="upgrade-btn" id="poop-storm"><span><span class="icon"></span>Poop Storm <span class="level-counter" id="poop-storm-counter">0</span></span><span class="cost"><span>1000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('poop-storm')">Max</button></button>
+                <button class="upgrade-btn" id="toilet-upgrade"><span><span class="icon"></span>Toilet Upgrade <span class="level-counter" id="toilet-upgrade-counter">0</span></span><span class="cost"><span>20000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('toilet-upgrade')">Max</button></button>
+                <button class="upgrade-btn" id="poop-king"><span><span class="icon"></span>Poop King <span class="level-counter" id="poop-king-counter">0</span></span><span class="cost"><span>50000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('poop-king')">Max</button></button>
+                <button class="upgrade-btn" id="stink-bomb"><span><span class="icon"></span>Stink Bomb <span class="level-counter" id="stink-bomb-counter">0</span></span><span class="cost"><span>100000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('stink-bomb')">Max</button></button>
+                <button class="multiplier-btn" id="swift-multiplier"><span><span class="icon"></span>Swift Multiplier <span class="level-counter" id="swift-multiplier-counter">0</span></span><span class="cost"><span>500</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('swift-multiplier')">Max</button></button>
+                <button class="multiplier-btn" id="hyper-multiplier"><span><span class="icon"></span>Hyper Multiplier <span class="level-counter" id="hyper-multiplier-counter">0</span></span><span class="cost"><span>1000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('hyper-multiplier')">Max</button></button>
+                <button class="multiplier-btn" id="cosmic-multiplier"><span><span class="icon"></span>Cosmic Multiplier <span class="level-counter" id="cosmic-multiplier-counter">0</span></span><span class="cost"><span>2000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('cosmic-multiplier')">Max</button></button>
+                <button class="multiplier-btn" id="toilet-flush"><span><span class="icon"></span>Toilet Flush <span class="level-counter" id="toilet-flush-counter">0</span></span><span class="cost"><span>5000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('toilet-flush')">Max</button></button>
+                <button class="multiplier-btn" id="golden-flush"><span><span class="icon"></span>Golden Flush <span class="level-counter" id="golden-flush-counter">0</span></span><span class="cost"><span>10000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('golden-flush')">Max</button></button>
+                <button class="multiplier-btn" id="stormy-flush"><span><span class="icon"></span>Stormy Flush <span class="level-counter" id="stormy-flush-counter">0</span></span><span class="cost"><span>20000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('stormy-flush')">Max</button></button>
+                <button class="multiplier-btn" id="kingly-boost"><span><span class="icon"></span>Kingly Boost <span class="level-counter" id="kingly-boost-counter">0</span></span><span class="cost"><span>50000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('kingly-boost')">Max</button></button>
+                <button class="multiplier-btn" id="bomb-burst"><span><span class="icon"></span>Bomb Burst <span class="level-counter" id="bomb-burst-counter">0</span></span><span class="cost"><span>100000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('bomb-burst')">Max</button></button>
+                <button class="upgrade-btn" id="poop-plunger"><span><span class="icon"></span>Poop Plunger <span class="level-counter" id="poop-plunger-counter">0</span></span><span class="cost"><span>150000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('poop-plunger')">Max</button></button>
+                <button class="upgrade-btn" id="stinky-splash"><span><span class="icon"></span>Stinky Splash <span class="level-counter" id="stinky-splash-counter">0</span></span><span class="cost"><span>200000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('stinky-splash')">Max</button></button>
+                <button class="upgrade-btn" id="flush-master"><span><span class="icon"></span>Flush Master <span class="level-counter" id="flush-master-counter">0</span></span><span class="cost"><span>250000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('flush-master')">Max</button></button>
+                <button class="upgrade-btn" id="poop-emperor"><span><span class="icon"></span>Poop Emperor <span class="level-counter" id="poop-emperor-counter">0</span></span><span class="cost"><span>300000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('poop-emperor')">Max</button></button>
+                <button class="upgrade-btn" id="toxic-cloud"><span><span class="icon"></span>Toxic Cloud <span class="level-counter" id="toxic-cloud-counter">0</span></span><span class="cost"><span>350000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('toxic-cloud')">Max</button></button>
+                <button class="upgrade-btn" id="golden-throne"><span><span class="icon"></span>Golden Throne <span class="level-counter" id="golden-throne-counter">0</span></span><span class="cost"><span>400000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('golden-throne')">Max</button></button>
+                <button class="upgrade-btn" id="storm-surge"><span><span class="icon"></span>Storm Surge <span class="level-counter" id="storm-surge-counter">0</span></span><span class="cost"><span>450000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('storm-surge')">Max</button></button>
+                <button class="upgrade-btn" id="poop-bomb"><span><span class="icon"></span>Poop Bomb <span class="level-counter" id="poop-bomb-counter">0</span></span><span class="cost"><span>500000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('poop-bomb')">Max</button></button>
+                <button class="upgrade-btn" id="flush-king"><span><span class="icon"></span>Flush King <span class="level-counter" id="flush-king-counter">0</span></span><span class="cost"><span>550000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('flush-king')">Max</button></button>
+                <button class="upgrade-btn" id="stink-wave"><span><span class="icon"></span>Stink Wave <span class="level-counter" id="stink-wave-counter">0</span></span><span class="cost"><span>600000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('stink-wave')">Max</button></button>
+                <button class="upgrade-btn" id="royal-flush"><span><span class="icon"></span>Royal Flush <span class="level-counter" id="royal-flush-counter">0</span></span><span class="cost"><span>650000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('royal-flush')">Max</button></button>
+                <button class="upgrade-btn" id="poop-tsunami"><span><span class="icon"></span>Poop Tsunami <span class="level-counter" id="poop-tsunami-counter">0</span></span><span class="cost"><span>700000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('poop-tsunami')">Max</button></button>
+                <button class="upgrade-btn" id="golden-wave"><span><span class="icon"></span>Golden Wave <span class="level-counter" id="golden-wave-counter">0</span></span><span class="cost"><span>750000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('golden-wave')">Max</button></button>
+                <button class="upgrade-btn" id="toxic-surge"><span><span class="icon"></span>Toxic Surge <span class="level-counter" id="toxic-surge-counter">0</span></span><span class="cost"><span>800000</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('toxic-surge')">Max</button></button>
+                <button class="upgrade-btn" id="prestige-btn"><span><span class="icon"></span>Prestige <span class="level-counter" id="prestige-btn-counter">0</span></span><span class="cost"><span>0</span><div class="cost-icon"></div></span><button class="upgrade-max-btn" onclick="upgradeMax('prestige-btn')">Max</button></button>
+            </div>
+        </div>
+    </div>
+    <img id="creepy-image" src="https://th.bing.com/th/id/R.782d96615b2c2a6ed8520457e7fdb641?rik=2RIXD3DU8hJ0WA&pid=ImgRaw&r=0" alt="Creepy Image">
+    <audio id="scream-audio" src="scream.mp3"></audio>
 
     <script>
-        const container = document.getElementById('container');
-        const ipDisplay = document.getElementById('ip-display');
-        const coin = document.getElementById('coin');
-        const visitCounter = document.getElementById('visit-counter');
+        const enterScreen = document.getElementById('enter-screen');
+        const coinScreen = document.getElementById('coin-screen');
+        const clickerScreen = document.getElementById('clicker-screen');
+        const enterBtn = document.getElementById('enter-btn');
+        const headsBtn = document.getElementById('heads-btn');
+        const tailsBtn = document.getElementById('tails-btn');
+        const eyeIcon = document.getElementById('eye-icon');
         const creepyImage = document.getElementById('creepy-image');
         const screamAudio = document.getElementById('scream-audio');
-        const clickerGame = document.getElementById('clicker-game');
         const clickerIp = document.getElementById('clicker-ip');
         const clickerScore = document.getElementById('clicker-score');
-        const upgradeClickBtn = document.getElementById('upgrade-click');
-        const upgradeAutoBtn = document.getElementById('upgrade-auto');
+        const multiplierCounter = document.getElementById('multiplier-counter');
+        const perSecond = document.getElementById('per-second');
+        const powerTapBtn = document.getElementById('power-tap');
+        const swiftFingerBtn = document.getElementById('swift-finger');
+        const ghostClickerBtn = document.getElementById('ghost-clicker');
+        const timeWarpBtn = document.getElementById('time-warp');
+        const luckyStreakBtn = document.getElementById('lucky-streak');
+        const goldenPoopBtn = document.getElementById('golden-poop');
+        const poopStormBtn = document.getElementById('poop-storm');
+        const toiletUpgradeBtn = document.getElementById('toilet-upgrade');
+        const poopKingBtn = document.getElementById('poop-king');
+        const stinkBombBtn = document.getElementById('stink-bomb');
+        const swiftMultiplierBtn = document.getElementById('swift-multiplier');
+        const hyperMultiplierBtn = document.getElementById('hyper-multiplier');
+        const cosmicMultiplierBtn = document.getElementById('cosmic-multiplier');
+        const toiletFlushBtn = document.getElementById('toilet-flush');
+        const goldenFlushBtn = document.getElementById('golden-flush');
+        const stormyFlushBtn = document.getElementById('stormy-flush');
+        const kinglyBoostBtn = document.getElementById('kingly-boost');
+        const bombBurstBtn = document.getElementById('bomb-burst');
+        const poopPlungerBtn = document.getElementById('poop-plunger');
+        const stinkySplashBtn = document.getElementById('stinky-splash');
+        const flushMasterBtn = document.getElementById('flush-master');
+        const poopEmperorBtn = document.getElementById('poop-emperor');
+        const toxicCloudBtn = document.getElementById('toxic-cloud');
+        const goldenThroneBtn = document.getElementById('golden-throne');
+        const stormSurgeBtn = document.getElementById('storm-surge');
+        const poopBombBtn = document.getElementById('poop-bomb');
+        const flushKingBtn = document.getElementById('flush-king');
+        const stinkWaveBtn = document.getElementById('stink-wave');
+        const royalFlushBtn = document.getElementById('royal-flush');
+        const poopTsunamiBtn = document.getElementById('poop-tsunami');
+        const goldenWaveBtn = document.getElementById('golden-wave');
+        const toxicSurgeBtn = document.getElementById('toxic-surge');
+        const prestigeBtn = document.getElementById('prestige-btn');
+
+        // Upgrade levels
+        let powerTapLevel = 0, swiftFingerLevel = 0, ghostClickerLevel = 0, timeWarpLevel = 0, luckyStreakLevel = 0,
+            goldenPoopLevel = 0, poopStormLevel = 0, toiletUpgradeLevel = 0, poopKingLevel = 0, stinkBombLevel = 0,
+            swiftMultiplierLevel = 0, hyperMultiplierLevel = 0, cosmicMultiplierLevel = 0, toiletFlushLevel = 0,
+            goldenFlushLevel = 0, stormyFlushLevel = 0, kinglyBoostLevel = 0, bombBurstLevel = 0, poopPlungerLevel = 0,
+            stinkySplashLevel = 0, flushMasterLevel = 0, poopEmperorLevel = 0, toxicCloudLevel = 0, goldenThroneLevel = 0,
+            stormSurgeLevel = 0, poopBombLevel = 0, flushKingLevel = 0, stinkWaveLevel = 0, royalFlushLevel = 0,
+            poopTsunamiLevel = 0, goldenWaveLevel = 0, toxicSurgeLevel = 0, prestigeLevel = 0;
 
         // Neon colors
         const colors = [
@@ -166,8 +597,8 @@
             return availableColors[Math.floor(Math.random() * availableColors.length)];
         }
 
-        function displayIP(ip) {
-            ipDisplay.innerHTML = '';
+        function displayIP(element, ip) {
+            element.innerHTML = '';
             const chars = ip.split('');
             let usedColors = [];
             chars.forEach(char => {
@@ -177,11 +608,11 @@
                 const color = getRandomColor(usedColors);
                 span.style.color = color;
                 usedColors.push(color);
-                ipDisplay.appendChild(span);
+                element.appendChild(span);
             });
             setInterval(() => {
                 usedColors = [];
-                ipDisplay.childNodes.forEach(span => {
+                element.childNodes.forEach(span => {
                     const color = getRandomColor(usedColors);
                     span.style.color = color;
                     usedColors.push(color);
@@ -198,91 +629,613 @@
             return count;
         }
 
-        function gameOver() {
-            coin.style.display = 'none';
+        function gameOver(choice) {
+            const result = Math.random() < 0.5 ? 'Heads' : 'Tails';
+            headsBtn.style.display = 'none';
+            tailsBtn.style.display = 'none';
+            const coinChoice = document.getElementById('coin-choice');
+            coinChoice.innerHTML = `<div class="coin-btn">${result}</div>`;
             document.body.style.animation = 'flash 0.2s 10';
             screamAudio.play();
             setTimeout(() => {
                 document.body.style.animation = '';
                 creepyImage.style.display = 'block';
+                coinScreen.style.display = 'none';
             }, 2000);
         }
 
-        // Coin flip
-        coin.addEventListener('click', () => {
-            const result = Math.random() < 0.5 ? 'Heads' : 'Tails';
-            coin.textContent = result;
-            setTimeout(gameOver, 1000); // Jump scare after 1 second
+        // Enter screen to coin flip
+        enterBtn.addEventListener('click', () => {
+            enterScreen.style.display = 'none';
+            coinScreen.style.display = 'flex';
+            coinScreen.style.flexDirection = 'column';
+            coinScreen.style.justifyContent = 'center';
+            coinScreen.style.alignItems = 'center';
+        });
+
+        // Coin flip choice
+        headsBtn.addEventListener('click', () => gameOver('Heads'));
+        tailsBtn.addEventListener('click', () => gameOver('Tails'));
+
+        // Switch to clicker game
+        eyeIcon.addEventListener('click', () => {
+            enterScreen.style.display = 'none';
+            coinScreen.style.display = 'none';
+            clickerScreen.style.display = 'flex';
+            clickerScreen.style.flexDirection = 'row';
         });
 
         // Clicker game
         let score = 0;
         let clickValue = 1;
         let autoClickValue = 0;
+        let clickMultiplier = 1;
+        let autoSpeed = 0;
+        let luckBonus = 0;
+        let goldenPoopBonus = 0;
+        let poopStormMultiplier = 1;
+        let toiletUpgrade = 0;
+        let poopKing = 0;
+        let stinkBomb = 0;
+        let swiftMultiplier = 1;
+        let hyperMultiplier = 1;
+        let cosmicMultiplier = 1;
+        let toiletFlush = 1;
+        let goldenFlush = 1;
+        let stormyFlush = 1;
+        let kinglyBoost = 1;
+        let bombBurst = 1;
+        let poopPlunger = 0;
+        let stinkySplash = 0;
+        let flushMaster = 0;
+        let poopEmperor = 0;
+        let toxicCloud = 0;
+        let goldenThrone = 0;
+        let stormSurge = 0;
+        let poopBomb = 0;
+        let flushKing = 0;
+        let stinkWave = 0;
+        let royalFlush = 0;
+        let poopTsunami = 0;
+        let goldenWave = 0;
+        let toxicSurge = 0;
+        let clicksRequired = 1;
+        let canClick = false;
 
-        function updateScore() {
-            clickerScore.textContent = `Score: ${score}`;
-            upgradeClickBtn.textContent = `Upgrade Click (Cost: ${clickValue * 10})`;
-            upgradeAutoBtn.textContent = `Auto Clicker (Cost: ${autoClickValue * 50 + 50})`;
+        function calculateTotalMultiplier() {
+            return clickMultiplier * poopStormMultiplier * swiftMultiplier * hyperMultiplier * cosmicMultiplier * toiletFlush * goldenFlush * stormyFlush * kinglyBoost * bombBurst * (goldenPoopBonus > 0 ? 1.2 : 1) * (toiletUpgrade > 0 ? 1.1 : 1) * (poopKing > 0 ? 1.3 : 1) * (stinkBomb > 0 ? 1.2 : 1) * (poopPlunger > 0 ? 1.15 : 1) * (stinkySplash > 0 ? 1.1 : 1) * (flushMaster > 0 ? 1.2 : 1) * (poopEmperor > 0 ? 1.3 : 1) * (toxicCloud > 0 ? 1.15 : 1) * (goldenThrone > 0 ? 1.25 : 1) * (stormSurge > 0 ? 1.2 : 1) * (poopBomb > 0 ? 1.15 : 1) * (flushKing > 0 ? 1.1 : 1) * (stinkWave > 0 ? 1.2 : 1) * (royalFlush > 0 ? 1.3 : 1) * (poopTsunami > 0 ? 1.25 : 1) * (goldenWave > 0 ? 1.2 : 1) * (toxicSurge > 0 ? 1.15 : 1);
         }
 
-        visitCounter.addEventListener('click', () => {
-            const visitCount = parseInt(document.getElementById('count').textContent);
-            let clicks = 0;
-            const clickHandler = () => {
-                clicks++;
-                if (clicks === visitCount) {
-                    coin.style.display = 'none';
-                    visitCounter.style.display = 'none';
-                    clickerGame.style.display = 'block';
-                    displayIP(ipDisplay.textContent); // Reuse IP for clicker
-                    visitCounter.removeEventListener('click', clickHandler);
-                }
-            };
-            visitCounter.addEventListener('click', clickHandler);
-        });
+        function updateScore() {
+            clickerScore.textContent = `Poop: ${Math.floor(score)}`;
+            const totalMultiplier = calculateTotalMultiplier();
+            multiplierCounter.textContent = `Multiplier: x${totalMultiplier.toFixed(2)}`; // Ensure text is updated
+            const perSecondValue = autoClickValue * totalMultiplier;
+            perSecond.textContent = `Poop per second: ${perSecondValue.toFixed(1)}`;
+            powerTapBtn.querySelector('.cost span').textContent = Math.floor(clickValue * 10);
+            swiftFingerBtn.querySelector('.cost span').textContent = Math.floor(clickMultiplier * 25);
+            ghostClickerBtn.querySelector('.cost span').textContent = Math.floor(autoClickValue * 50 + 50);
+            timeWarpBtn.querySelector('.cost span').textContent = Math.floor(autoSpeed * 100 + 100);
+            luckyStreakBtn.querySelector('.cost span').textContent = Math.floor(luckBonus * 200 + 200);
+            goldenPoopBtn.querySelector('.cost span').textContent = Math.floor(goldenPoopBonus * 500 + 500);
+            poopStormBtn.querySelector('.cost span').textContent = Math.floor((poopStormMultiplier - 1) * 1000 + 1000);
+            toiletUpgradeBtn.querySelector('.cost span').textContent = Math.floor((toiletUpgrade * 20000) + 20000);
+            poopKingBtn.querySelector('.cost span').textContent = Math.floor((poopKing * 50000) + 50000);
+            stinkBombBtn.querySelector('.cost span').textContent = Math.floor((stinkBomb * 100000) + 100000);
+            swiftMultiplierBtn.querySelector('.cost span').textContent = Math.floor((swiftMultiplier - 1) * 500 + 500);
+            hyperMultiplierBtn.querySelector('.cost span').textContent = Math.floor((hyperMultiplier - 1) * 1000 + 1000);
+            cosmicMultiplierBtn.querySelector('.cost span').textContent = Math.floor((cosmicMultiplier - 1) * 2000 + 2000);
+            toiletFlushBtn.querySelector('.cost span').textContent = Math.floor((toiletFlush - 1) * 5000 + 5000);
+            goldenFlushBtn.querySelector('.cost span').textContent = Math.floor((goldenFlush - 1) * 10000 + 10000);
+            stormyFlushBtn.querySelector('.cost span').textContent = Math.floor((stormyFlush - 1) * 20000 + 20000);
+            kinglyBoostBtn.querySelector('.cost span').textContent = Math.floor((kinglyBoost - 1) * 50000 + 50000);
+            bombBurstBtn.querySelector('.cost span').textContent = Math.floor((bombBurst - 1) * 100000 + 100000);
+            poopPlungerBtn.querySelector('.cost span').textContent = Math.floor((poopPlunger * 150000) + 150000);
+            stinkySplashBtn.querySelector('.cost span').textContent = Math.floor((stinkySplash * 200000) + 200000);
+            flushMasterBtn.querySelector('.cost span').textContent = Math.floor((flushMaster * 250000) + 250000);
+            poopEmperorBtn.querySelector('.cost span').textContent = Math.floor((poopEmperor * 300000) + 300000);
+            toxicCloudBtn.querySelector('.cost span').textContent = Math.floor((toxicCloud * 350000) + 350000);
+            goldenThroneBtn.querySelector('.cost span').textContent = Math.floor((goldenThrone * 400000) + 400000);
+            stormSurgeBtn.querySelector('.cost span').textContent = Math.floor((stormSurge * 450000) + 450000);
+            poopBombBtn.querySelector('.cost span').textContent = Math.floor((poopBomb * 500000) + 500000);
+            flushKingBtn.querySelector('.cost span').textContent = Math.floor((flushKing * 550000) + 550000);
+            stinkWaveBtn.querySelector('.cost span').textContent = Math.floor((stinkWave * 600000) + 600000);
+            royalFlushBtn.querySelector('.cost span').textContent = Math.floor((royalFlush * 650000) + 650000);
+            poopTsunamiBtn.querySelector('.cost span').textContent = Math.floor((poopTsunami * 700000) + 700000);
+            goldenWaveBtn.querySelector('.cost span').textContent = Math.floor((goldenWave * 750000) + 750000);
+            toxicSurgeBtn.querySelector('.cost span').textContent = Math.floor((toxicSurge * 800000) + 800000);
+            prestigeBtn.querySelector('.cost span').textContent = Math.floor(1e12 * Math.pow(100, prestigeLevel));
+            prestigeBtn.textContent = `Prestige ${prestigeBtn.querySelector('.icon') ? prestigeBtn.querySelector('.icon').outerHTML : '<span class="icon"></span>'}Prestige (${(1e12 * Math.pow(100, prestigeLevel)).toLocaleString()} Poop)`;
+
+            // Update level counters
+            document.getElementById('power-tap-counter').textContent = powerTapLevel;
+            document.getElementById('swift-finger-counter').textContent = swiftFingerLevel;
+            document.getElementById('ghost-clicker-counter').textContent = ghostClickerLevel;
+            document.getElementById('time-warp-counter').textContent = timeWarpLevel;
+            document.getElementById('lucky-streak-counter').textContent = luckyStreakLevel;
+            document.getElementById('golden-poop-counter').textContent = goldenPoopLevel;
+            document.getElementById('poop-storm-counter').textContent = poopStormLevel;
+            document.getElementById('toilet-upgrade-counter').textContent = toiletUpgradeLevel;
+            document.getElementById('poop-king-counter').textContent = poopKingLevel;
+            document.getElementById('stink-bomb-counter').textContent = stinkBombLevel;
+            document.getElementById('swift-multiplier-counter').textContent = swiftMultiplierLevel;
+            document.getElementById('hyper-multiplier-counter').textContent = hyperMultiplierLevel;
+            document.getElementById('cosmic-multiplier-counter').textContent = cosmicMultiplierLevel;
+            document.getElementById('toilet-flush-counter').textContent = toiletFlushLevel;
+            document.getElementById('golden-flush-counter').textContent = goldenFlushLevel;
+            document.getElementById('stormy-flush-counter').textContent = stormyFlushLevel;
+            document.getElementById('kingly-boost-counter').textContent = kinglyBoostLevel;
+            document.getElementById('bomb-burst-counter').textContent = bombBurstLevel;
+            document.getElementById('poop-plunger-counter').textContent = poopPlungerLevel;
+            document.getElementById('stinky-splash-counter').textContent = stinkySplashLevel;
+            document.getElementById('flush-master-counter').textContent = flushMasterLevel;
+            document.getElementById('poop-emperor-counter').textContent = poopEmperorLevel;
+            document.getElementById('toxic-cloud-counter').textContent = toxicCloudLevel;
+            document.getElementById('golden-throne-counter').textContent = goldenThroneLevel;
+            document.getElementById('storm-surge-counter').textContent = stormSurgeLevel;
+            document.getElementById('poop-bomb-counter').textContent = poopBombLevel;
+            document.getElementById('flush-king-counter').textContent = flushKingLevel;
+            document.getElementById('stink-wave-counter').textContent = stinkWaveLevel;
+            document.getElementById('royal-flush-counter').textContent = royalFlushLevel;
+            document.getElementById('poop-tsunami-counter').textContent = poopTsunamiLevel;
+            document.getElementById('golden-wave-counter').textContent = goldenWaveLevel;
+            document.getElementById('toxic-surge-counter').textContent = toxicSurgeLevel;
+            document.getElementById('prestige-btn-counter').textContent = prestigeLevel;
+        }
 
         clickerIp.addEventListener('click', () => {
-            score += clickValue;
+            if (clicksRequired > 0) {
+                clicksRequired--;
+                if (clicksRequired <= 0) {
+                    canClick = true;
+                }
+            }
+            if (canClick) {
+                const totalMultiplier = calculateTotalMultiplier();
+                score += clickValue * totalMultiplier + (Math.random() < 0.1 * luckBonus ? 10 : 0);
+            }
             updateScore();
         });
 
-        upgradeClickBtn.addEventListener('click', () => {
-            const cost = clickValue * 10;
+        function upgradeMax(upgradeId) {
+            const costFunctions = {
+                'power-tap': () => Math.floor(clickValue * 10),
+                'swift-finger': () => Math.floor(clickMultiplier * 25),
+                'ghost-clicker': () => Math.floor(autoClickValue * 50 + 50),
+                'time-warp': () => Math.floor(autoSpeed * 100 + 100),
+                'lucky-streak': () => Math.floor(luckBonus * 200 + 200),
+                'golden-poop': () => Math.floor(goldenPoopBonus * 500 + 500),
+                'poop-storm': () => Math.floor((poopStormMultiplier - 1) * 1000 + 1000),
+                'toilet-upgrade': () => Math.floor((toiletUpgrade * 20000) + 20000),
+                'poop-king': () => Math.floor((poopKing * 50000) + 50000),
+                'stink-bomb': () => Math.floor((stinkBomb * 100000) + 100000),
+                'swift-multiplier': () => Math.floor((swiftMultiplier - 1) * 500 + 500),
+                'hyper-multiplier': () => Math.floor((hyperMultiplier - 1) * 1000 + 1000),
+                'cosmic-multiplier': () => Math.floor((cosmicMultiplier - 1) * 2000 + 2000),
+                'toilet-flush': () => Math.floor((toiletFlush - 1) * 5000 + 5000),
+                'golden-flush': () => Math.floor((goldenFlush - 1) * 10000 + 10000),
+                'stormy-flush': () => Math.floor((stormyFlush - 1) * 20000 + 20000),
+                'kingly-boost': () => Math.floor((kinglyBoost - 1) * 50000 + 50000),
+                'bomb-burst': () => Math.floor((bombBurst - 1) * 100000 + 100000),
+                'poop-plunger': () => Math.floor((poopPlunger * 150000) + 150000),
+                'stinky-splash': () => Math.floor((stinkySplash * 200000) + 200000),
+                'flush-master': () => Math.floor((flushMaster * 250000) + 250000),
+                'poop-emperor': () => Math.floor((poopEmperor * 300000) + 300000),
+                'toxic-cloud': () => Math.floor((toxicCloud * 350000) + 350000),
+                'golden-throne': () => Math.floor((goldenThrone * 400000) + 400000),
+                'storm-surge': () => Math.floor((stormSurge * 450000) + 450000),
+                'poop-bomb': () => Math.floor((poopBomb * 500000) + 500000),
+                'flush-king': () => Math.floor((flushKing * 550000) + 550000),
+                'stink-wave': () => Math.floor((stinkWave * 600000) + 600000),
+                'royal-flush': () => Math.floor((royalFlush * 650000) + 650000),
+                'poop-tsunami': () => Math.floor((poopTsunami * 700000) + 700000),
+                'golden-wave': () => Math.floor((goldenWave * 750000) + 750000),
+                'toxic-surge': () => Math.floor((toxicSurge * 800000) + 800000),
+                'prestige-btn': () => Math.floor(1e12 * Math.pow(100, prestigeLevel))
+            };
+
+            const getLevel = {
+                'power-tap': () => powerTapLevel,
+                'swift-finger': () => swiftFingerLevel,
+                'ghost-clicker': () => ghostClickerLevel,
+                'time-warp': () => timeWarpLevel,
+                'lucky-streak': () => luckyStreakLevel,
+                'golden-poop': () => goldenPoopLevel,
+                'poop-storm': () => poopStormLevel,
+                'toilet-upgrade': () => toiletUpgradeLevel,
+                'poop-king': () => poopKingLevel,
+                'stink-bomb': () => stinkBombLevel,
+                'swift-multiplier': () => swiftMultiplierLevel,
+                'hyper-multiplier': () => hyperMultiplierLevel,
+                'cosmic-multiplier': () => cosmicMultiplierLevel,
+                'toilet-flush': () => toiletFlushLevel,
+                'golden-flush': () => goldenFlushLevel,
+                'stormy-flush': () => stormyFlushLevel,
+                'kingly-boost': () => kinglyBoostLevel,
+                'bomb-burst': () => bombBurstLevel,
+                'poop-plunger': () => poopPlungerLevel,
+                'stinky-splash': () => stinkySplashLevel,
+                'flush-master': () => flushMasterLevel,
+                'poop-emperor': () => poopEmperorLevel,
+                'toxic-cloud': () => toxicCloudLevel,
+                'golden-throne': () => goldenThroneLevel,
+                'storm-surge': () => stormSurgeLevel,
+                'poop-bomb': () => poopBombLevel,
+                'flush-king': () => flushKingLevel,
+                'stink-wave': () => stinkWaveLevel,
+                'royal-flush': () => royalFlushLevel,
+                'poop-tsunami': () => poopTsunamiLevel,
+                'golden-wave': () => goldenWaveLevel,
+                'toxic-surge': () => toxicSurgeLevel,
+                'prestige-btn': () => prestigeLevel
+            };
+
+            const setLevel = {
+                'power-tap': (value) => { powerTapLevel = value; clickValue += 5 * value; },
+                'swift-finger': (value) => { swiftFingerLevel = value; clickMultiplier += 0.1 * value; },
+                'ghost-clicker': (value) => { ghostClickerLevel = value; autoClickValue += 2 * value; if (autoClickValue >= 2 && !window.autoClickInterval) { startAutoClick(); } },
+                'time-warp': (value) => { timeWarpLevel = value; autoSpeed += 2 * value; if (window.autoClickInterval) { adjustAutoClickSpeed(); } },
+                'lucky-streak': (value) => { luckyStreakLevel = value; luckBonus += 1 * value; },
+                'golden-poop': (value) => { goldenPoopLevel = value; goldenPoopBonus += 1 * value; },
+                'poop-storm': (value) => { poopStormLevel = value; poopStormMultiplier += 0.05 * value; },
+                'toilet-upgrade': (value) => { toiletUpgradeLevel = value; toiletUpgrade += 1 * value; },
+                'poop-king': (value) => { poopKingLevel = value; poopKing += 1 * value; },
+                'stink-bomb': (value) => { stinkBombLevel = value; stinkBomb += 1 * value; },
+                'swift-multiplier': (value) => { swiftMultiplierLevel = value; swiftMultiplier += 0.05 * value; },
+                'hyper-multiplier': (value) => { hyperMultiplierLevel = value; hyperMultiplier += 0.1 * value; },
+                'cosmic-multiplier': (value) => { cosmicMultiplierLevel = value; cosmicMultiplier += 0.15 * value; },
+                'toilet-flush': (value) => { toiletFlushLevel = value; toiletFlush += 0.1 * value; },
+                'golden-flush': (value) => { goldenFlushLevel = value; goldenFlush += 0.2 * value; },
+                'stormy-flush': (value) => { stormyFlushLevel = value; stormyFlush += 0.25 * value; },
+                'kingly-boost': (value) => { kinglyBoostLevel = value; kinglyBoost += 0.3 * value; },
+                'bomb-burst': (value) => { bombBurstLevel = value; bombBurst += 0.4 * value; },
+                'poop-plunger': (value) => { poopPlungerLevel = value; poopPlunger += 1 * value; },
+                'stinky-splash': (value) => { stinkySplashLevel = value; stinkySplash += 1 * value; },
+                'flush-master': (value) => { flushMasterLevel = value; flushMaster += 1 * value; },
+                'poop-emperor': (value) => { poopEmperorLevel = value; poopEmperor += 1 * value; },
+                'toxic-cloud': (value) => { toxicCloudLevel = value; toxicCloud += 1 * value; },
+                'golden-throne': (value) => { goldenThroneLevel = value; goldenThrone += 1 * value; },
+                'storm-surge': (value) => { stormSurgeLevel = value; stormSurge += 1 * value; },
+                'poop-bomb': (value) => { poopBombLevel = value; poopBomb += 1 * value; },
+                'flush-king': (value) => { flushKingLevel = value; flushKing += 1 * value; },
+                'stink-wave': (value) => { stinkWaveLevel = value; stinkWave += 1 * value; },
+                'royal-flush': (value) => { royalFlushLevel = value; royalFlush += 1 * value; },
+                'poop-tsunami': (value) => { poopTsunamiLevel = value; poopTsunami += 1 * value; },
+                'golden-wave': (value) => { goldenWaveLevel = value; goldenWave += 1 * value; },
+                'toxic-surge': (value) => { toxicSurgeLevel = value; toxicSurge += 1 * value; },
+                'prestige-btn': (value) => { prestigeLevel = value; }
+            };
+
+            const costFn = costFunctions[upgradeId];
+            const getLevelFn = getLevel[upgradeId];
+            const setLevelFn = setLevel[upgradeId];
+            let currentLevel = getLevelFn();
+            let totalCost = 0;
+
+            while (score >= costFn()) {
+                totalCost += costFn();
+                currentLevel++;
+                setLevelFn(currentLevel);
+            }
+
+            if (totalCost > 0) {
+                score -= totalCost;
+                updateScore();
+            }
+        }
+
+        function startAutoClick() {
+            clearInterval(window.autoClickInterval);
+            window.autoClickInterval = setInterval(() => {
+                const totalMultiplier = calculateTotalMultiplier();
+                score += autoClickValue * totalMultiplier + (Math.random() < 0.1 * luckBonus ? 10 : 0);
+                updateScore();
+            }, Math.max(100, 1000 - autoSpeed * 100));
+        }
+
+        function adjustAutoClickSpeed() {
+            clearInterval(window.autoClickInterval);
+            window.autoClickInterval = setInterval(() => {
+                const totalMultiplier = calculateTotalMultiplier();
+                score += autoClickValue * totalMultiplier + (Math.random() < 0.1 * luckBonus ? 10 : 0);
+                updateScore();
+            }, Math.max(100, 1000 - autoSpeed * 100));
+        }
+
+        powerTapBtn.addEventListener('click', () => {
+            const cost = Math.floor(clickValue * 10);
             if (score >= cost) {
                 score -= cost;
-                clickValue++;
+                clickValue += 5;
+                powerTapLevel++;
                 updateScore();
             }
         });
 
-        upgradeAutoBtn.addEventListener('click', () => {
-            const cost = autoClickValue * 50 + 50;
+        swiftFingerBtn.addEventListener('click', () => {
+            const cost = Math.floor(clickMultiplier * 25);
             if (score >= cost) {
                 score -= cost;
-                autoClickValue++;
-                if (autoClickValue === 1) {
-                    setInterval(() => {
-                        score += autoClickValue;
-                        updateScore();
-                    }, 1000);
+                clickMultiplier += 0.1;
+                swiftFingerLevel++;
+                updateScore();
+            }
+        });
+
+        ghostClickerBtn.addEventListener('click', () => {
+            const cost = Math.floor(autoClickValue * 50 + 50);
+            if (score >= cost) {
+                score -= cost;
+                autoClickValue += 2;
+                ghostClickerLevel++;
+                if (autoClickValue >= 2 && !window.autoClickInterval) {
+                    startAutoClick();
                 }
                 updateScore();
             }
         });
 
-        // Initial setup
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                displayIP(data.ip);
-                updateVisitCount();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                displayIP('0.0.0.0');
-                updateVisitCount();
-            });
-    </script>
-</body>
-</html>
+        timeWarpBtn.addEventListener('click', () => {
+            const cost = Math.floor(autoSpeed * 100 + 100);
+            if (score >= cost && autoClickValue > 0) {
+                score -= cost;
+                autoSpeed += 2;
+                timeWarpLevel++;
+                if (window.autoClickInterval) {
+                    adjustAutoClickSpeed();
+                }
+                updateScore();
+            }
+        });
+
+        luckyStreakBtn.addEventListener('click', () => {
+            const cost = Math.floor(luckBonus * 200 + 200);
+            if (score >= cost) {
+                score -= cost;
+                luckBonus += 1;
+                luckyStreakLevel++;
+                updateScore();
+            }
+        });
+
+        goldenPoopBtn.addEventListener('click', () => {
+            const cost = Math.floor(goldenPoopBonus * 500 + 500);
+            if (score >= cost) {
+                score -= cost;
+                goldenPoopBonus += 1;
+                goldenPoopLevel++;
+                updateScore();
+            }
+        });
+
+        poopStormBtn.addEventListener('click', () => {
+            const cost = Math.floor((poopStormMultiplier - 1) * 1000 + 1000);
+            if (score >= cost) {
+                score -= cost;
+                poopStormMultiplier += 0.05;
+                poopStormLevel++;
+                updateScore();
+            }
+        });
+
+        toiletUpgradeBtn.addEventListener('click', () => {
+            const cost = Math.floor((toiletUpgrade * 20000) + 20000);
+            if (score >= cost) {
+                score -= cost;
+                toiletUpgrade += 1;
+                toiletUpgradeLevel++;
+                updateScore();
+            }
+        });
+
+        poopKingBtn.addEventListener('click', () => {
+            const cost = Math.floor((poopKing * 50000) + 50000);
+            if (score >= cost) {
+                score -= cost;
+                poopKing += 1;
+                poopKingLevel++;
+                updateScore();
+            }
+        });
+
+        stinkBombBtn.addEventListener('click', () => {
+            const cost = Math.floor((stinkBomb * 100000) + 100000);
+            if (score >= cost) {
+                score -= cost;
+                stinkBomb += 1;
+                stinkBombLevel++;
+                updateScore();
+            }
+        });
+
+        swiftMultiplierBtn.addEventListener('click', () => {
+            const cost = Math.floor((swiftMultiplier - 1) * 500 + 500);
+            if (score >= cost) {
+                score -= cost;
+                swiftMultiplier += 0.05;
+                swiftMultiplierLevel++;
+                updateScore();
+            }
+        });
+
+        hyperMultiplierBtn.addEventListener('click', () => {
+            const cost = Math.floor((hyperMultiplier - 1) * 1000 + 1000);
+            if (score >= cost) {
+                score -= cost;
+                hyperMultiplier += 0.1;
+                hyperMultiplierLevel++;
+                updateScore();
+            }
+        });
+
+        cosmicMultiplierBtn.addEventListener('click', () => {
+            const cost = Math.floor((cosmicMultiplier - 1) * 2000 + 2000);
+            if (score >= cost) {
+                score -= cost;
+                cosmicMultiplier += 0.15;
+                cosmicMultiplierLevel++;
+                updateScore();
+            }
+        });
+
+        toiletFlushBtn.addEventListener('click', () => {
+            const cost = Math.floor((toiletFlush - 1) * 5000 + 5000);
+            if (score >= cost) {
+                score -= cost;
+                toiletFlush += 0.1;
+                toiletFlushLevel++;
+                updateScore();
+            }
+        });
+
+        goldenFlushBtn.addEventListener('click', () => {
+            const cost = Math.floor((goldenFlush - 1) * 10000 + 10000);
+            if (score >= cost) {
+                score -= cost;
+                goldenFlush += 0.2;
+                goldenFlushLevel++;
+                updateScore();
+            }
+        });
+
+        stormyFlushBtn.addEventListener('click', () => {
+            const cost = Math.floor((stormyFlush - 1) * 20000 + 20000);
+            if (score >= cost) {
+                score -= cost;
+                stormyFlush += 0.25;
+                stormyFlushLevel++;
+                updateScore();
+            }
+        });
+
+        kinglyBoostBtn.addEventListener('click', () => {
+            const cost = Math.floor((kinglyBoost - 1) * 50000 + 50000);
+            if (score >= cost) {
+                score -= cost;
+                kinglyBoost += 0.3;
+                kinglyBoostLevel++;
+                updateScore();
+            }
+        });
+
+        bombBurstBtn.addEventListener('click', () => {
+            const cost = Math.floor((bombBurst - 1) * 100000 + 100000);
+            if (score >= cost) {
+                score -= cost;
+                bombBurst += 0.4;
+                bombBurstLevel++;
+                updateScore();
+            }
+        });
+
+        poopPlungerBtn.addEventListener('click', () => {
+            const cost = Math.floor((poopPlunger * 150000) + 150000);
+            if (score >= cost) {
+                score -= cost;
+                poopPlunger += 1;
+                poopPlungerLevel++;
+                updateScore();
+            }
+        });
+
+        stinkySplashBtn.addEventListener('click', () => {
+            const cost = Math.floor((stinkySplash * 200000) + 200000);
+            if (score >= cost) {
+                score -= cost;
+                stinkySplash += 1;
+                stinkySplashLevel++;
+                updateScore();
+            }
+        });
+
+        flushMasterBtn.addEventListener('click', () => {
+            const cost = Math.floor((flushMaster * 250000) + 250000);
+            if (score >= cost) {
+                score -= cost;
+                flushMaster += 1;
+                flushMasterLevel++;
+                updateScore();
+            }
+        });
+
+        poopEmperorBtn.addEventListener('click', () => {
+            const cost = Math.floor((poopEmperor * 300000) + 300000);
+            if (score >= cost) {
+                score -= cost;
+                poopEmperor += 1;
+                poopEmperorLevel++;
+                updateScore();
+            }
+        });
+
+        toxicCloudBtn.addEventListener('click', () => {
+            const cost = Math.floor((toxicCloud * 350000) + 350000);
+            if (score >= cost) {
+                score -= cost;
+                toxicCloud += 1;
+                toxicCloudLevel++;
+                updateScore();
+            }
+        });
+
+        goldenThroneBtn.addEventListener('click', () => {
+            const cost = Math.floor((goldenThrone * 400000) + 400000);
+            if (score >= cost) {
+                score -= cost;
+                goldenThrone += 1;
+                goldenThroneLevel++;
+                updateScore();
+            }
+        });
+
+        stormSurgeBtn.addEventListener('click', () => {
+            const cost = Math.floor((stormSurge * 450000) + 450000);
+            if (score >= cost) {
+                score -= cost;
+                stormSurge += 1;
+                stormSurgeLevel++;
+                updateScore();
+            }
+        });
+
+        poopBombBtn.addEventListener('click', () => {
+            const cost = Math.floor((poopBomb * 500000) + 500000);
+            if (score >= cost) {
+                score -= cost;
+                poopBomb += 1;
+                poopBombLevel++;
+                updateScore();
+            }
+        });
+
+        flushKingBtn.addEventListener('click', () => {
+            const cost = Math.floor((flushKing * 550000) + 550000);
+            if (score >= cost) {
+                score -= cost;
+                flushKing += 1;
+                flushKingLevel++;
+                updateScore();
+            }
+        });
+
+        stinkWaveBtn.addEventListener('click', () => {
+            const cost = Math.floor((stinkWave * 600000) + 600000);
+            if (score >= cost) {
+                score -= cost;
+                stinkWave += 1;
+                stinkWaveLevel++;
+                updateScore();
+            }
+        });
+
+        royalFlushBtn.addEventListener('click', () => {
+            const cost = Math.floor((royalFlush * 650000) + 650000);
+            if (score >= cost) {
+                score -= cost;
+                royalFlush += 1;
+                royalFlushLevel++;
+                updateScore();
+            }
+        });
+
+        poopTsunamiBtn.addEventListener('
