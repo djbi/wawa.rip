@@ -4,14 +4,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>wawa.rip</title>
-    <link rel="stylesheet" href="assets/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
-    <script src="scripts/ip.js" defer></script>
-    <script src="assets/cursor.js" defer></script>
-    <script src="scripts/trail.js" defer></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: black;
+            overflow: hidden;
+            cursor: none !important;
+        }
+        #ip-display {
+            font-size: 2em;
+            font-family: monospace;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            color: white;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        #custom-cursor {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            font-size: 20px;
+            text-align: center;
+            line-height: 20px;
+            transform: rotate(-45deg);
+            pointer-events: none;
+            z-index: 2;
+            animation: colorCycle 3s infinite linear;
+        }
+        @keyframes colorCycle {
+            0% { color: #FF87AB; }
+            33% { color: #FF0000; }
+            66% { color: #00E7FF; }
+            100% { color: #FF87AB; }
+        }
+    </style>
 </head>
 <body>
-    <div id="ip-display"></div>
+    <div id="ip-display">Loading IP...</div>
     <div id="custom-cursor">♡</div>
+
+    <script>
+        // IP Display
+        const display = document.getElementById('ip-display');
+        const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500', '#800080', '#008000', '#FF4500', '#00CED1', '#FF69B4'];
+
+        fetch('https://api.ipify.org?format=json')
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                const ip = data.ip || 'No IP Returned';
+                displayIP(ip);
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                display.innerText = `Error: ${error.message}`;
+            });
+
+        function displayIP(ip) {
+            display.innerHTML = '';
+            const spans = [];
+            ip.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.innerText = char;
+                display.appendChild(span);
+                spans.push(span);
+            });
+            function updateColors() {
+                let usedColors = new Set();
+                spans.forEach(span => {
+                    let newColor;
+                    do {
+                        newColor = colors[Math.floor(Math.random() * colors.length)];
+                    } while (usedColors.has(newColor));
+                    usedColors.add(newColor);
+                    span.style.color = newColor;
+                });
+            }
+            updateColors();
+            setInterval(updateColors, 1000);
+        }
+
+        // Custom Cursor
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.pageX - 10}px`;
+            cursor.style.top = `${e.pageY - 10}px`;
+        });
+
+        // p5.js Trail
+        let trail = [];
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+            textAlign(CENTER, CENTER);
+            textSize(20);
+        }
+        function draw() {
+            clear();
+            trail.forEach((t, index) => {
+                let col = color(t.col);
+                col.setAlpha(t.alpha);
+                fill(col);
+                noStroke();
+                push();
+                translate(t.x, t.y);
+                rotate(-45 * (PI / 180));
+                text('♡', 0, 0);
+                pop();
+                t.alpha -= 255 / (1.2 * 60);
+                if (t.alpha <= 0) trail.splice(index, 1);
+            });
+        }
+        function mouseMoved() {
+            const cursorColor = window.getComputedStyle(cursor).color;
+            trail.push({
+                x: mouseX,
+                y: mouseY,
+                col: cursorColor,
+                alpha: 255
+            });
+        }
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+        }
+    </script>
 </body>
 </html>
