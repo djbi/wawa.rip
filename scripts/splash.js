@@ -6,14 +6,14 @@ window.visitCount = localStorage.getItem('visitCount') ? parseInt(localStorage.g
 
 // Initialize splash screen on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('splash.js loaded');
+    console.log('splash.js loaded at', new Date().toISOString());
 
     const splashScreen = document.getElementById('splashScreen');
     const visitCounter = document.getElementById('visitCounter');
     const mainContainer = document.getElementById('mainContainer');
 
     if (!splashScreen || !visitCounter || !mainContainer) {
-        console.error('Splash screen elements not found');
+        console.error('Splash screen elements not found:', { splashScreen, visitCounter, mainContainer });
         return;
     }
 
@@ -36,18 +36,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function enterMainPage(e) {
         e.preventDefault();
-        console.log('Entering main page');
+        console.log('Entering main page at', new Date().toISOString());
         isSplashScreen = false;
         splashScreen.style.display = 'none';
         mainContainer.style.display = 'block';
+        console.log('mainContainer display set to block');
         window.visitCount++;
         localStorage.setItem('visitCount', window.visitCount);
         if (typeof window.sendVisitData === 'function') {
             window.sendVisitData();
         }
         setTimeout(() => {
+            console.log('Attempting to load logos after transition');
             if (typeof window.loadLogos === 'function') {
                 window.loadLogos();
+            } else {
+                console.error('loadLogos function not found');
             }
         }, 100);
     }
