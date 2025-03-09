@@ -28,15 +28,15 @@
             .then(response => response.json())
             .then(data => {
                 const ip = data.ip;
-                displayIPWithColors(ip);
+                displayIPWithChangingColors(ip);
             })
             .catch(error => {
                 console.error('Error fetching IP:', error);
                 document.getElementById('ip-display').innerText = 'Could not fetch IP';
             });
 
-        // Function to display IP with unique colors for each letter
-        function displayIPWithColors(ip) {
+        // Function to display IP and animate colors
+        function displayIPWithChangingColors(ip) {
             const display = document.getElementById('ip-display');
             const colors = [
                 '#FF0000', // Red
@@ -52,17 +52,34 @@
                 '#00CED1', // Dark Turquoise
                 '#FF69B4'  // Hot Pink
             ];
-            let colorIndex = 0;
 
-            // Split the IP into individual characters and apply colors
+            // Split IP into characters and create spans
+            const spans = [];
             ip.split('').forEach(char => {
                 const span = document.createElement('span');
                 span.innerText = char;
-                span.style.color = colors[colorIndex];
                 display.appendChild(span);
-                // Cycle through colors, ensuring no repeats for adjacent letters
-                colorIndex = (colorIndex + 1) % colors.length;
+                spans.push(span);
             });
+
+            // Function to update colors
+            function updateColors() {
+                let usedColors = new Set(); // Track used colors in each cycle
+                spans.forEach(span => {
+                    let newColor;
+                    do {
+                        newColor = colors[Math.floor(Math.random() * colors.length)];
+                    } while (usedColors.has(newColor)); // Ensure no repeats in one cycle
+                    usedColors.add(newColor);
+                    span.style.color = newColor;
+                });
+            }
+
+            // Initial color assignment
+            updateColors();
+
+            // Change colors every second (1000ms)
+            setInterval(updateColors, 1000);
         }
     </script>
 </body>
