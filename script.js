@@ -97,7 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Game over function for coin flip
+    // Function to go directly to the clicker screen
+    function goToClickerScreen() {
+        enterScreen.style.display = 'none';
+        coinScreen.style.display = 'none';
+        clickerScreen.style.display = 'flex';
+        canClick = true; // Enable clicking on the clicker screen
+    }
+
+    // Game over function for coin flip (used only if user goes through coin screen)
     function gameOver(choice) {
         try {
             const result = Math.random() < 0.5 ? 'Heads' : 'Tails';
@@ -314,12 +322,14 @@ document.addEventListener('DOMContentLoaded', () => {
     headsBtn.addEventListener('click', () => gameOver('Heads'));
     tailsBtn.addEventListener('click', () => gameOver('Tails'));
 
+    // Redirect to clicker screen on IP address click
+    ipDisplay.addEventListener('click', () => {
+        goToClickerScreen();
+    });
+
+    // Redirect to clicker screen on eye icon click (remove previous creepy image behavior)
     eyeIcon.addEventListener('click', () => {
-        creepyImage.style.display = 'block';
-        screamAudio.play().catch(err => console.error('Error playing audio:', err));
-        setTimeout(() => {
-            creepyImage.style.display = 'none';
-        }, 2000);
+        goToClickerScreen();
     });
 
     clickerIp.addEventListener('click', () => {
