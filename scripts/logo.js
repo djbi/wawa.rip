@@ -2,22 +2,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('logos.js loaded');
 
-    // Use CDN-hosted images temporarily to confirm functionality
+    // Use reliable internet-hosted images
     const customLogos = {
         'https://www.tiktok.com/@faith.meows?_t=ZN-8uT1pCNKhvC&_r=1': {
-            src: 'https://gpng.net/wp-content/uploads/Tiktok-Free-Photo-png.png',
+            src: 'https://upload.wikimedia.org/wikipedia/commons/3/3d/TikTok_logo.svg', // TikTok logo from Wikimedia
             fallback: 'https://via.placeholder.com/50?text=TikTok'
         },
         'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi': {
-            src: 'https://th.bing.com/th/id/R.dd5c17cf74d017e8935c87385ed156e0?rik=0mDRr0Ob1yVmWQ&pid=ImgRaw&r=0',
+            src: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg', // Spotify logo from Wikimedia
             fallback: 'https://via.placeholder.com/50?text=Spotify'
         },
         'https://www.roblox.com/share?code=44cb54032142d34787f1f2ad3aff1033&type=Profile&source=ProfileShare&stamp=1741364262991': {
-            src: 'https://i.imgflip.com/7nwenp.png',
+            src: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Roblox_icon_logo.svg', // Roblox logo from Wikimedia
             fallback: 'https://via.placeholder.com/50?text=Roblox'
         },
         'https://github.com/djbi': {
-            src: 'https://tse2.mm.bing.net/th/id/OIF.fI7VRWzvOCfBNQsOCbJQyA?rs=1&pid=ImgDetMain',
+            src: 'https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg', // GitHub logo from Wikimedia
             fallback: 'https://via.placeholder.com/50?text=GitHub'
         }
     };
@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
             img.src = src;
             img.alt = url.split('/')[2];
             img.className = 'social-logo';
-            img.style.maxWidth = '100%';
-            img.style.maxHeight = '100%';
+            img.style.maxWidth = '50px'; // Fixed size for consistency
+            img.style.maxHeight = '50px';
             img.style.display = 'block'; // Ensure visibility
             img.onerror = () => {
                 console.error(`Failed to load image for ${url}: ${src}, using fallback`);
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
             img.onload = () => {
-                console.log(`Loaded image for ${url}: ${src}`);
+                console.log(`Successfully loaded image for ${url}: ${src}`);
                 if (typeof window.debugImageLoad === 'function') {
                     window.debugImageLoad(url, 'success', src);
                 }
