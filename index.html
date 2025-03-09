@@ -13,7 +13,6 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            /* Prevent selection for entire body */
             user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -25,6 +24,7 @@
         #ip-address {
             font-size: 2em;
             margin-bottom: 10px;
+            cursor: default; /* Prevents cursor change on hover */
         }
         .digit {
             display: inline-block;
@@ -43,6 +43,11 @@
             width: 16px;
             height: 16px;
         }
+        #count {
+            color: #FF69B4; /* Neon Bubblegum Pink */
+            text-shadow: 0 0 5px #FF69B4;
+            animation: counterGlow 2s infinite alternate;
+        }
 
         @keyframes glow {
             from {
@@ -50,6 +55,17 @@
             }
             to {
                 text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+            }
+        }
+
+        @keyframes counterGlow {
+            from {
+                color: #FF69B4; /* Bubblegum Pink */
+                text-shadow: 0 0 5px #FF69B4, 0 0 10px #FF69B4;
+            }
+            to {
+                color: #9400D3; /* Dark Violet */
+                text-shadow: 0 0 5px #9400D3, 0 0 10px #9400D3;
             }
         }
     </style>
@@ -66,7 +82,7 @@
     </div>
 
     <script>
-        // Neon colors
+        // Neon colors for IP
         const colors = [
             '#FF00FF', '#00FFFF', '#FF00AA', '#00FF00',
             '#FFFF00', '#FF6600', '#FF0099', '#00CCFF',
@@ -108,6 +124,15 @@
             
             // Fast color changing
             setInterval(updateColors, 300);
+
+            // Click counter for redirect
+            let clickCount = 0;
+            ipContainer.addEventListener('click', () => {
+                clickCount++;
+                if (clickCount === 3) {
+                    window.location.href = 'https://discordapp.com/users/1265799421417754664';
+                }
+            });
         }
 
         // Simple visit counter using localStorage
