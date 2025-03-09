@@ -1,0 +1,497 @@
+body {
+    background-color: #1a1a1a;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    touch-action: manipulation; /* Prevent double-tap zoom on mobile */
+}
+
+#enter-screen, #coin-screen, #clicker-screen {
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+#enter-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#coin-screen, #clicker-screen {
+    display: none;
+}
+
+#ip-display, #ip-display-coin, #ip-display-clicker {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2em;
+    cursor: default;
+}
+
+.digit {
+    display: inline-block;
+    text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+    animation: glow 1.5s infinite alternate;
+}
+
+#enter-btn {
+    color: white;
+    font-size: 2em;
+    cursor: pointer;
+    padding: 10px 20px; /* Added padding for better touch target */
+}
+
+#coin-choice {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.coin-btn {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: gold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    cursor: pointer;
+    touch-action: manipulation; /* Improve touch responsiveness */
+}
+
+#visit-counter {
+    color: white;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#eye-icon {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+#count {
+    color: #FF69B4;
+    text-shadow: 0 0 5px #FF69B4;
+    animation: counterGlow 2s infinite alternate;
+}
+
+#clicker-game {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+}
+
+#clicker-main {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url('https://i.imgur.com/5yY2k9W.png') no-repeat center center;
+    background-size: cover;
+    position: relative;
+}
+
+#clicker-ip {
+    font-size: 2em;
+    cursor: pointer;
+    margin-bottom: 20px;
+    color: #8B4513;
+    text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700;
+}
+
+#multiplier-counter {
+    font-size: 1em;
+    color: white;
+    text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700;
+    margin-bottom: 10px;
+}
+
+#clicker-score {
+    font-size: 2em;
+    color: white;
+    text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700;
+    margin-bottom: 10px;
+}
+
+#per-second {
+    font-size: 1em;
+    color: white;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+#sidebar {
+    flex: 1;
+    background-color: #2a2a4a;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.upgrade-btn, .multiplier-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    border: none;
+    padding: 8px;
+    margin: 5px 0;
+    cursor: pointer;
+    font-size: 0.9em;
+    width: 100%;
+    text-align: left;
+    transition: transform 0.2s;
+}
+
+.upgrade-btn:hover, .multiplier-btn:hover {
+    transform: scale(1.05);
+}
+
+.upgrade-btn span:first-child, .multiplier-btn span:first-child {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.upgrade-btn .icon, .multiplier-btn .icon {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    font-weight: bold;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.multiplier-btn {
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    animation: pulse 2s infinite;
+}
+
+.multiplier-btn .icon {
+    border-radius: 5px;
+    transform: rotate(45deg);
+}
+
+.multiplier-btn .icon::before {
+    display: inline-block;
+    transform: rotate(-45deg);
+}
+
+.upgrade-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.max-btn {
+    background-color: #FFD700;
+    color: black;
+    border: none;
+    padding: 5px 8px;
+    cursor: pointer;
+    font-size: 0.8em;
+    border-radius: 5px;
+}
+
+.max-btn:hover {
+    background-color: #FFEC8B;
+}
+
+.upgrade-count {
+    color: #FFD700;
+    font-size: 0.8em;
+}
+
+/* Define styles for each upgrade button */
+#power-tap { background: linear-gradient(45deg, #FF4500, #FF8C00); border: 2px solid #FFD700; border-radius: 10px; }
+#power-tap .icon::before { content: "💪"; }
+#swift-finger { background: radial-gradient(circle, #00CED1, #20B2AA); border: 3px dashed #00FFFF; border-radius: 15px; }
+#swift-finger .icon::before { content: "👇"; }
+#ghost-clicker { background: linear-gradient(90deg, #9400D3, #8A2BE2); border: 2px double #FF00FF; border-radius: 5px; }
+#ghost-clicker .icon::before { content: "👻"; }
+#time-warp { background: linear-gradient(45deg, #FFD700, #FFA500); border: 3px dotted #FFFF00; border-radius: 20px; }
+#time-warp .icon::before { content: "⏳"; }
+#lucky-streak { background: radial-gradient(circle, #32CD32, #228B22); border: 2px solid #00FF00; border-radius: 10px; }
+#lucky-streak .icon::before { content: "🍀"; }
+#golden-poop { background: linear-gradient(45deg, #FF69B4, #FF1493); border: 3px solid #FFD700; border-radius: 8px; }
+#golden-poop .icon::before { content: "💰"; }
+#poop-storm { background: linear-gradient(135deg, #4682B4, #1E90FF); border: 2px dashed #00BFFF; border-radius: 12px; }
+#poop-storm .icon::before { content: "🌩️"; }
+#toilet-upgrade { background: radial-gradient(circle, #ADFF2F, #9ACD32); border: 3px double #7FFF00; border-radius: 15px; }
+#toilet-upgrade .icon::before { content: "🚽"; }
+#poop-king { background: linear-gradient(45deg, #DAA520, #B8860B); border: 2px solid #FFD700; border-radius: 10px; }
+#poop-king .icon::before { content: "👑"; }
+#stink-bomb { background: linear-gradient(90deg, #CD5C5C, #DC143C); border: 3px dotted #FF4500; border-radius: 20px; }
+#stink-bomb .icon::before { content: "💣"; }
+#flush-power { background: linear-gradient(45deg, #00CED1, #48D1CC); border: 2px solid #00BFFF; border-radius: 10px; }
+#flush-power .icon::before { content: "💧"; }
+#plunger-master { background: linear-gradient(90deg, #8B4513, #A0522D); border: 3px dashed #CD853F; border-radius: 15px; }
+#plunger-master .icon::before { content: "🪠"; }
+#sewer-rush { background: radial-gradient(circle, #2F4F4F, #696969); border: 2px double #808080; border-radius: 5px; }
+#sewer-rush .icon::before { content: "🏞️"; }
+#poop-cannon { background: linear-gradient(45deg, #FF4500, #DC143C); border: 3px dotted #FF6347; border-radius: 20px; }
+#poop-cannon .icon::before { content: "💥"; }
+#flush-frenzy { background: linear-gradient(135deg, #00BFFF, #1E90FF); border: 2px solid #87CEEB; border-radius: 10px; }
+#flush-frenzy .icon::before { content: "🌊"; }
+#toilet-titan { background: radial-gradient(circle, #B0C4DE, #4682B4); border: 3px dashed #5F9EA0; border-radius: 15px; }
+#toilet-titan .icon::before { content: "🦸"; }
+#stink-wave { background: linear-gradient(90deg, #9ACD32, #32CD32); border: 2px double #ADFF2F; border-radius: 8px; }
+#stink-wave .icon::before { content: "🌬️"; }
+#poop-blaster { background: linear-gradient(45deg, #FF1493, #C71585); border: 3px solid #FF69B4; border-radius: 12px; }
+#poop-blaster .icon::before { content: "🔫"; }
+#septic-surge { background: radial-gradient(circle, #556B2F, #6B8E23); border: 2px solid #9ACD32; border-radius: 10px; }
+#septic-surge .icon::before { content: "🛠️"; }
+#flush-fury { background: linear-gradient(45deg, #00CED1, #20B2AA); border: 3px dotted #00FFFF; border-radius: 15px; }
+#flush-fury .icon::before { content: "💦"; }
+#swift-multiplier { background: linear-gradient(45deg, #FF1493, #C71585); }
+#swift-multiplier .icon::before { content: "✨"; }
+#hyper-multiplier { background: linear-gradient(45deg, #00FF7F, #3CB371); }
+#hyper-multiplier .icon::before { content: "⚡"; }
+#cosmic-multiplier { background: linear-gradient(45deg, #8A2BE2, #6A5ACD); }
+#cosmic-multiplier .icon::before { content: "🌠"; }
+#toilet-flush { background: linear-gradient(135deg, #00CED1, #48D1CC); }
+#toilet-flush .icon::before { content: "💧"; }
+#golden-flush { background: linear-gradient(45deg, #FFD700, #FFA500); }
+#golden-flush .icon::before { content: "💎"; }
+#stormy-flush { background: linear-gradient(90deg, #4682B4, #1E90FF); }
+#stormy-flush .icon::before { content: "⚡"; }
+#kingly-boost { background: linear-gradient(45deg, #DAA520, #B8860B); }
+#kingly-boost .icon::before { content: "👑"; }
+#bomb-burst { background: linear-gradient(90deg, #CD5C5C, #DC143C); }
+#bomb-burst .icon::before { content: "💥"; }
+#sewer-boost { background: linear-gradient(45deg, #2F4F4F, #696969); }
+#sewer-boost .icon::before { content: "🏞️"; }
+#plunger-flush { background: linear-gradient(135deg, #8B4513, #A0522D); }
+#plunger-flush .icon::before { content: "🪠"; }
+#stink-multiplier { background: linear-gradient(90deg, #9ACD32, #32CD32); }
+#stink-multiplier .icon::before { content: "🌬️"; }
+#cannon-boost { background: linear-gradient(45deg, #FF4500, #DC143C); }
+#cannon-boost .icon::before { content: "💥"; }
+#frenzy-multiplier { background: linear-gradient(135deg, #00BFFF, #1E90FF); }
+#frenzy-multiplier .icon::before { content: "🌊"; }
+#titan-boost { background: linear-gradient(45deg, #B0C4DE, #4682B4); }
+#titan-boost .icon::before { content: "🦸"; }
+#wave-multiplier { background: linear-gradient(90deg, #9ACD32, #32CD32); }
+#wave-multiplier .icon::before { content: "🌬️"; }
+#blaster-boost { background: linear-gradient(45deg, #FF1493, #C71585); }
+#blaster-boost .icon::before { content: "🔫"; }
+#surge-multiplier { background: linear-gradient(135deg, #556B2F, #6B8E23); }
+#surge-multiplier .icon::before { content: "🛠️"; }
+#fury-boost { background: linear-gradient(45deg, #00CED1, #20B2AA); }
+#fury-boost .icon::before { content: "💦"; }
+#poop-vortex { background: linear-gradient(90deg, #8A2BE2, #6A5ACD); }
+#poop-vortex .icon::before { content: "🌀"; }
+#flush-chaos { background: linear-gradient(45deg, #FF4500, #DC143C); }
+#flush-chaos .icon::before { content: "🌪️"; }
+#septic-storm { background: linear-gradient(135deg, #2F4F4F, #696969); }
+#septic-storm .icon::before { content: "🌩️"; }
+#prestige-btn { background: linear-gradient(45deg, #DC143C, #B22222); border: 3px solid #FFD700; border-radius: 10px; }
+#prestige-btn .icon::before { content: "⭐"; }
+
+.cost {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.cost-icon {
+    width: 20px;
+    height: 20px;
+    background: url('https://i.imgur.com/coin.png') no-repeat center center;
+    background-size: contain;
+}
+
+#creepy-image {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 80%;
+    max-height: 80%;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 5px currentColor, 0 0 10px currentColor; }
+    to { text-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
+}
+
+@keyframes counterGlow {
+    from { color: #FF69B4; text-shadow: 0 0 5px #FF69B4, 0 0 10px #FF69B4; }
+    to { color: #9400D3; text-shadow: 0 0 5px #9400D3, 0 0 10px #9400D3; }
+}
+
+@keyframes flash {
+    0% { background-color: black; }
+    50% { background-color: white; }
+    100% { background-color: black; }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(255, 255, 255, 1); }
+    100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #clicker-game {
+        flex-direction: column;
+    }
+
+    #clicker-main {
+        flex: 1;
+        height: 60%;
+    }
+
+    #sidebar {
+        flex: 1;
+        height: 40%;
+        padding: 5px;
+    }
+
+    #clicker-ip {
+        font-size: 1.5em;
+        padding: 10px; /* Larger touch target */
+    }
+
+    #clicker-score, #multiplier-counter {
+        font-size: 1.2em;
+    }
+
+    #per-second {
+        font-size: 0.8em;
+        bottom: 10px;
+        left: 10px;
+    }
+
+    #ip-display, #ip-display-coin, #ip-display-clicker {
+        font-size: 1.5em;
+        top: 5px;
+    }
+
+    .upgrade-btn, .multiplier-btn {
+        font-size: 0.8em;
+        padding: 6px;
+    }
+
+    .upgrade-btn .icon, .multiplier-btn .icon {
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+    }
+
+    .cost-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .max-btn {
+        padding: 3px 5px;
+        font-size: 0.7em;
+    }
+
+    .upgrade-count {
+        font-size: 0.7em;
+    }
+
+    #enter-btn {
+        font-size: 1.5em;
+        padding: 15px 30px; /* Larger touch target for mobile */
+    }
+
+    .coin-btn {
+        width: 80px;
+        height: 80px;
+        font-size: 1.2em;
+    }
+
+    #visit-counter {
+        font-size: 0.9em;
+        bottom: 5px;
+    }
+}
+
+/* Additional media query for very small screens (e.g., phones in portrait) */
+@media (max-width: 480px) {
+    #ip-display, #ip-display-coin, #ip-display-clicker {
+        font-size: 1.2em;
+    }
+
+    #clicker-ip {
+        font-size: 1.2em;
+    }
+
+    #clicker-score, #multiplier-counter {
+        font-size: 1em;
+    }
+
+    #enter-btn {
+        font-size: 1.2em;
+        padding: 10px 20px;
+    }
+
+    .coin-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1em;
+    }
+
+    .upgrade-btn, .multiplier-btn {
+        font-size: 0.7em;
+        padding: 4px;
+    }
+}
+
+/* Ensure landscape orientation on mobile is handled */
+@media (max-height: 500px) and (orientation: landscape) {
+    #clicker-main {
+        height: 100%;
+        flex: 1.5;
+    }
+
+    #sidebar {
+        height: 100%;
+        flex: 1;
+    }
+
+    #clicker-ip {
+        font-size: 1.3em;
+    }
+
+    #clicker-score, #multiplier-counter {
+        font-size: 1em;
+    }
+}
