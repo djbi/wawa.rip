@@ -9,10 +9,61 @@
             background-color: black;
             margin: 0;
             height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #ip-display {
+            font-size: 2em;
+            font-family: monospace;
         }
     </style>
 </head>
 <body>
-    <h1 style="color: white; text-align: center;">Welcome to wawa.rip</h1>
+    <div id="ip-display"></div>
+
+    <script>
+        // Fetch the user's IP address using a public API
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const ip = data.ip;
+                displayIPWithColors(ip);
+            })
+            .catch(error => {
+                console.error('Error fetching IP:', error);
+                document.getElementById('ip-display').innerText = 'Could not fetch IP';
+            });
+
+        // Function to display IP with unique colors for each letter
+        function displayIPWithColors(ip) {
+            const display = document.getElementById('ip-display');
+            const colors = [
+                '#FF0000', // Red
+                '#00FF00', // Green
+                '#0000FF', // Blue
+                '#FFFF00', // Yellow
+                '#FF00FF', // Magenta
+                '#00FFFF', // Cyan
+                '#FFA500', // Orange
+                '#800080', // Purple
+                '#008000', // Dark Green
+                '#FF4500', // Orange Red
+                '#00CED1', // Dark Turquoise
+                '#FF69B4'  // Hot Pink
+            ];
+            let colorIndex = 0;
+
+            // Split the IP into individual characters and apply colors
+            ip.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.innerText = char;
+                span.style.color = colors[colorIndex];
+                display.appendChild(span);
+                // Cycle through colors, ensuring no repeats for adjacent letters
+                colorIndex = (colorIndex + 1) % colors.length;
+            });
+        }
+    </script>
 </body>
 </html>
