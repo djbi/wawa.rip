@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>meow meow</title>
-    <!-- Removed <base> tag to avoid path issues -->
     <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="./styles/glow-effects.css">
 </head>
@@ -34,14 +33,14 @@
         <button id="sendNote">Send Note</button>
     </div>
 
-    <!-- Load all scripts, ensuring logos.js loads before splash.js -->
+    <!-- Load all scripts -->
     <script src="./scripts/particles.js"></script>
     <script src="./scripts/analytics.js"></script>
-    <script src="./scripts/logos.js"></script> <!-- Load logos.js first -->
+    <script src="./scripts/logos.js"></script> <!-- Ensure this path is correct -->
     <script src="./scripts/cursor.js"></script>
     <script src="./scripts/interactions.js"></script>
     <script src="./scripts/debug.js"></script>
     <script src="./scripts/main.js"></script>
-    <script src="./scripts/splash.js"></script> <!-- Load splash.js last -->
+    <script src="./scripts/splash.js"></script>
 </body>
 </html>
