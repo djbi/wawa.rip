@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>meow meow to meow to wawa.rip</title>
+    <title>meow meow</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -30,220 +30,17 @@
             <div id="clicker-main">
                 <div id="multiplier-counter">Multiplier: x1</div>
                 <div id="clicker-score">Poop: 0</div>
-                <div id="clicker-ip">Click Me</div>
+                <div id="clicker-ip">💩</div> <!-- Changed to poop emoji -->
                 <div id="per-second">Poop per second: 0</div>
             </div>
             <div id="sidebar">
+                <!-- Upgrades will be ordered by cost in script.js -->
                 <div class="upgrade-container">
                     <button class="upgrade-btn" id="power-tap"><span><span class="icon"></span>Power Tap</span><span class="cost"><span>10</span><div class="cost-icon"></div></span></button>
                     <button class="max-btn" data-upgrade="power-tap">Max</button>
                     <span class="upgrade-count" id="power-tap-count">0</span>
                 </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="swift-finger"><span><span class="icon"></span>Swift Finger</span><span class="cost"><span>25</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="swift-finger">Max</button>
-                    <span class="upgrade-count" id="swift-finger-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="ghost-clicker"><span><span class="icon"></span>Ghost Clicker</span><span class="cost"><span>50</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="ghost-clicker">Max</button>
-                    <span class="upgrade-count" id="ghost-clicker-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="time-warp"><span><span class="icon"></span>Time Warp</span><span class="cost"><span>100</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="time-warp">Max</button>
-                    <span class="upgrade-count" id="time-warp-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="lucky-streak"><span><span class="icon"></span>Lucky Streak</span><span class="cost"><span>200</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="lucky-streak">Max</button>
-                    <span class="upgrade-count" id="lucky-streak-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="golden-poop"><span><span class="icon"></span>Golden Poop</span><span class="cost"><span>500</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="golden-poop">Max</button>
-                    <span class="upgrade-count" id="golden-poop-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="poop-storm"><span><span class="icon"></span>Poop Storm</span><span class="cost"><span>1000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="poop-storm">Max</button>
-                    <span class="upgrade-count" id="poop-storm-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="toilet-upgrade"><span><span class="icon"></span>Toilet Upgrade</span><span class="cost"><span>20000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="toilet-upgrade">Max</button>
-                    <span class="upgrade-count" id="toilet-upgrade-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="poop-king"><span><span class="icon"></span>Poop King</span><span class="cost"><span>50000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="poop-king">Max</button>
-                    <span class="upgrade-count" id="poop-king-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="stink-bomb"><span><span class="icon"></span>Stink Bomb</span><span class="cost"><span>100000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="stink-bomb">Max</button>
-                    <span class="upgrade-count" id="stink-bomb-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="flush-power"><span><span class="icon"></span>Flush Power</span><span class="cost"><span>1500</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="flush-power">Max</button>
-                    <span class="upgrade-count" id="flush-power-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="plunger-master"><span><span class="icon"></span>Plunger Master</span><span class="cost"><span>3000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="plunger-master">Max</button>
-                    <span class="upgrade-count" id="plunger-master-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="sewer-rush"><span><span class="icon"></span>Sewer Rush</span><span class="cost"><span>5000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="sewer-rush">Max</button>
-                    <span class="upgrade-count" id="sewer-rush-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="poop-cannon"><span><span class="icon"></span>Poop Cannon</span><span class="cost"><span>10000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="poop-cannon">Max</button>
-                    <span class="upgrade-count" id="poop-cannon-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="flush-frenzy"><span><span class="icon"></span>Flush Frenzy</span><span class="cost"><span>15000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="flush-frenzy">Max</button>
-                    <span class="upgrade-count" id="flush-frenzy-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="toilet-titan"><span><span class="icon"></span>Toilet Titan</span><span class="cost"><span>25000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="toilet-titan">Max</button>
-                    <span class="upgrade-count" id="toilet-titan-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="stink-wave"><span><span class="icon"></span>Stink Wave</span><span class="cost"><span>30000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="stink-wave">Max</button>
-                    <span class="upgrade-count" id="stink-wave-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="poop-blaster"><span><span class="icon"></span>Poop Blaster</span><span class="cost"><span>40000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="poop-blaster">Max</button>
-                    <span class="upgrade-count" id="poop-blaster-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="septic-surge"><span><span class="icon"></span>Septic Surge</span><span class="cost"><span>60000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="septic-surge">Max</button>
-                    <span class="upgrade-count" id="septic-surge-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="flush-fury"><span><span class="icon"></span>Flush Fury</span><span class="cost"><span>80000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="flush-fury">Max</button>
-                    <span class="upgrade-count" id="flush-fury-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="swift-multiplier"><span><span class="icon"></span>Swift Multiplier</span><span class="cost"><span>500</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="swift-multiplier">Max</button>
-                    <span class="upgrade-count" id="swift-multiplier-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="hyper-multiplier"><span><span class="icon"></span>Hyper Multiplier</span><span class="cost"><span>1000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="hyper-multiplier">Max</button>
-                    <span class="upgrade-count" id="hyper-multiplier-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="cosmic-multiplier"><span><span class="icon"></span>Cosmic Multiplier</span><span class="cost"><span>2000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="cosmic-multiplier">Max</button>
-                    <span class="upgrade-count" id="cosmic-multiplier-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="toilet-flush"><span><span class="icon"></span>Toilet Flush</span><span class="cost"><span>5000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="toilet-flush">Max</button>
-                    <span class="upgrade-count" id="toilet-flush-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="golden-flush"><span><span class="icon"></span>Golden Flush</span><span class="cost"><span>10000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="golden-flush">Max</button>
-                    <span class="upgrade-count" id="golden-flush-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="stormy-flush"><span><span class="icon"></span>Stormy Flush</span><span class="cost"><span>20000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="stormy-flush">Max</button>
-                    <span class="upgrade-count" id="stormy-flush-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="kingly-boost"><span><span class="icon"></span>Kingly Boost</span><span class="cost"><span>50000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="kingly-boost">Max</button>
-                    <span class="upgrade-count" id="kingly-boost-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="bomb-burst"><span><span class="icon"></span>Bomb Burst</span><span class="cost"><span>100000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="bomb-burst">Max</button>
-                    <span class="upgrade-count" id="bomb-burst-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="sewer-boost"><span><span class="icon"></span>Sewer Boost</span><span class="cost"><span>120000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="sewer-boost">Max</button>
-                    <span class="upgrade-count" id="sewer-boost-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="plunger-flush"><span><span class="icon"></span>Plunger Flush</span><span class="cost"><span>150000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="plunger-flush">Max</button>
-                    <span class="upgrade-count" id="plunger-flush-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="stink-multiplier"><span><span class="icon"></span>Stink Multiplier</span><span class="cost"><span>200000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="stink-multiplier">Max</button>
-                    <span class="upgrade-count" id="stink-multiplier-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="cannon-boost"><span><span class="icon"></span>Cannon Boost</span><span class="cost"><span>250000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="cannon-boost">Max</button>
-                    <span class="upgrade-count" id="cannon-boost-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="frenzy-multiplier"><span><span class="icon"></span>Frenzy Multiplier</span><span class="cost"><span>300000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="frenzy-multiplier">Max</button>
-                    <span class="upgrade-count" id="frenzy-multiplier-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="titan-boost"><span><span class="icon"></span>Titan Boost</span><span class="cost"><span>350000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="titan-boost">Max</button>
-                    <span class="upgrade-count" id="titan-boost-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="wave-multiplier"><span><span class="icon"></span>Wave Multiplier</span><span class="cost"><span>400000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="wave-multiplier">Max</button>
-                    <span class="upgrade-count" id="wave-multiplier-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="blaster-boost"><span><span class="icon"></span>Blaster Boost</span><span class="cost"><span>450000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="blaster-boost">Max</button>
-                    <span class="upgrade-count" id="blaster-boost-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="surge-multiplier"><span><span class="icon"></span>Surge Multiplier</span><span class="cost"><span>500000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="surge-multiplier">Max</button>
-                    <span class="upgrade-count" id="surge-multiplier-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="fury-boost"><span><span class="icon"></span>Fury Boost</span><span class="cost"><span>600000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="fury-boost">Max</button>
-                    <span class="upgrade-count" id="fury-boost-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="poop-vortex"><span><span class="icon"></span>Poop Vortex</span><span class="cost"><span>700000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="poop-vortex">Max</button>
-                    <span class="upgrade-count" id="poop-vortex-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="flush-chaos"><span><span class="icon"></span>Flush Chaos</span><span class="cost"><span>800000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="flush-chaos">Max</button>
-                    <span class="upgrade-count" id="flush-chaos-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="multiplier-btn" id="septic-storm"><span><span class="icon"></span>Septic Storm</span><span class="cost"><span>900000</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="septic-storm">Max</button>
-                    <span class="upgrade-count" id="septic-storm-count">0</span>
-                </div>
-                <div class="upgrade-container">
-                    <button class="upgrade-btn" id="prestige-btn"><span><span class="icon"></span>Prestige</span><span class="cost"><span>0</span><div class="cost-icon"></div></span></button>
-                    <button class="max-btn" data-upgrade="prestige-btn" disabled>Max</button>
-                    <span class="upgrade-count" id="prestige-btn-count">0</span>
-                </div>
+                <!-- More upgrades will be added dynamically in script.js -->
             </div>
         </div>
     </div>
