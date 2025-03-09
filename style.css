@@ -1,0 +1,45 @@
+body {
+    background-color: black;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: none; /* Hide default cursor */
+}
+
+#ip-display {
+    font-size: 2em;
+    font-family: monospace;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#custom-cursor {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 20px;
+    transform: rotate(-45deg); /* Tilt heart -45 degrees */
+    pointer-events: none;
+    z-index: 2;
+    animation: colorCycle 3s infinite linear;
+}
+
+@keyframes colorCycle {
+    0% { color: #FF87AB; } /* Bubblegum pink */
+    33% { color: #FF0000; } /* Red */
+    66% { color: #00E7FF; } /* Light cyan blue */
+    100% { color: #FF87AB; } /* Back to bubblegum pink */
+}
