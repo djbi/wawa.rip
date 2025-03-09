@@ -1,11 +1,16 @@
-body {
-    background-color: black;
+html, body {
     margin: 0;
+    padding: 0;
     height: 100vh;
+    background-color: black;
+    overflow: hidden; /* Prevent scrolling */
+    cursor: none !important; /* Hide default cursor everywhere */
+}
+
+body {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: none; /* Hide default cursor */
 }
 
 #ip-display {
@@ -22,6 +27,7 @@ canvas {
     position: absolute;
     top: 0;
     left: 0;
+    pointer-events: none; /* Ensure canvas doesn’t block mouse events */
 }
 
 #custom-cursor {
