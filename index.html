@@ -12,18 +12,52 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            cursor: none; /* Hide default cursor */
         }
         #ip-display {
             font-size: 2em;
             font-family: monospace;
         }
+        .trail {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            font-size: 20px;
+            text-align: center;
+            line-height: 20px;
+            transform: rotate(-45deg); /* Tilt heart -45 degrees */
+            pointer-events: none; /* Prevent trail from interfering with mouse events */
+            animation: fadeOut 1.2s linear forwards; /* Trail lasts 1.2s */
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        #custom-cursor {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            font-size: 20px;
+            text-align: center;
+            line-height: 20px;
+            transform: rotate(-45deg); /* Tilt heart -45 degrees */
+            pointer-events: none; /* Prevent cursor from interfering */
+            animation: colorCycle 3s infinite linear; /* Color cycle every 3s */
+        }
+        @keyframes colorCycle {
+            0% { color: #FF87AB; } /* Bubblegum pink */
+            33% { color: #FF0000; } /* Red */
+            66% { color: #00E7FF; } /* Light cyan blue */
+            100% { color: #FF87AB; } /* Back to bubblegum pink */
+        }
     </style>
 </head>
 <body>
     <div id="ip-display"></div>
+    <div id="custom-cursor">♡</div>
 
     <script>
-        // Fetch the user's IP address using a public API
+        // Fetch the user's IP address
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
@@ -35,25 +69,15 @@
                 document.getElementById('ip-display').innerText = 'Could not fetch IP';
             });
 
-        // Function to display IP and animate colors
+        // Display IP with changing colors
         function displayIPWithChangingColors(ip) {
             const display = document.getElementById('ip-display');
             const colors = [
-                '#FF0000', // Red
-                '#00FF00', // Green
-                '#0000FF', // Blue
-                '#FFFF00', // Yellow
-                '#FF00FF', // Magenta
-                '#00FFFF', // Cyan
-                '#FFA500', // Orange
-                '#800080', // Purple
-                '#008000', // Dark Green
-                '#FF4500', // Orange Red
-                '#00CED1', // Dark Turquoise
-                '#FF69B4'  // Hot Pink
+                '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF',
+                '#00FFFF', '#FFA500', '#800080', '#008000', '#FF4500',
+                '#00CED1', '#FF69B4'
             ];
 
-            // Split IP into characters and create spans
             const spans = [];
             ip.split('').forEach(char => {
                 const span = document.createElement('span');
@@ -62,25 +86,42 @@
                 spans.push(span);
             });
 
-            // Function to update colors
             function updateColors() {
-                let usedColors = new Set(); // Track used colors in each cycle
+                let usedColors = new Set();
                 spans.forEach(span => {
                     let newColor;
                     do {
                         newColor = colors[Math.floor(Math.random() * colors.length)];
-                    } while (usedColors.has(newColor)); // Ensure no repeats in one cycle
+                    } while (usedColors.has(newColor));
                     usedColors.add(newColor);
                     span.style.color = newColor;
                 });
             }
 
-            // Initial color assignment
             updateColors();
-
-            // Change colors every second (1000ms)
             setInterval(updateColors, 1000);
         }
+
+        // Custom cursor and trail
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            // Update cursor position
+            cursor.style.left = `${e.pageX - 10}px`; // Offset to center the heart
+            cursor.style.top = `${e.pageY - 10}px`;
+
+            // Create trail element
+            const trail = document.createElement('div');
+            trail.className = 'trail';
+            trail.innerText = '♡';
+            trail.style.left = `${e.pageX - 10}px`;
+            trail.style.top = `${e.pageY - 10}px`;
+            document.body.appendChild(trail);
+
+            // Remove trail after 1.2s
+            setTimeout(() => {
+                trail.remove();
+            }, 1200);
+        });
     </script>
 </body>
 </html>
