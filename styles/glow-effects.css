@@ -1,0 +1,31 @@
+/* Glow effects using SVG filter */
+.logo-container {
+    filter: url(#glow);
+}
+
+.social-logo {
+    filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 10px #00ff00);
+}
+
+@keyframes glow-pulse {
+    0% { filter: brightness(1); }
+    50% { filter: brightness(1.5); }
+    100% { filter: brightness(1); }
+}
+
+.social-logo:hover {
+    animation: glow-pulse 1s infinite;
+}
+
+/* SVG filter for custom glow */
+<svg style="display:none;">
+    <defs>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+</svg>
