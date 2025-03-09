@@ -65,13 +65,13 @@ function draw() {
         col.setAlpha(t.alpha);
         fill(col);
         noStroke();
-        push(); // Save transformation state
+        push();
         translate(t.x, t.y);
         rotate(-45 * (PI / 180)); // Rotate -45 degrees
         text('♡', 0, 0);
-        pop(); // Restore transformation state
-        t.alpha -= 255 / (1.2 * 60); // Fade over 1.2s (assuming 60 FPS)
-        if (t.alpha <= 0) trail.splice(index, 1); // Remove faded trails
+        pop();
+        t.alpha -= 255 / (1.2 * 60); // Fade over 1.2s (60 FPS)
+        if (t.alpha <= 0) trail.splice(index, 1);
     });
 }
 
