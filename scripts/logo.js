@@ -1,23 +1,23 @@
 // Initialize logos on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('logos.js loaded');
+    console.log('logos.js loaded at', new Date().toISOString());
 
-    // Use reliable internet-hosted images with absolute URLs
+    // Use reliable internet-hosted images with absolute URLs from cdnjs
     const customLogos = {
         'https://www.tiktok.com/@faith.meows?_t=ZN-8uT1pCNKhvC&_r=1': {
-            src: 'https://upload.wikimedia.org/wikipedia/commons/3/3d/TikTok_logo.svg',
+            src: 'https://cdnjs.cloudflare.com/ajax/libs/simple-icons/12.1.0/tiktok.svg',
             fallback: 'https://via.placeholder.com/50?text=TikTok'
         },
         'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi': {
-            src: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg',
+            src: 'https://cdnjs.cloudflare.com/ajax/libs/simple-icons/12.1.0/spotify.svg',
             fallback: 'https://via.placeholder.com/50?text=Spotify'
         },
         'https://www.roblox.com/share?code=44cb54032142d34787f1f2ad3aff1033&type=Profile&source=ProfileShare&stamp=1741364262991': {
-            src: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Roblox_icon_logo.svg',
+            src: 'https://cdnjs.cloudflare.com/ajax/libs/simple-icons/12.1.0/roblox.svg',
             fallback: 'https://via.placeholder.com/50?text=Roblox'
         },
         'https://github.com/djbi': {
-            src: 'https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg',
+            src: 'https://cdnjs.cloudflare.com/ajax/libs/simple-icons/12.1.0/github.svg',
             fallback: 'https://via.placeholder.com/50?text=GitHub'
         }
     };
@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         console.log('Attempting to load social logos...');
         socialIcons.innerHTML = ''; // Clear any existing content
+        let loadedCount = 0;
         for (const [url, { src, fallback }] of Object.entries(customLogos)) {
             console.log(`Processing logo for ${url} with src: ${src}`);
             const link = document.createElement('a');
@@ -52,7 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
             img.onload = () => {
+                loadedCount++;
                 console.log(`Successfully loaded image for ${url}: ${src}`);
+                console.log(`Total loaded images: ${loadedCount}`);
                 if (typeof window.debugImageLoad === 'function') {
                     window.debugImageLoad(url, 'success', src);
                 }
@@ -67,6 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 placeholder.textContent = `Loading ${img.alt}...`;
                 placeholder.style.color = '#ff69b4';
                 imgContainer.appendChild(placeholder);
+            } else {
+                console.log(`Image for ${url} is already in cache: ${src}`);
             }
         }
         console.log(`Finished loading logos. Total elements in socialIcons: ${socialIcons.children.length}`);
@@ -74,11 +79,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Force reload logos after a short delay to ensure DOM is ready
     setTimeout(() => {
-        if (document.getElementById('mainContainer').style.display === 'block') {
+        const mainContainer = document.getElementById('mainContainer');
+        if (mainContainer && mainContainer.style.display === 'block') {
             console.log('Triggering logo load due to mainContainer visibility');
             window.loadLogos();
         } else {
             console.log('mainContainer not visible yet, delaying logo load');
+            // Retry after another delay if mainContainer isn't visible yet
+            setTimeout(() => {
+                if (mainContainer && mainContainer.style.display === 'block') {
+                    console.log('Retry: Triggering logo load due to mainContainer visibility');
+                    window.loadLogos();
+                } else {
+                    console.error('mainContainer still not visible after retry');
+                }
+            }, 2000);
         }
     }, 500);
 });
