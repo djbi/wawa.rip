@@ -1,7 +1,7 @@
 // Initialize logos on DOM load
 document.addEventListener('DOMContentLoaded', () => {
     console.log('logos.js loaded at', new Date().toISOString());
-    window.loadLogos = window.loadLogos || function() { // Ensure function is defined globally
+    window.loadLogos = window.loadLogos || function() {
         const socialIcons = document.getElementById('socialIcons');
         if (!socialIcons) {
             console.error('socialIcons element not found at time of loadLogos execution');
@@ -13,19 +13,19 @@ document.addEventListener('DOMContentLoaded', () => {
         let loadedCount = 0;
         const customLogos = {
             'https://www.tiktok.com/@faith.meows?_t=ZN-8uT1pCNKhvC&_r=1': {
-                src: 'https://logolook.net/wp-content/uploads/2021/06/Symbol-Tiktok.png',
+                src: './assets/tiktok.png',
                 fallback: 'https://via.placeholder.com/50?text=TikTok'
             },
             'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi': {
-                src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/512px-Spotify_logo_without_text.svg.png',
+                src: './assets/spotify.png',
                 fallback: 'https://via.placeholder.com/50?text=Spotify'
             },
             'https://www.roblox.com/share?code=44cb54032142d34787f1f2ad3aff1033&type=Profile&source=ProfileShare&stamp=1741364262991': {
-                src: 'https://i.imgflip.com/7nwenp.png',
+                src: './assets/roblox.png',
                 fallback: 'https://via.placeholder.com/50?text=Roblox'
             },
             'https://github.com/djbi': {
-                src: 'https://github.githubassets.com/favicons/favicon.png',
+                src: './assets/github.png',
                 fallback: 'https://via.placeholder.com/50?text=GitHub'
             }
         };
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const imgContainer = document.createElement('div');
             imgContainer.className = 'logo-container';
             const img = document.createElement('img');
-            img.src = src; // Use absolute URL
+            img.src = src; // Use local path
             img.alt = url.split('/')[2];
             img.className = 'social-logo';
             img.style.maxWidth = '50px';
