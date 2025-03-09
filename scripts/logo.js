@@ -1,28 +1,7 @@
 // Initialize logos on DOM load
 document.addEventListener('DOMContentLoaded', () => {
     console.log('logos.js loaded at', new Date().toISOString());
-
-    // Use local images
-    const customLogos = {
-        'https://www.tiktok.com/@faith.meows?_t=ZN-8uT1pCNKhvC&_r=1': {
-            src: './assets/tiktok.png',
-            fallback: 'https://via.placeholder.com/50?text=TikTok'
-        },
-        'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi': {
-            src: './assets/spotify.png',
-            fallback: 'https://via.placeholder.com/50?text=Spotify'
-        },
-        'https://www.roblox.com/share?code=44cb54032142d34787f1f2ad3aff1033&type=Profile&source=ProfileShare&stamp=1741364262991': {
-            src: './assets/roblox.png',
-            fallback: 'https://via.placeholder.com/50?text=Roblox'
-        },
-        'https://github.com/djbi': {
-            src: './assets/github.png',
-            fallback: 'https://via.placeholder.com/50?text=GitHub'
-        }
-    };
-
-    window.loadLogos = function() {
+    window.loadLogos = window.loadLogos || function() { // Ensure function is defined globally
         const socialIcons = document.getElementById('socialIcons');
         if (!socialIcons) {
             console.error('socialIcons element not found at time of loadLogos execution');
@@ -32,6 +11,24 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('socialIcons visibility:', window.getComputedStyle(socialIcons).display);
         socialIcons.innerHTML = ''; // Clear any existing content
         let loadedCount = 0;
+        const customLogos = {
+            'https://www.tiktok.com/@faith.meows?_t=ZN-8uT1pCNKhvC&_r=1': {
+                src: 'https://logolook.net/wp-content/uploads/2021/06/Symbol-Tiktok.png',
+                fallback: 'https://via.placeholder.com/50?text=TikTok'
+            },
+            'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi': {
+                src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/512px-Spotify_logo_without_text.svg.png',
+                fallback: 'https://via.placeholder.com/50?text=Spotify'
+            },
+            'https://www.roblox.com/share?code=44cb54032142d34787f1f2ad3aff1033&type=Profile&source=ProfileShare&stamp=1741364262991': {
+                src: 'https://i.imgflip.com/7nwenp.png',
+                fallback: 'https://via.placeholder.com/50?text=Roblox'
+            },
+            'https://github.com/djbi': {
+                src: 'https://github.githubassets.com/favicons/favicon.png',
+                fallback: 'https://via.placeholder.com/50?text=GitHub'
+            }
+        };
         for (const [url, { src, fallback }] of Object.entries(customLogos)) {
             console.log(`Processing logo for ${url} with src: ${src}`);
             const link = document.createElement('a');
@@ -40,10 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const imgContainer = document.createElement('div');
             imgContainer.className = 'logo-container';
             const img = document.createElement('img');
-            img.src = src; // Use local path
+            img.src = src; // Use absolute URL
             img.alt = url.split('/')[2];
             img.className = 'social-logo';
-            img.style.maxWidth = '50px'; // Constrain to fit design
+            img.style.maxWidth = '50px';
             img.style.maxHeight = '50px';
             img.style.display = 'block';
             img.onerror = () => {
@@ -78,7 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`Finished loading logos. Total elements in socialIcons: ${socialIcons.children.length}`);
     };
 
-    // Force reload logos after a short delay to ensure DOM is ready
+    // Trigger initial load
+    console.log('Triggering initial logo load');
+    window.loadLogos();
+
+    // Retry on mainContainer visibility
     setTimeout(() => {
         const mainContainer = document.getElementById('mainContainer');
         if (mainContainer) {
