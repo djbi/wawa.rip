@@ -5,19 +5,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Use reliable internet-hosted images with absolute URLs
     const customLogos = {
         'https://www.tiktok.com/@faith.meows?_t=ZN-8uT1pCNKhvC&_r=1': {
-            src: 'https://brand.tiktok.com/api/public/brand/resource/5e8f9c7a-0e1f-4b1e-8c5a-7f4d2f3e0e2d/1.0/tiktok-icon-512.png', // Official TikTok 512x512px icon
+            src: 'https://logolook.net/wp-content/uploads/2021/06/Symbol-Tiktok.png', // Specified TikTok logo
             fallback: 'https://via.placeholder.com/50?text=TikTok'
         },
         'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi': {
-            src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/512px-Spotify_logo_without_text.svg.png', // Resized PNG from Wikimedia
+            src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/512px-Spotify_logo_without_text.svg.png', // Retained working Spotify URL
             fallback: 'https://via.placeholder.com/50?text=Spotify'
         },
         'https://www.roblox.com/share?code=44cb54032142d34787f1f2ad3aff1033&type=Profile&source=ProfileShare&stamp=1741364262991': {
-            src: 'https://s3.amazonaws.com/assets.roproxy.com/assets/Logo-1024x1024.png', // Official Roblox 1024x1024px logo
+            src: 'https://i.imgflip.com/7nwenp.png', // Specified Roblox logo
             fallback: 'https://via.placeholder.com/50?text=Roblox'
         },
         'https://github.com/djbi': {
-            src: 'https://github.githubassets.com/favicons/favicon.png', // Official GitHub favicon
+            src: 'https://github.githubassets.com/favicons/favicon.png', // Retained working GitHub URL
             fallback: 'https://via.placeholder.com/50?text=GitHub'
         }
     };
