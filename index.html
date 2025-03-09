@@ -16,9 +16,15 @@
         }
         #ip-address {
             font-size: 2em;
+            /* Prevent text selection */
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
         .digit {
             transition: color 0.5s ease;
+            display: inline-block; /* Ensures proper rendering */
         }
     </style>
 </head>
