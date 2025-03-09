@@ -2,22 +2,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('logos.js loaded at', new Date().toISOString());
 
-    // Use reliable internet-hosted images with absolute URLs from cdnjs
+    // Use reliable internet-hosted images with absolute URLs
     const customLogos = {
         'https://www.tiktok.com/@faith.meows?_t=ZN-8uT1pCNKhvC&_r=1': {
-            src: 'https://cdnjs.cloudflare.com/ajax/libs/simple-icons/12.1.0/tiktok.svg',
+            src: 'https://brand.tiktok.com/api/public/brand/resource/5e8f9c7a-0e1f-4b1e-8c5a-7f4d2f3e0e2d/1.0/tiktok-icon-512.png', // Official TikTok 512x512px icon
             fallback: 'https://via.placeholder.com/50?text=TikTok'
         },
         'https://open.spotify.com/user/313x5v4poeytrommnmgiutn5wmpi': {
-            src: 'https://cdnjs.cloudflare.com/ajax/libs/simple-icons/12.1.0/spotify.svg',
+            src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/512px-Spotify_logo_without_text.svg.png', // Resized PNG from Wikimedia
             fallback: 'https://via.placeholder.com/50?text=Spotify'
         },
         'https://www.roblox.com/share?code=44cb54032142d34787f1f2ad3aff1033&type=Profile&source=ProfileShare&stamp=1741364262991': {
-            src: 'https://cdnjs.cloudflare.com/ajax/libs/simple-icons/12.1.0/roblox.svg',
+            src: 'https://s3.amazonaws.com/assets.roproxy.com/assets/Logo-1024x1024.png', // Official Roblox 1024x1024px logo
             fallback: 'https://via.placeholder.com/50?text=Roblox'
         },
         'https://github.com/djbi': {
-            src: 'https://cdnjs.cloudflare.com/ajax/libs/simple-icons/12.1.0/github.svg',
+            src: 'https://github.githubassets.com/favicons/favicon.png', // Official GitHub favicon
             fallback: 'https://via.placeholder.com/50?text=GitHub'
         }
     };
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             img.src = src; // Use absolute URL
             img.alt = url.split('/')[2];
             img.className = 'social-logo';
-            img.style.maxWidth = '50px';
+            img.style.maxWidth = '50px'; // Constrain to fit design
             img.style.maxHeight = '50px';
             img.style.display = 'block';
             img.onerror = () => {
@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.loadLogos();
         } else {
             console.log('mainContainer not visible yet, delaying logo load');
-            // Retry after another delay if mainContainer isn't visible yet
             setTimeout(() => {
                 if (mainContainer && mainContainer.style.display === 'block') {
                     console.log('Retry: Triggering logo load due to mainContainer visibility');
