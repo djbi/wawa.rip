@@ -111,10 +111,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.style.animation = '';
                 creepyImage.style.display = 'block';
                 coinScreen.style.display = 'none';
+                setTimeout(() => {
+                    creepyImage.style.display = 'none';
+                    clickerScreen.style.display = 'flex';
+                    canClick = true; // Enable clicking on the clicker screen
+                }, 2000);
             }, 2000);
         } catch (error) {
             console.error('Error in gameOver:', error);
         }
+    }
+
+    // Cycle browser title
+    function cycleTitle() {
+        const titleText = "meow meow to meow to wawa.rip";
+        let index = 0;
+        setInterval(() => {
+            const start = index % titleText.length;
+            const end = (index + titleText.length) % titleText.length;
+            let displayText = titleText.slice(start) + titleText.slice(0, end);
+            document.title = displayText;
+            index = (index + 1) % titleText.length;
+        }, 500);
     }
 
     // Upgrade definitions
@@ -160,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'poop-vortex': { button: document.getElementById('poop-vortex'), countDisplay: document.getElementById('poop-vortex-count'), value: 1, count: 0, costBase: 700000, costMultiplier: 700000, effect: () => poopVortex += 1.5 },
         'flush-chaos': { button: document.getElementById('flush-chaos'), countDisplay: document.getElementById('flush-chaos-count'), value: 1, count: 0, costBase: 800000, costMultiplier: 800000, effect: () => flushChaos += 1.6 },
         'septic-storm': { button: document.getElementById('septic-storm'), countDisplay: document.getElementById('septic-storm-count'), value: 1, count: 0, costBase: 900000, costMultiplier: 900000, effect: () => septicStorm += 1.7 },
-        'prestige-btn': { button: document.getElementById('prestige-btn'), countDisplay: document.getElementById('prestige-btn-count'), value: 0, count: 0, costBase: 1e12, costMultiplier: 1e12, effect: () => {} }
+        'prestige-btn': { button: document.getElementById('prestige-btn'), countDisplay: document.getElementById('prestige-btn-count'), value: 0, count: 0, costBase: 1e12, costMultiplier: 1e12, effect: () => prestigeLevel += 1 }
     };
 
     // Clicker game variables
@@ -270,4 +288,70 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
-            if ((upgradeKey === 'ghost-clicker' || upgradeKey === 'sewer-rush' || upgradeKey === 'flush-frenzy
+            updateScore();
+        } catch (error) {
+            console.error('Error purchasing upgrade:', error);
+        }
+    }
+
+    // Auto-click function
+    function autoClick() {
+        try {
+            const totalMultiplier = calculateTotalMultiplier();
+            score += autoClickValue * totalMultiplier;
+            updateScore();
+        } catch (error) {
+            console.error('Error in autoClick:', error);
+        }
+    }
+
+    // Event Listeners
+    enterBtn.addEventListener('click', () => {
+        enterScreen.style.display = 'none';
+        coinScreen.style.display = 'flex';
+    });
+
+    headsBtn.addEventListener('click', () => gameOver('Heads'));
+    tailsBtn.addEventListener('click', () => gameOver('Tails'));
+
+    eyeIcon.addEventListener('click', () => {
+        creepyImage.style.display = 'block';
+        screamAudio.play().catch(err => console.error('Error playing audio:', err));
+        setTimeout(() => {
+            creepyImage.style.display = 'none';
+        }, 2000);
+    });
+
+    clickerIp.addEventListener('click', () => {
+        if (!canClick) return;
+        const totalMultiplier = calculateTotalMultiplier();
+        const luckChance = Math.random() < (luckBonus * 0.05);
+        const additionalScore = luckChance ? clickValue * 2 : clickValue;
+        score += additionalScore * totalMultiplier;
+        updateScore();
+    });
+
+    // Add event listeners for upgrade buttons
+    for (const key in upgrades) {
+        upgrades[key].button.addEventListener('click', () => purchaseUpgrade(key));
+    }
+
+    // Add event listeners for max buttons
+    document.querySelectorAll('.max-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const upgradeKey = btn.getAttribute('data-upgrade');
+            if (upgradeKey && !btn.disabled) {
+                purchaseUpgrade(upgradeKey, true);
+            }
+        });
+    });
+
+    // Initialize game
+    fetchIP();
+    updateVisitCount();
+    cycleTitle();
+    updateScore();
+
+    // Start auto-click interval
+    setInterval(autoClick, 1000 - autoSpeed * 100);
+});
