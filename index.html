@@ -3,77 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wawa.rip</title>
+    <title>IP Display</title>
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
+        body {
             background-color: black;
-            overflow: hidden;
-            cursor: none !important;
-        }
-        #ip-display {
-            font-size: 2em;
-            font-family: monospace;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             color: white;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
         }
     </style>
 </head>
 <body>
-    <div id="ip-display"></div>
+    <div id="ip-address">Loading your IP...</div>
 
     <script>
-        const display = document.getElementById('ip-display');
-        const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500', '#800080', '#008000', '#FF4500', '#00CED1', '#FF69B4'];
-
-        fetch('https://ipapi.co/json/')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
+        // Using a free IP API to get the user's IP address
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
             .then(data => {
-                const ip = data.ip || 'No IP Returned';
-                console.log('IP fetched:', ip);
-                displayIP(ip);
+                document.getElementById('ip-address').textContent = data.ip;
             })
             .catch(error => {
-                console.error('Fetch error:', error);
-                displayIP('Unknown IP');
+                document.getElementById('ip-address').textContent = 'Unable to fetch IP';
+                console.error('Error:', error);
             });
-
-        function displayIP(ip) {
-            display.innerHTML = '';
-            const spans = [];
-            ip.split('').forEach(char => {
-                const span = document.createElement('span');
-                span.innerText = char;
-                display.appendChild(span);
-                spans.push(span);
-            });
-
-            function updateColors() {
-                let usedColors = new Set();
-                spans.forEach(span => {
-                    let newColor;
-                    do {
-                        newColor = colors[Math.floor(Math.random() * colors.length)];
-                    } while (usedColors.has(newColor));
-                    usedColors.add(newColor);
-                    span.style.color = newColor;
-                });
-            }
-
-            updateColors();
-            setInterval(updateColors, 1000); // Reintroduced color changing
-        }
     </script>
 </body>
 </html>
