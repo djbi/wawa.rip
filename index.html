@@ -13,18 +13,35 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-        }
-        #ip-address {
-            font-size: 2em;
+            /* Prevent selection for entire body */
             user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
         }
+        #container {
+            text-align: center;
+        }
+        #ip-address {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
         .digit {
             display: inline-block;
             text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
             animation: glow 1.5s infinite alternate;
+        }
+        #visit-counter {
+            color: white;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        #eye-icon {
+            width: 16px;
+            height: 16px;
         }
 
         @keyframes glow {
@@ -38,23 +55,22 @@
     </style>
 </head>
 <body>
-    <div id="ip-address">Loading your IP...</div>
+    <div id="container">
+        <div id="ip-address">Loading your IP...</div>
+        <div id="visit-counter">
+            <svg id="eye-icon" viewBox="0 0 24 24" fill="white">
+                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            </svg>
+            <span id="count">567</span>
+        </div>
+    </div>
 
     <script>
         // Neon colors
         const colors = [
-            '#FF00FF', // Neon Magenta
-            '#00FFFF', // Neon Cyan
-            '#FF00AA', // Neon Pink
-            '#00FF00', // Neon Green
-            '#FFFF00', // Neon Yellow
-            '#FF6600', // Neon Orange
-            '#FF0099', // Neon Hot Pink
-            '#00CCFF', // Neon Sky Blue
-            '#FF3366', // Neon Coral
-            '#33FF33', // Neon Lime
-            '#FFCC00', // Neon Gold
-            '#FF0066'  // Neon Rose
+            '#FF00FF', '#00FFFF', '#FF00AA', '#00FF00',
+            '#FFFF00', '#FF6600', '#FF0099', '#00CCFF',
+            '#FF3366', '#33FF33', '#FFCC00', '#FF0066'
         ];
 
         function getRandomColor(excludeColors = []) {
@@ -90,8 +106,20 @@
                 ipContainer.appendChild(span);
             });
             
-            // Start continuous color changing
-            setInterval(updateColors, 1000);
+            // Fast color changing
+            setInterval(updateColors, 300);
+        }
+
+        // Simple visit counter using localStorage
+        function updateVisitCount() {
+            let count = localStorage.getItem('visitCount');
+            if (!count) {
+                count = 567; // Starting number
+            } else {
+                count = parseInt(count) + 1;
+            }
+            localStorage.setItem('visitCount', count);
+            document.getElementById('count').textContent = count;
         }
 
         // Fetch IP and initial display
@@ -99,6 +127,7 @@
             .then(response => response.json())
             .then(data => {
                 displayIP(data.ip);
+                updateVisitCount();
             })
             .catch(error => {
                 document.getElementById('ip-address').textContent = 'Unable to fetch IP';
