@@ -1,0 +1,52 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: black;
+    overflow: hidden;
+    cursor: none !important; /* Hide default cursor */
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#ip-display {
+    font-size: 2em;
+    font-family: monospace;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    color: white; /* Fallback color */
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+#custom-cursor {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 20px;
+    transform: rotate(-45deg);
+    pointer-events: none;
+    z-index: 2;
+    animation: colorCycle 3s infinite linear;
+}
+
+@keyframes colorCycle {
+    0% { color: #FF87AB; } /* Bubblegum pink */
+    33% { color: #FF0000; } /* Red */
+    66% { color: #00E7FF; } /* Light cyan blue */
+    100% { color: #FF87AB; } /* Back to bubblegum pink */
+}
