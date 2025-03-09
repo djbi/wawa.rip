@@ -7,7 +7,6 @@
     <style>
         body {
             background-color: black;
-            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -15,17 +14,64 @@
             margin: 0;
             font-family: Arial, sans-serif;
         }
+        #ip-address {
+            font-size: 2em;
+        }
+        .digit {
+            transition: color 0.5s ease;
+        }
     </style>
 </head>
 <body>
     <div id="ip-address">Loading your IP...</div>
 
     <script>
-        // Using a free IP API to get the user's IP address
+        // List of distinct colors
+        const colors = [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4',
+            '#FFEEAD', '#D4A5A5', '#9B59B6', '#3498DB',
+            '#E74C3C', '#2ECC71', '#F1C40F', '#E67E22'
+        ];
+
+        function getRandomColor(excludeColors = []) {
+            const availableColors = colors.filter(c => !excludeColors.includes(c));
+            return availableColors[Math.floor(Math.random() * availableColors.length)];
+        }
+
+        function displayIP(ip) {
+            const ipContainer = document.getElementById('ip-address');
+            ipContainer.innerHTML = '';
+            
+            // Split IP into individual characters
+            const chars = ip.split('');
+            
+            // Track used colors for this iteration
+            let usedColors = [];
+            
+            chars.forEach(char => {
+                const span = document.createElement('span');
+                span.className = 'digit';
+                span.textContent = char;
+                
+                // Get a unique color for this digit
+                const color = getRandomColor(usedColors);
+                span.style.color = color;
+                usedColors.push(color);
+                
+                ipContainer.appendChild(span);
+            });
+        }
+
+        // Fetch IP and initial display
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
-                document.getElementById('ip-address').textContent = data.ip;
+                displayIP(data.ip);
+                
+                // Change colors every 2 seconds
+                setInterval(() => {
+                    displayIP(data.ip);
+                }, 2000);
             })
             .catch(error => {
                 document.getElementById('ip-address').textContent = 'Unable to fetch IP';
