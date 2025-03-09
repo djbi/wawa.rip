@@ -4,15 +4,8 @@ html, body {
     height: 100vh;
     background-color: black;
     overflow: hidden;
-    cursor: none !important; /* Hide default cursor */
+    cursor: none !important;
 }
-
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 #ip-display {
     font-size: 2em;
     font-family: monospace;
@@ -21,16 +14,14 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1;
-    color: white; /* Fallback color */
+    color: white;
 }
-
 canvas {
     position: absolute;
     top: 0;
     left: 0;
     pointer-events: none;
 }
-
 #custom-cursor {
     position: absolute;
     width: 20px;
@@ -43,10 +34,9 @@ canvas {
     z-index: 2;
     animation: colorCycle 3s infinite linear;
 }
-
 @keyframes colorCycle {
-    0% { color: #FF87AB; } /* Bubblegum pink */
-    33% { color: #FF0000; } /* Red */
-    66% { color: #00E7FF; } /* Light cyan blue */
-    100% { color: #FF87AB; } /* Back to bubblegum pink */
+    0% { color: #FF87AB; }
+    33% { color: #FF0000; }
+    66% { color: #00E7FF; }
+    100% { color: #FF87AB; }
 }
