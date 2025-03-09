@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game</title>
+    <title>Snake Game with IP Obstacle</title>
     <style>
         body {
             background-color: black;
@@ -109,12 +109,13 @@
         const gridSize = 20;
         let snake = [{ x: 400, y: 300 }];
         let apple = { x: 0, y: 0 };
+        let ipObstacle = { x: 0, y: 0, dx: 2, dy: 2, text: '' };
         let mouseX = 400, mouseY = 300;
         let speed = 5;
         let gameStarted = false;
         let clickCount = 0;
 
-        // Neon colors for snake
+        // Neon colors for snake and IP
         const colors = [
             '#FF00FF', '#00FFFF', '#FF00AA', '#00FF00',
             '#FFFF00', '#FF6600', '#FF0099', '#00CCFF',
@@ -128,6 +129,14 @@
         function spawnApple() {
             apple.x = Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize;
             apple.y = Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize;
+        }
+
+        function spawnIPObstacle(ip) {
+            ipObstacle.text = ip;
+            ipObstacle.x = Math.floor(Math.random() * (canvas.width - 100));
+            ipObstacle.y = Math.floor(Math.random() * (canvas.height - 20));
+            ipObstacle.dx = (Math.random() > 0.5 ? 2 : -2);
+            ipObstacle.dy = (Math.random() > 0.5 ? 2 : -2);
         }
 
         function updateVisitCount() {
@@ -163,8 +172,24 @@
             snake.unshift(head);
             snake.pop();
 
-            // Check collision with walls
-            if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
+            // Move IP obstacle
+            ipObstacle.x += ipObstacle.dx;
+            ipObstacle.y += ipObstacle.dy;
+
+            // Bounce IP obstacle off walls
+            if (ipObstacle.x < 0 || ipObstacle.x > canvas.width - ctx.measureText(ipObstacle.text).width) {
+                ipObstacle.dx = -ipObstacle.dx;
+            }
+            if (ipObstacle.y < 0 || ipObstacle.y > canvas.height - 20) {
+                ipObstacle.dy = -ipObstacle.dy;
+            }
+
+            // Check collision with walls or IP obstacle
+            const ipWidth = ctx.measureText(ipObstacle.text).width;
+            const ipHeight = 20;
+            if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height ||
+                (head.x + gridSize > ipObstacle.x && head.x < ipObstacle.x + ipWidth &&
+                 head.y + gridSize > ipObstacle.y && head.y < ipObstacle.y + ipHeight)) {
                 gameOver();
                 return;
             }
@@ -178,6 +203,11 @@
             // Draw apple
             ctx.fillStyle = '#FF0000';
             ctx.fillRect(apple.x, apple.y, gridSize - 2, gridSize - 2);
+
+            // Draw IP obstacle
+            ctx.font = '20px Arial';
+            ctx.fillStyle = getRandomColor();
+            ctx.fillText(ipObstacle.text, ipObstacle.x, ipObstacle.y);
 
             requestAnimationFrame(gameLoop);
         }
@@ -196,16 +226,34 @@
             }, 2000);
         }
 
-        // Start game on double click
+        // Start game on double click and fetch IP
         container.addEventListener('click', () => {
             clickCount++;
             if (clickCount === 2 && !gameStarted) {
-                startMessage.style.display = 'none';
-                canvas.style.display = 'block';
-                gameStarted = true;
-                spawnApple();
-                updateVisitCount();
-                gameLoop();
+                fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => {
+                        startMessage.style.display = 'none';
+                        canvas.style.display = 'block';
+                        gameStarted = true;
+                        spawnApple();
+                        spawnIPObstacle(data.ip);
+                        updateVisitCount();
+                        gameLoop();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching IP:', error);
+                        startMessage.textContent = 'Error loading IP, starting anyway...';
+                        setTimeout(() => {
+                            startMessage.style.display = 'none';
+                            canvas.style.display = 'block';
+                            gameStarted = true;
+                            spawnApple();
+                            spawnIPObstacle('0.0.0.0'); // Fallback IP
+                            updateVisitCount();
+                            gameLoop();
+                        }, 1000);
+                    });
             }
         });
 
