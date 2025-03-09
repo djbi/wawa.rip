@@ -32,9 +32,13 @@
         const display = document.getElementById('ip-display');
         const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFA500', '#800080', '#008000', '#FF4500', '#00CED1', '#FF69B4'];
 
-        // Fetch IP
         fetch('https://ipapi.co/json/')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 const ip = data.ip || 'No IP Returned';
                 console.log('IP fetched:', ip);
@@ -42,8 +46,7 @@
             })
             .catch(error => {
                 console.error('Fetch error:', error);
-                const fallbackIP = 'Unknown IP';
-                displayIP(fallbackIP);
+                displayIP('Unknown IP');
             });
 
         function displayIP(ip) {
@@ -69,7 +72,7 @@
             }
 
             updateColors();
-            setInterval(updateColors, 1000);
+            setInterval(updateColors, 1000); // Reintroduced color changing
         }
     </script>
 </body>
