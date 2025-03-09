@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game with IP Obstacle</title>
+    <title>Coin Flip with IP Clicker</title>
     <style>
         body {
             background-color: black;
@@ -17,6 +17,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
             overflow: hidden;
+            font-family: Arial, sans-serif;
         }
         #container {
             text-align: center;
@@ -24,9 +25,29 @@
             width: 100%;
             height: 100%;
         }
-        #game-canvas {
-            display: none;
-            background-color: black;
+        #ip-display {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            cursor: default;
+        }
+        .digit {
+            display: inline-block;
+            text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+            animation: glow 1.5s infinite alternate;
+        }
+        #coin {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: gold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            cursor: pointer;
         }
         #visit-counter {
             color: white;
@@ -39,6 +60,7 @@
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
+            cursor: pointer;
         }
         #eye-icon {
             width: 16px;
@@ -49,23 +71,39 @@
             text-shadow: 0 0 5px #FF69B4;
             animation: counterGlow 2s infinite alternate;
         }
-        #start-message {
+        #clicker-game {
+            display: none;
             color: white;
-            font-size: 1.5em;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        #clicker-ip {
+            font-size: 2em;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #clicker-score {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .upgrade-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 5px currentColor, 0 0 10px currentColor; }
+            to { text-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
         }
         @keyframes counterGlow {
-            from {
-                color: #FF69B4;
-                text-shadow: 0 0 5px #FF69B4, 0 0 10px #FF69B4;
-            }
-            to {
-                color: #9400D3;
-                text-shadow: 0 0 5px #9400D3, 0 0 10px #9400D3;
-            }
+            from { color: #FF69B4; text-shadow: 0 0 5px #FF69B4, 0 0 10px #FF69B4; }
+            to { color: #9400D3; text-shadow: 0 0 5px #9400D3, 0 0 10px #9400D3; }
         }
         @keyframes flash {
             0% { background-color: black; }
@@ -85,58 +123,70 @@
 </head>
 <body>
     <div id="container">
-        <canvas id="game-canvas" width="800" height="600"></canvas>
-        <div id="start-message">Double-click to start</div>
+        <div id="ip-display">Loading your IP...</div>
+        <div id="coin">Flip Me</div>
         <div id="visit-counter">
             <svg id="eye-icon" viewBox="0 0 24 24" fill="white">
                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
             </svg>
             <span id="count">567</span>
         </div>
+        <div id="clicker-game">
+            <div id="clicker-ip">Click Me</div>
+            <div id="clicker-score">Score: 0</div>
+            <button class="upgrade-btn" id="upgrade-click">Upgrade Click (Cost: 10)</button>
+            <button class="upgrade-btn" id="upgrade-auto">Auto Clicker (Cost: 50)</button>
+        </div>
         <img id="creepy-image" src="https://th.bing.com/th/id/R.782d96615b2c2a6ed8520457e7fdb641?rik=2RIXD3DU8hJ0WA&pid=ImgRaw&r=0" alt="Creepy Image">
         <audio id="scream-audio" src="scream.mp3"></audio>
     </div>
 
     <script>
-        const canvas = document.getElementById('game-canvas');
-        const ctx = canvas.getContext('2d');
         const container = document.getElementById('container');
-        const startMessage = document.getElementById('start-message');
+        const ipDisplay = document.getElementById('ip-display');
+        const coin = document.getElementById('coin');
+        const visitCounter = document.getElementById('visit-counter');
         const creepyImage = document.getElementById('creepy-image');
         const screamAudio = document.getElementById('scream-audio');
+        const clickerGame = document.getElementById('clicker-game');
+        const clickerIp = document.getElementById('clicker-ip');
+        const clickerScore = document.getElementById('clicker-score');
+        const upgradeClickBtn = document.getElementById('upgrade-click');
+        const upgradeAutoBtn = document.getElementById('upgrade-auto');
 
-        // Snake game variables
-        const gridSize = 20;
-        let snake = [{ x: 400, y: 300 }];
-        let apple = { x: 0, y: 0 };
-        let ipObstacle = { x: 0, y: 0, dx: 2, dy: 2, text: '' };
-        let mouseX = 400, mouseY = 300;
-        let speed = 5;
-        let gameStarted = false;
-        let clickCount = 0;
-
-        // Neon colors for snake and IP
+        // Neon colors
         const colors = [
             '#FF00FF', '#00FFFF', '#FF00AA', '#00FF00',
             '#FFFF00', '#FF6600', '#FF0099', '#00CCFF',
             '#FF3366', '#33FF33', '#FFCC00', '#FF0066'
         ];
 
-        function getRandomColor() {
-            return colors[Math.floor(Math.random() * colors.length)];
+        function getRandomColor(excludeColors = []) {
+            const availableColors = colors.filter(c => !excludeColors.includes(c));
+            return availableColors[Math.floor(Math.random() * availableColors.length)];
         }
 
-        function spawnApple() {
-            apple.x = Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize;
-            apple.y = Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize;
-        }
-
-        function spawnIPObstacle(ip) {
-            ipObstacle.text = ip;
-            ipObstacle.x = Math.floor(Math.random() * (canvas.width - 100));
-            ipObstacle.y = Math.floor(Math.random() * (canvas.height - 20));
-            ipObstacle.dx = (Math.random() > 0.5 ? 2 : -2);
-            ipObstacle.dy = (Math.random() > 0.5 ? 2 : -2);
+        function displayIP(ip) {
+            ipDisplay.innerHTML = '';
+            const chars = ip.split('');
+            let usedColors = [];
+            chars.forEach(char => {
+                const span = document.createElement('span');
+                span.className = 'digit';
+                span.textContent = char;
+                const color = getRandomColor(usedColors);
+                span.style.color = color;
+                usedColors.push(color);
+                ipDisplay.appendChild(span);
+            });
+            setInterval(() => {
+                usedColors = [];
+                ipDisplay.childNodes.forEach(span => {
+                    const color = getRandomColor(usedColors);
+                    span.style.color = color;
+                    usedColors.push(color);
+                });
+            }, 300);
         }
 
         function updateVisitCount() {
@@ -145,124 +195,94 @@
             else count = parseInt(count) + 1;
             localStorage.setItem('visitCount', count);
             document.getElementById('count').textContent = count;
-        }
-
-        function gameLoop() {
-            if (!gameStarted) return;
-
-            // Clear canvas
-            ctx.fillStyle = 'black';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Move snake towards mouse
-            let head = { x: snake[0].x, y: snake[0].y };
-            const dx = mouseX - head.x;
-            const dy = mouseY - head.y;
-            const angle = Math.atan2(dy, dx);
-            head.x += Math.cos(angle) * speed;
-            head.y += Math.sin(angle) * speed;
-
-            // Check collision with apple
-            if (Math.abs(head.x - apple.x) < gridSize && Math.abs(head.y - apple.y) < gridSize) {
-                snake.push({ x: snake[snake.length - 1].x, y: snake[snake.length - 1].y });
-                spawnApple();
-            }
-
-            // Update snake body
-            snake.unshift(head);
-            snake.pop();
-
-            // Move IP obstacle
-            ipObstacle.x += ipObstacle.dx;
-            ipObstacle.y += ipObstacle.dy;
-
-            // Bounce IP obstacle off walls
-            if (ipObstacle.x < 0 || ipObstacle.x > canvas.width - ctx.measureText(ipObstacle.text).width) {
-                ipObstacle.dx = -ipObstacle.dx;
-            }
-            if (ipObstacle.y < 0 || ipObstacle.y > canvas.height - 20) {
-                ipObstacle.dy = -ipObstacle.dy;
-            }
-
-            // Check collision with walls or IP obstacle
-            const ipWidth = ctx.measureText(ipObstacle.text).width;
-            const ipHeight = 20;
-            if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height ||
-                (head.x + gridSize > ipObstacle.x && head.x < ipObstacle.x + ipWidth &&
-                 head.y + gridSize > ipObstacle.y && head.y < ipObstacle.y + ipHeight)) {
-                gameOver();
-                return;
-            }
-
-            // Draw snake
-            snake.forEach((segment, index) => {
-                ctx.fillStyle = getRandomColor();
-                ctx.fillRect(segment.x, segment.y, gridSize - 2, gridSize - 2);
-            });
-
-            // Draw apple
-            ctx.fillStyle = '#FF0000';
-            ctx.fillRect(apple.x, apple.y, gridSize - 2, gridSize - 2);
-
-            // Draw IP obstacle
-            ctx.font = '20px Arial';
-            ctx.fillStyle = getRandomColor();
-            ctx.fillText(ipObstacle.text, ipObstacle.x, ipObstacle.y);
-
-            requestAnimationFrame(gameLoop);
+            return count;
         }
 
         function gameOver() {
-            gameStarted = false;
-            canvas.style.display = 'none';
-            
-            // Flash screen and play scream
+            coin.style.display = 'none';
             document.body.style.animation = 'flash 0.2s 10';
             screamAudio.play();
-            
             setTimeout(() => {
                 document.body.style.animation = '';
                 creepyImage.style.display = 'block';
             }, 2000);
         }
 
-        // Start game on double click and fetch IP
-        container.addEventListener('click', () => {
-            clickCount++;
-            if (clickCount === 2 && !gameStarted) {
-                fetch('https://api.ipify.org?format=json')
-                    .then(response => response.json())
-                    .then(data => {
-                        startMessage.style.display = 'none';
-                        canvas.style.display = 'block';
-                        gameStarted = true;
-                        spawnApple();
-                        spawnIPObstacle(data.ip);
-                        updateVisitCount();
-                        gameLoop();
-                    })
-                    .catch(error => {
-                        console.error('Error fetching IP:', error);
-                        startMessage.textContent = 'Error loading IP, starting anyway...';
-                        setTimeout(() => {
-                            startMessage.style.display = 'none';
-                            canvas.style.display = 'block';
-                            gameStarted = true;
-                            spawnApple();
-                            spawnIPObstacle('0.0.0.0'); // Fallback IP
-                            updateVisitCount();
-                            gameLoop();
-                        }, 1000);
-                    });
+        // Coin flip
+        coin.addEventListener('click', () => {
+            const result = Math.random() < 0.5 ? 'Heads' : 'Tails';
+            coin.textContent = result;
+            setTimeout(gameOver, 1000); // Jump scare after 1 second
+        });
+
+        // Clicker game
+        let score = 0;
+        let clickValue = 1;
+        let autoClickValue = 0;
+
+        function updateScore() {
+            clickerScore.textContent = `Score: ${score}`;
+            upgradeClickBtn.textContent = `Upgrade Click (Cost: ${clickValue * 10})`;
+            upgradeAutoBtn.textContent = `Auto Clicker (Cost: ${autoClickValue * 50 + 50})`;
+        }
+
+        visitCounter.addEventListener('click', () => {
+            const visitCount = parseInt(document.getElementById('count').textContent);
+            let clicks = 0;
+            const clickHandler = () => {
+                clicks++;
+                if (clicks === visitCount) {
+                    coin.style.display = 'none';
+                    visitCounter.style.display = 'none';
+                    clickerGame.style.display = 'block';
+                    displayIP(ipDisplay.textContent); // Reuse IP for clicker
+                    visitCounter.removeEventListener('click', clickHandler);
+                }
+            };
+            visitCounter.addEventListener('click', clickHandler);
+        });
+
+        clickerIp.addEventListener('click', () => {
+            score += clickValue;
+            updateScore();
+        });
+
+        upgradeClickBtn.addEventListener('click', () => {
+            const cost = clickValue * 10;
+            if (score >= cost) {
+                score -= cost;
+                clickValue++;
+                updateScore();
             }
         });
 
-        // Track mouse movement
-        document.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouseX = e.clientX - rect.left;
-            mouseY = e.clientY - rect.top;
+        upgradeAutoBtn.addEventListener('click', () => {
+            const cost = autoClickValue * 50 + 50;
+            if (score >= cost) {
+                score -= cost;
+                autoClickValue++;
+                if (autoClickValue === 1) {
+                    setInterval(() => {
+                        score += autoClickValue;
+                        updateScore();
+                    }, 1000);
+                }
+                updateScore();
+            }
         });
+
+        // Initial setup
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                displayIP(data.ip);
+                updateVisitCount();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                displayIP('0.0.0.0');
+                updateVisitCount();
+            });
     </script>
 </body>
 </html>
