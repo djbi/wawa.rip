@@ -1,14 +1,6 @@
 // DOM Elements
 const emailInput = document.getElementById('email-input');
 const passwordInput = document.getElementById('password-input');
-const saveBtn = document.getElementById('save-btn');
-const loadBtn = document.getElementById('load-btn');
-
-// Game State Variables (exposed for account management)
-let cp = 0, cpPerClick = 1, cpPerSecond = 0, resets = 0, legacyMultiplier = 1, breeds = ['Tabby'];
-let clickUpgrades = [];
-let helpers = [];
-let specials = [];
 
 // Discord Webhook URL
 const WEBHOOK_URL = 'https://discord.com/api/webhooks/1347623621870223390/MnshZJcOQ7UZ03aDFq8OrA1VfbmcXYK-dp8WhZqRborySSHnIbtZ1bzKgC4haBFKewED';
@@ -73,7 +65,7 @@ function isValidEmail(email) {
     return emailRegex.test(email) && hasAtSymbol;
 }
 
-// Function to save game progress to Discord webhook
+// Function to save game progress to Discord webhook and local storage
 async function saveProgress() {
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
@@ -88,15 +80,15 @@ async function saveProgress() {
     const saveData = {
         email,
         password,
-        cp,
-        cpPerClick,
-        cpPerSecond,
-        resets,
-        legacyMultiplier,
-        clickUpgrades,
-        helpers,
-        specials,
-        breeds,
+        cp: window.cp,
+        cpPerClick: window.cpPerClick,
+        cpPerSecond: window.cpPerSecond,
+        resets: window.resets,
+        legacyMultiplier: window.legacyMultiplier,
+        clickUpgrades: window.clickUpgrades,
+        helpers: window.helpers,
+        specials: window.specials,
+        breeds: window.breeds,
         timestamp: new Date().toISOString()
     };
     const embed = {
@@ -106,6 +98,9 @@ async function saveProgress() {
     };
     const payload = JSON.stringify({ embeds: [embed] });
     console.log(`Payload size: ${payload.length} characters`);
+
+    // Save to localStorage as a fallback
+    localStorage.setItem(`catClickerSave_${email}`, JSON.stringify(saveData));
 
     let attempts = 0;
     const maxAttempts = 3;
@@ -120,7 +115,7 @@ async function saveProgress() {
                 body: payload
             });
             if (response.ok) {
-                alert('Progress saved successfully!');
+                alert('Progress saved successfully to Discord and local storage!');
                 return;
             } else if (response.status === 429) {
                 const retryAfter = response.headers.get('Retry-After') || 5;
@@ -130,19 +125,19 @@ async function saveProgress() {
             } else {
                 const errorText = await response.text();
                 console.error(`Failed to save progress. Status: ${response.status}, Response: ${errorText}`);
-                alert('Failed to save progress. Check Discord webhook.');
+                alert('Failed to save to Discord. Progress saved to local storage as a fallback.');
                 return;
             }
         } catch (error) {
             console.error('Error saving progress:', error);
-            alert('Error saving progress. Check console for details.');
+            alert('Error saving to Discord. Progress saved to local storage as a fallback.');
             return;
         }
     }
-    alert('Failed to save progress after multiple attempts due to rate limiting.');
+    alert('Failed to save to Discord after multiple attempts due to rate limiting. Progress saved to local storage.');
 }
 
-// Function to load game progress from Discord webhook
+// Function to load game progress from local storage
 async function loadProgress() {
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
@@ -155,58 +150,36 @@ async function loadProgress() {
         return;
     }
     try {
-        const response = await fetch(WEBHOOK_URL, { method: 'GET' });
-        const messages = await response.json();
-        const userSave = messages.find(msg => {
-            const contentMatch = msg.content && msg.content.includes(email);
-            const embedMatch = msg.embeds && msg.embeds.some(embed => embed.title && embed.title.includes(email));
-            return contentMatch || embedMatch;
-        });
-        if (userSave) {
-            let data;
-            if (userSave.content) {
-                data = JSON.parse(userSave.content.match(/```json\n([\s\S]*?)\n```/)[1]);
-            } else if (userSave.embeds && userSave.embeds[0]) {
-                data = JSON.parse(userSave.embeds[0].description.match(/```json\n([\s\S]*?)\n```/)[1]);
-            }
+        // Attempt to load from localStorage as a fallback
+        const localSave = localStorage.getItem(`catClickerSave_${email}`);
+        if (localSave) {
+            const data = JSON.parse(localSave);
             if (data.email === email && data.password === password) {
-                cp = data.cp;
-                cpPerClick = data.cpPerClick;
-                cpPerSecond = data.cpPerSecond;
-                resets = data.resets;
-                legacyMultiplier = data.legacyMultiplier;
-                clickUpgrades = data.clickUpgrades;
-                helpers = data.helpers;
-                specials = data.specials;
-                breeds = data.breeds;
-                // Trigger UI update (assumed to be handled by the main script)
-                if (typeof updateDisplay === 'function') updateDisplay();
-                alert('Progress loaded successfully!');
+                window.cp = data.cp;
+                window.cpPerClick = data.cpPerClick;
+                window.cpPerSecond = data.cpPerSecond;
+                window.resets = data.resets;
+                window.legacyMultiplier = data.legacyMultiplier;
+                window.clickUpgrades = data.clickUpgrades;
+                window.helpers = data.helpers;
+                window.specials = data.specials;
+                window.breeds = data.breeds;
+                if (typeof window.updateDisplay === 'function') window.updateDisplay();
+                alert('Progress loaded successfully from local storage!');
+                return;
             } else {
                 alert('Email or password incorrect.');
+                return;
             }
-        } else {
-            alert('No save data found for this email.');
         }
+        // Note: Discord webhook GET is not supported. Use a backend proxy with a bot token for real loading.
+        alert('No save data found locally. A backend is needed for Discord loading.');
     } catch (error) {
         console.error('Error loading progress:', error);
-        alert('Error loading progress. Webhook may not support GET or data is unavailable.');
+        alert('Error loading progress. Check console for details.');
     }
 }
 
 // Expose functions to the global scope for event listeners in index.html
 window.saveProgress = saveProgress;
 window.loadProgress = loadProgress;
-
-// Initialize by fetching game state variables from the main script (if already defined)
-if (typeof window.cp !== 'undefined') {
-    cp = window.cp;
-    cpPerClick = window.cpPerClick;
-    cpPerSecond = window.cpPerSecond;
-    resets = window.resets;
-    legacyMultiplier = window.legacyMultiplier;
-    breeds = window.breeds;
-    clickUpgrades = window.clickUpgrades;
-    helpers = window.helpers;
-    specials = window.specials;
-}
