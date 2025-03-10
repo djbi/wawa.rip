@@ -349,7 +349,7 @@
             </div>
             <div class="panel hidden" id="legacy">
                 <h2>Catnip Legacy</h2>
-                <button id="reset-btn">Reset (10K MC)</button>
+                <button id="reset-btn">Reset (50K MC)</button>
                 <p id="breed-info">Breed: Tabby (+1% MC)</p>
                 <p id="reset-count">Resets: 0</p>
             </div>
@@ -361,12 +361,12 @@
         let cp = 0, cpPerClick = 1, cpPerSecond = 0, resets = 0, legacyMultiplier = 1, breeds = ['Tabby'];
         const colors = ['#000000', '#ff0000', '#00ff00', '#0000ff', '#ff00ff', '#00ffff', '#ffff00', '#ff8000', '#8000ff'];
         const backgroundGradients = [
-            'linear-gradient(to bottom, #FF69B4, #FFC1CC)', // Pink to Light Pink
-            'linear-gradient(to bottom, #87CEEB, #E0F7FA)', // Sky Blue to Light Cyan
-            'linear-gradient(to bottom, #98FB98, #E0FFE0)', // Pale Green to Light Green
-            'linear-gradient(to bottom, #FFD700, #FFFACD)', // Gold to Lemon Chiffon
-            'linear-gradient(to bottom, #FFA07A, #FFE4E1)', // Light Salmon to Misty Rose
-            'linear-gradient(to bottom, #DDA0DD, #F5F0FF)'  // Plum to Pale Purple
+            'linear-gradient(to bottom, #FF69B4, #FFC1CC)',
+            'linear-gradient(to bottom, #87CEEB, #E0F7FA)',
+            'linear-gradient(to bottom, #98FB98, #E0FFE0)',
+            'linear-gradient(to bottom, #FFD700, #FFFACD)',
+            'linear-gradient(to bottom, #FFA07A, #FFE4E1)',
+            'linear-gradient(to bottom, #DDA0DD, #F5F0FF)'
         ];
         const prefixes = [
             { name: '', value: 1 },
@@ -520,9 +520,6 @@
         const saveBtn = document.getElementById('save-btn');
         const loadBtn = document.getElementById('load-btn');
 
-        // Webhook URL for saving/loading progress
-        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1347623621870223390/MnshZJcOQ7UZ03aDFq8OrA1VfbmcXYK-dp8WhZqRborySSHnIbtZ1bzKgC4haBFKewED';
-
         // Function to format large numbers with prefixes
         function formatCP(num) {
             for (let i = prefixes.length - 1; i >= 0; i--) {
@@ -568,7 +565,7 @@
             resetBtn.textContent = `Reset (${formatCP(50000 * Math.pow(15, resets))} MC)`;
             resetCount.textContent = `Resets: ${resets}`;
             breedInfo.textContent = `Breed: ${breeds[breeds.length - 1]} (${breeds.length > 1 ? '+Unique Bonus' : '+1% MC'})`;
-            document.title = `${formatCP(cp)} Meow Coins - Cat Clicker`; // Update browser title
+            document.title = `${formatCP(cp)} Meow Coins - Cat Clicker`;
             populatePanels();
             updateNotifications();
             updateBackground();
@@ -645,7 +642,7 @@
         // Function to buy a special upgrade
         function buySpecial(name) {
             const special = specials.find(s => s.name === name);
-            if (cp >= special.cost && (!special.once || !s.owned)) {
+            if (cp >= special.cost && (!special.once || !special.owned)) {
                 cp -= special.cost;
                 special.effect();
                 special.owned = true;
@@ -676,14 +673,14 @@
                 const cpBeforeReset = cp;
                 resets++;
                 cp = 0;
-                cpPerClick = 1; // Reset base click multiplier
-                cpPerSecond = 0; // Reset base CPS
-                legacyMultiplier = 1; // Reset legacy multiplier
-                clickUpgrades.forEach(u => { u.owned = 0; u.cost = u.baseCost; }); // Reset costs
-                helpers.forEach(h => { h.owned = 0; h.cost = h.baseCost; }); // Reset costs
-                specials.forEach(s => { s.owned = false; s.cost = s.baseCost; }); // Reset costs
+                cpPerClick = 1;
+                cpPerSecond = 0;
+                legacyMultiplier = 1;
+                clickUpgrades.forEach(u => { u.owned = 0; u.cost = u.baseCost; });
+                helpers.forEach(h => { h.owned = 0; h.cost = h.baseCost; });
+                specials.forEach(s => { s.owned = false; s.cost = s.baseCost; });
                 legacyMultiplier *= 1 + (cpBeforeReset / 10000 * 0.01);
-                cat.style.color = colors[Math.floor(Math.random() * colors.length)]; // Change cat color on prestige
+                cat.style.color = colors[Math.floor(Math.random() * colors.length)];
                 const newBreed = resets === 1 ? 'Siamese' : resets === 2 ? 'Persian' : resets === 3 ? 'Maine Coon' :
                                 resets === 4 ? 'Sphynx' : resets === 5 ? 'Bengal' : resets === 6 ? 'Ragdoll' :
                                 resets === 7 ? 'Abyssinian' : resets === 8 ? 'Scottish Fold' : resets === 9 ? 'Norwegian Forest' : `Cosmic Cat ${resets}`;
@@ -715,93 +712,6 @@
             document.getElementById(panelId).scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Function to save game progress to Discord webhook with email and password
-        async function saveProgress() {
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
-            if (!email || !password) {
-                alert('Please enter both email and password!');
-                return;
-            }
-            if (!isValidEmail(email)) {
-                alert('Please enter a valid email address with an @ symbol!');
-                return;
-            }
-            const saveData = {
-                email,
-                password,
-                cp,
-                cpPerClick,
-                cpPerSecond,
-                resets,
-                legacyMultiplier,
-                clickUpgrades,
-                helpers,
-                specials,
-                breeds,
-                timestamp: new Date().toISOString()
-            };
-            try {
-                const response = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        content: `**Save Data for ${email}**\n\`\`\`json\n${JSON.stringify(saveData, null, 2)}\n\`\`\``
-                    })
-                });
-                if (response.ok) {
-                    alert('Progress saved successfully!');
-                } else {
-                    alert('Failed to save progress. Check Discord webhook.');
-                }
-            } catch (error) {
-                console.error('Error saving progress:', error);
-                alert('Error saving progress. Check console for details.');
-            }
-        }
-
-        // Function to load game progress from Discord webhook with email and password verification
-        async function loadProgress() {
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
-            if (!email || !password) {
-                alert('Please enter both email and password!');
-                return;
-            }
-            if (!isValidEmail(email)) {
-                alert('Please enter a valid email address with an @ symbol!');
-                return;
-            }
-            try {
-                const response = await fetch(WEBHOOK_URL, { method: 'GET' });
-                const messages = await response.json();
-                const userSave = messages.find(msg => msg.content.includes(email));
-                if (userSave) {
-                    const data = JSON.parse(userSave.content.match(/```json\n([\s\S]*?)\n```/)[1]);
-                    if (data.email === email && data.password === password) {
-                        cp = data.cp;
-                        cpPerClick = data.cpPerClick;
-                        cpPerSecond = data.cpPerSecond;
-                        resets = data.resets;
-                        legacyMultiplier = data.legacyMultiplier;
-                        clickUpgrades = data.clickUpgrades;
-                        helpers = data.helpers;
-                        specials = data.specials;
-                        breeds = data.breeds;
-                        updateDisplay();
-                        alert('Progress loaded successfully!');
-                    } else {
-                        alert('Email or password incorrect.');
-                    }
-                } else {
-                    alert('No save data found for this email.');
-                }
-            } catch (error) {
-                console.error('Error loading progress:', error);
-                alert('Error loading progress. Webhook may not support GET or data is unavailable.');
-            }
-        }
-
         // Enhanced email validation function
         function isValidEmail(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -828,16 +738,16 @@
                     setTimeout(() => {
                         legacyMultiplier = originalMultiplier;
                         updateDisplay();
-                    }, 10000); // 10 seconds bonus
+                    }, 10000);
                     rainbowCat.remove();
                 }
             });
 
             setTimeout(() => {
                 if (!bonusActive) rainbowCat.remove();
-            }, 8000); // 8 seconds to click
+            }, 8000);
 
-            setTimeout(spawnRainbowCat, 75000); // Next cat in 75 seconds
+            setTimeout(spawnRainbowCat, 75000);
         }
 
         // Event Listeners
@@ -847,9 +757,9 @@
             specials.forEach(s => !s.once && s.owned && s.effect());
         });
         resetBtn.addEventListener('click', resetGame);
+        accountBtn.addEventListener('click', toggleAccountPanel);
         saveBtn.addEventListener('click', saveProgress);
         loadBtn.addEventListener('click', loadProgress);
-        accountBtn.addEventListener('click', toggleAccountPanel);
 
         // Start the game loop and rainbow cat spawn
         setInterval(() => {
@@ -860,7 +770,10 @@
         // Initial Setup
         populatePanels();
         updateDisplay();
-        spawnRainbowCat(); // Start rainbow cat spawning
+        spawnRainbowCat();
+
+        // Load account.js for account management
+        document.write('<script src="account.js"></script>');
     </script>
 </body>
 </html>
