@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat Clicker</title>
+    <title>0 Meow Coins - Cat Clicker</title>
     <style>
         /* General styling for the body */
         body {
@@ -247,6 +247,20 @@
         .rainbow-cat {
             animation: rainbow 2s infinite;
         }
+        @keyframes rgb-glow {
+            0% { text-shadow: 0 0 10px red, 0 0 20px red; }
+            14% { text-shadow: 0 0 10px orange, 0 0 20px orange; }
+            28% { text-shadow: 0 0 10px yellow, 0 0 20px yellow; }
+            42% { text-shadow: 0 0 10px green, 0 0 20px green; }
+            57% { text-shadow: 0 0 10px blue, 0 0 20px blue; }
+            71% { text-shadow: 0 0 10px indigo, 0 0 20px indigo; }
+            85% { text-shadow: 0 0 10px violet, 0 0 20px violet; }
+            100% { text-shadow: 0 0 10px red, 0 0 20px red; }
+        }
+        #cat-area h1 {
+            animation: rgb-glow 3s infinite;
+            color: #fff;
+        }
         @media (max-width: 600px) {
             .panel {
                 height: 150px;
@@ -257,8 +271,24 @@
             #cat { font-size: 150px; }
             #container { flex-direction: column; }
             #cat-area, #middle-section, #panels { width: 100%; height: auto; }
-            #tabs { display: none; } /* Remove tabs on mobile */
-            .panel.hidden { display: none; } /* Only show active panel */
+            #tabs {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 3px 0;
+            }
+            .tab {
+                font-size: 10px;
+                padding: 3px 5px;
+                margin: 2px;
+            }
+            .notification {
+                width: 16px;
+                height: 16px;
+                font-size: 10px;
+                line-height: 16px;
+                right: -8px;
+            }
             #account-btn { font-size: 10px; padding: 3px; }
             #email-input, #password-input { font-size: 12px; }
             #save-btn, #load-btn { font-size: 10px; padding: 3px 8px; }
@@ -269,8 +299,8 @@
     <div id="container">
         <div id="cat-area">
             <h1>Cat Clicker</h1>
-            <div id="cp-counter">Cat Points: 0 CP</div>
-            <div id="cps-display">0 CP/s</div>
+            <div id="cp-counter">Meow Coins: 0 MC</div>
+            <div id="cps-display">0 MC/s</div>
             <div id="multiplier-display">Multiplier: x1</div>
             <span id="cat">🐱</span>
         </div>
@@ -319,8 +349,8 @@
             </div>
             <div class="panel hidden" id="legacy">
                 <h2>Catnip Legacy</h2>
-                <button id="reset-btn">Reset (10K CP)</button>
-                <p id="breed-info">Breed: Tabby (+1% CP)</p>
+                <button id="reset-btn">Reset (10K MC)</button>
+                <p id="breed-info">Breed: Tabby (+1% MC)</p>
                 <p id="reset-count">Resets: 0</p>
             </div>
         </div>
@@ -330,6 +360,14 @@
         // Game State Variables
         let cp = 0, cpPerClick = 1, cpPerSecond = 0, resets = 0, legacyMultiplier = 1, breeds = ['Tabby'];
         const colors = ['#000000', '#ff0000', '#00ff00', '#0000ff', '#ff00ff', '#00ffff', '#ffff00', '#ff8000', '#8000ff'];
+        const backgroundGradients = [
+            'linear-gradient(to bottom, #FF69B4, #FFC1CC)', // Pink to Light Pink
+            'linear-gradient(to bottom, #87CEEB, #E0F7FA)', // Sky Blue to Light Cyan
+            'linear-gradient(to bottom, #98FB98, #E0FFE0)', // Pale Green to Light Green
+            'linear-gradient(to bottom, #FFD700, #FFFACD)', // Gold to Lemon Chiffon
+            'linear-gradient(to bottom, #FFA07A, #FFE4E1)', // Light Salmon to Misty Rose
+            'linear-gradient(to bottom, #DDA0DD, #F5F0FF)'  // Plum to Pale Purple
+        ];
         const prefixes = [
             { name: '', value: 1 },
             { name: 'K', value: 1e3 },
@@ -505,7 +543,7 @@
             const clickCount = clickUpgrades.filter(u => cp >= u.cost && u.owned < 100).length;
             const helperCount = helpers.filter(h => cp >= h.cost && h.owned < 100).length;
             const specialCount = specials.filter(s => cp >= s.cost && (!s.once || !s.owned)).length;
-            const canReset = cp >= (10000 * Math.pow(10, resets));
+            const canReset = cp >= (50000 * Math.pow(15, resets));
             clickNotif.textContent = clickCount || '';
             helperNotif.textContent = helperCount || '';
             specialNotif.textContent = specialCount || '';
@@ -516,30 +554,38 @@
             legacyPanel.classList.toggle('has-notification', canReset);
         }
 
+        // Function to update background based on resets
+        function updateBackground() {
+            const backgroundIndex = Math.floor(resets / 5) % backgroundGradients.length;
+            document.body.style.background = backgroundGradients[backgroundIndex];
+        }
+
         // Function to update all displayed values
         function updateDisplay() {
-            cpCounter.textContent = `Cat Points: ${formatCP(cp)} CP`;
-            cpsDisplay.textContent = `${formatCP(cpPerSecond)} CP/s`;
+            cpCounter.textContent = `Meow Coins: ${formatCP(cp)} MC`;
+            cpsDisplay.textContent = `${formatCP(cpPerSecond)} MC/s`;
             multiplierDisplay.textContent = `Multiplier: x${legacyMultiplier.toFixed(2)}`;
-            resetBtn.textContent = `Reset (${formatCP(10000 * Math.pow(10, resets))} CP)`;
+            resetBtn.textContent = `Reset (${formatCP(50000 * Math.pow(15, resets))} MC)`;
             resetCount.textContent = `Resets: ${resets}`;
-            breedInfo.textContent = `Breed: ${breeds[breeds.length - 1]} (${breeds.length > 1 ? '+Unique Bonus' : '+1% CP'})`;
+            breedInfo.textContent = `Breed: ${breeds[breeds.length - 1]} (${breeds.length > 1 ? '+Unique Bonus' : '+1% MC'})`;
+            document.title = `${formatCP(cp)} Meow Coins - Cat Clicker`; // Update browser title
             populatePanels();
             updateNotifications();
+            updateBackground();
         }
 
         // Function to populate upgrade panels with buttons and owned count
         function populatePanels() {
             clickUpgradesList.innerHTML = clickUpgrades.map(u =>
-                `<div class="upgrade-row"><button class="${cp >= u.cost ? 'affordable' : ''}" onclick="buyClickUpgrade('${u.name}')">${u.icon} ${u.name} (x${u.owned}) <span>${formatCP(u.cost)} CP</span></button>` +
+                `<div class="upgrade-row"><button class="${cp >= u.cost ? 'affordable' : ''}" onclick="buyClickUpgrade('${u.name}')">${u.icon} ${u.name} (x${u.owned}) <span>${formatCP(u.cost)} MC</span></button>` +
                 `<button class="upgrade-all-btn" onclick="buyAllClickUpgrade('${u.name}')">All</button></div>`
             ).join('');
             helpersList.innerHTML = helpers.map(h =>
-                `<div class="upgrade-row"><button class="${cp >= h.cost ? 'affordable' : ''}" onclick="buyHelper('${h.name}')">${h.icon} ${h.name} (x${h.owned}) <span>${formatCP(h.cost)} CP</span></button>` +
+                `<div class="upgrade-row"><button class="${cp >= h.cost ? 'affordable' : ''}" onclick="buyHelper('${h.name}')">${h.icon} ${h.name} (x${h.owned}) <span>${formatCP(h.cost)} MC</span></button>` +
                 `<button class="upgrade-all-btn" onclick="buyAllHelper('${h.name}')">All</button></div>`
             ).join('');
             specialsList.innerHTML = specials.map(s =>
-                `<div class="upgrade-row"><button class="${cp >= s.cost ? 'affordable' : ''}" onclick="buySpecial('${s.name}')" ${s.owned && s.once ? 'disabled' : ''}>${s.icon} ${s.name} ${s.owned ? '(x1)' : ''} <span>${formatCP(s.cost)} CP</span></button>` +
+                `<div class="upgrade-row"><button class="${cp >= s.cost ? 'affordable' : ''}" onclick="buySpecial('${s.name}')" ${s.owned && s.once ? 'disabled' : ''}>${s.icon} ${s.name} ${s.owned ? '(x1)' : ''} <span>${formatCP(s.cost)} MC</span></button>` +
                 `<button class="upgrade-all-btn" onclick="buyAllSpecial('${s.name}')" ${s.owned && s.once ? 'disabled' : ''}>All</button></div>`
             ).join('');
         }
@@ -599,7 +645,7 @@
         // Function to buy a special upgrade
         function buySpecial(name) {
             const special = specials.find(s => s.name === name);
-            if (cp >= special.cost && (!special.once || !special.owned)) {
+            if (cp >= special.cost && (!special.once || !s.owned)) {
                 cp -= special.cost;
                 special.effect();
                 special.owned = true;
@@ -625,7 +671,7 @@
 
         // Function to reset the game for prestige with multiplier and price reset
         function resetGame() {
-            const resetCost = 10000 * Math.pow(10, resets);
+            const resetCost = 50000 * Math.pow(15, resets);
             if (cp >= resetCost) {
                 const cpBeforeReset = cp;
                 resets++;
@@ -678,7 +724,7 @@
                 return;
             }
             if (!isValidEmail(email)) {
-                alert('Please enter a valid email address!');
+                alert('Please enter a valid email address with an @ symbol!');
                 return;
             }
             const saveData = {
@@ -723,7 +769,7 @@
                 return;
             }
             if (!isValidEmail(email)) {
-                alert('Please enter a valid email address!');
+                alert('Please enter a valid email address with an @ symbol!');
                 return;
             }
             try {
@@ -756,10 +802,11 @@
             }
         }
 
-        // Simple email validation function
+        // Enhanced email validation function
         function isValidEmail(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
+            const hasAtSymbol = email.includes('@');
+            return emailRegex.test(email) && hasAtSymbol;
         }
 
         // Function to spawn rainbow cat bonus
