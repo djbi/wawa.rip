@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Button Clicker</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Cookie Clicker Concept</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container">
-        <div id="score-display">Points: 0</div>
-        <div id="button" onclick="clickButton()">👉 Click Me! 👈</div>
-        <div id="per-second">Points per second: 0</div>
-        <div id="upgrade-container"></div>
+    <div id="game">
+        <h1>Cookie Clicker</h1>
+        <p>Cookies: <span id="cookie-counter">0</span></p>
+        <img id="cookie" src="img/cookie.png" alt="Cookie" width="200">
+        <div id="store">
+            <button id="upgrade-click">Upgrade Click (10 cookies)</button>
+        </div>
     </div>
-    <script src="script.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
