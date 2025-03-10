@@ -357,8 +357,13 @@
     </div>
 
     <script>
-        // Game State Variables
-        let cp = 0, cpPerClick = 1, cpPerSecond = 0, resets = 0, legacyMultiplier = 1, breeds = ['Tabby'];
+        // Game State Variables (exposed globally)
+        window.cp = 0;
+        window.cpPerClick = 1;
+        window.cpPerSecond = 0;
+        window.resets = 0;
+        window.legacyMultiplier = 1;
+        window.breeds = ['Tabby'];
         const colors = ['#000000', '#ff0000', '#00ff00', '#0000ff', '#ff00ff', '#00ffff', '#ffff00', '#ff8000', '#8000ff'];
         const backgroundGradients = [
             'linear-gradient(to bottom, #FF69B4, #FFC1CC)',
@@ -412,8 +417,8 @@
             { name: 'Novdec', value: 1e120 }
         ];
 
-        // Data Structures with Initial Costs and Icons
-        const clickUpgrades = [
+        // Data Structures with Initial Costs and Icons (exposed globally)
+        window.clickUpgrades = [
             { name: 'Catnip Boost', baseCost: 50, cost: 50, boost: 1, owned: 0, icon: '🌿' },
             { name: 'Laser Pointer', baseCost: 200, cost: 200, boost: 5, owned: 0, icon: '🔴' },
             { name: 'Feather Wand', baseCost: 1000, cost: 1000, boost: 20, owned: 0, icon: '🪶' },
@@ -437,7 +442,7 @@
             { name: 'Paw of Eternity', baseCost: 500000000000000, cost: 500000000000000, boost: 250000000000, owned: 0, icon: '⏳' },
             { name: 'Meowgaverse Manipulator', baseCost: 2500000000000000, cost: 2500000000000000, boost: 1000000000000, owned: 0, icon: '🌍' }
         ];
-        const helpers = [
+        window.helpers = [
             { name: 'Kitten', baseCost: 100, cost: 100, cps: 1, owned: 0, icon: '🐾' },
             { name: 'Stray Cat', baseCost: 500, cost: 500, cps: 5, owned: 0, icon: '🐱' },
             { name: 'Cat Tower', baseCost: 2500, cost: 2500, cps: 25, owned: 0, icon: '🏰' },
@@ -464,34 +469,34 @@
             { name: 'Felinefinity Sentinels', baseCost: 250000000000000000, cost: 250000000000000000, cps: 2500000000000000, owned: 0, icon: '🛡️' },
             { name: 'Pawtacular Titans', baseCost: 1000000000000000000, cost: 1000000000000000000, cps: 10000000000000000, owned: 0, icon: '💪' }
         ];
-        const specials = [
-            { name: 'Purr Multiplier', baseCost: 10000, cost: 10000, effect: () => legacyMultiplier *= 2, once: true, owned: false, icon: '🐾' },
-            { name: 'Whisker Luck', baseCost: 25000, cost: 25000, effect: () => Math.random() < 0.05 && (cp += cpPerClick * 2), once: false, owned: false, icon: '🍀' },
-            { name: 'Catnip Frenzy', baseCost: 100000, cost: 100000, effect: () => { let boost = setInterval(() => cp += cpPerClick * 10, 100); setTimeout(() => clearInterval(boost), 30000); }, once: true, owned: false, icon: '🌿' },
-            { name: 'Feline Aura', baseCost: 50000, cost: 50000, effect: () => cpPerSecond *= 1.1, once: true, owned: false, icon: '✨' },
-            { name: 'Nine Lives', baseCost: 250000, cost: 250000, effect: () => Math.random() < 0.01 && (cp += cpPerClick * 8), once: false, owned: false, icon: '💖' },
-            { name: 'Cat Whisperer', baseCost: 1000000, cost: 1000000, effect: () => cpPerClick += cpPerSecond * 0.5, once: true, owned: false, icon: '👂' },
-            { name: 'Paw-some Efficiency', baseCost: 5000000, cost: 5000000, effect: () => cpPerSecond *= 1.25, once: true, owned: false, icon: '⚡' },
-            { name: 'Golden Fur', baseCost: 10000000, cost: 10000000, effect: () => Math.random() < 0.001 && (cp += cpPerSecond * 3600), once: false, owned: false, icon: '🏆' },
-            { name: 'Hyper Purr', baseCost: 50000000, cost: 50000000, effect: () => { let boost = setInterval(() => cp += cpPerSecond * 2, 1000); setTimeout(() => clearInterval(boost), 60000); }, once: true, owned: false, icon: '🚀' },
-            { name: 'Temporal Catnip', baseCost: 250000000, cost: 250000000, effect: () => { let boost = setInterval(() => cp += cpPerSecond, 1000); setTimeout(() => clearInterval(boost), 600000); }, once: true, owned: false, icon: '⏳' },
-            { name: 'Quantum Paws', baseCost: 1000000000, cost: 1000000000, effect: () => Math.random() < 0.02 && (cp += cpPerSecond * 10), once: false, owned: false, icon: '🔬' },
-            { name: 'Celestial Claws', baseCost: 5000000000, cost: 5000000000, effect: () => cpPerClick *= 1.5, once: true, owned: false, icon: '🌟' },
-            { name: 'Omniversal Meow', baseCost: 25000000000, cost: 25000000000, effect: () => Math.random() < 0.0001 && (cp += cpPerClick * 999), once: false, owned: false, icon: '🌌' },
-            { name: 'Purrfect Harmony', baseCost: 100000000000, cost: 100000000000, effect: () => cpPerSecond *= 1 + (helpers.reduce((a, h) => a + h.owned, 0) * 0.0015), once: true, owned: false, icon: '🎶' },
-            { name: 'Claw of Destiny', baseCost: 500000000000, cost: 500000000000, effect: () => { let boost = setInterval(() => cp += cpPerClick * 4, 100); setTimeout(() => clearInterval(boost), 60000); }, once: true, owned: false, icon: '⚔️' }
+        window.specials = [
+            { name: 'Purr Multiplier', baseCost: 10000, cost: 10000, effect: () => window.legacyMultiplier *= 2, once: true, owned: false, icon: '🐾' },
+            { name: 'Whisker Luck', baseCost: 25000, cost: 25000, effect: () => Math.random() < 0.05 && (window.cp += window.cpPerClick * 2), once: false, owned: false, icon: '🍀' },
+            { name: 'Catnip Frenzy', baseCost: 100000, cost: 100000, effect: () => { let boost = setInterval(() => window.cp += window.cpPerClick * 10, 100); setTimeout(() => clearInterval(boost), 30000); }, once: true, owned: false, icon: '🌿' },
+            { name: 'Feline Aura', baseCost: 50000, cost: 50000, effect: () => window.cpPerSecond *= 1.1, once: true, owned: false, icon: '✨' },
+            { name: 'Nine Lives', baseCost: 250000, cost: 250000, effect: () => Math.random() < 0.01 && (window.cp += window.cpPerClick * 8), once: false, owned: false, icon: '💖' },
+            { name: 'Cat Whisperer', baseCost: 1000000, cost: 1000000, effect: () => window.cpPerClick += window.cpPerSecond * 0.5, once: true, owned: false, icon: '👂' },
+            { name: 'Paw-some Efficiency', baseCost: 5000000, cost: 5000000, effect: () => window.cpPerSecond *= 1.25, once: true, owned: false, icon: '⚡' },
+            { name: 'Golden Fur', baseCost: 10000000, cost: 10000000, effect: () => Math.random() < 0.001 && (window.cp += window.cpPerSecond * 3600), once: false, owned: false, icon: '🏆' },
+            { name: 'Hyper Purr', baseCost: 50000000, cost: 50000000, effect: () => { let boost = setInterval(() => window.cp += window.cpPerSecond * 2, 1000); setTimeout(() => clearInterval(boost), 60000); }, once: true, owned: false, icon: '🚀' },
+            { name: 'Temporal Catnip', baseCost: 250000000, cost: 250000000, effect: () => { let boost = setInterval(() => window.cp += window.cpPerSecond, 1000); setTimeout(() => clearInterval(boost), 600000); }, once: true, owned: false, icon: '⏳' },
+            { name: 'Quantum Paws', baseCost: 1000000000, cost: 1000000000, effect: () => Math.random() < 0.02 && (window.cp += window.cpPerSecond * 10), once: false, owned: false, icon: '🔬' },
+            { name: 'Celestial Claws', baseCost: 5000000000, cost: 5000000000, effect: () => window.cpPerClick *= 1.5, once: true, owned: false, icon: '🌟' },
+            { name: 'Omniversal Meow', baseCost: 25000000000, cost: 25000000000, effect: () => Math.random() < 0.0001 && (window.cp += window.cpPerClick * 999), once: false, owned: false, icon: '🌌' },
+            { name: 'Purrfect Harmony', baseCost: 100000000000, cost: 100000000000, effect: () => window.cpPerSecond *= 1 + (window.helpers.reduce((a, h) => a + h.owned, 0) * 0.0015), once: true, owned: false, icon: '🎶' },
+            { name: 'Claw of Destiny', baseCost: 500000000000, cost: 500000000000, effect: () => { let boost = setInterval(() => window.cp += window.cpPerClick * 4, 100); setTimeout(() => clearInterval(boost), 60000); }, once: true, owned: false, icon: '⚔️' }
         ];
         const breedBonuses = {
-            'Tabby': () => legacyMultiplier *= 1.01,
-            'Siamese': () => cpPerClick *= 1.02,
-            'Persian': () => cpPerSecond *= 1.03,
-            'Maine Coon': () => Math.random() < 0.05 && (cp += cpPerSecond * 3600),
-            'Sphynx': () => Math.random() < 0.01 && (cp += cpPerClick),
-            'Bengal': () => cpPerClick *= 1.1,
-            'Ragdoll': () => cpPerSecond *= 1 + (helpers.reduce((a, h) => a + h.owned, 0) * 0.0002),
-            'Abyssinian': () => clickUpgrades.forEach(u => u.cost *= 0.99),
-            'Scottish Fold': () => legacyMultiplier *= 1.05,
-            'Norwegian Forest': () => legacyMultiplier *= 1 + (resets * 0.03)
+            'Tabby': () => window.legacyMultiplier *= 1.01,
+            'Siamese': () => window.cpPerClick *= 1.02,
+            'Persian': () => window.cpPerSecond *= 1.03,
+            'Maine Coon': () => Math.random() < 0.05 && (window.cp += window.cpPerSecond * 3600),
+            'Sphynx': () => Math.random() < 0.01 && (window.cp += window.cpPerClick),
+            'Bengal': () => window.cpPerClick *= 1.1,
+            'Ragdoll': () => window.cpPerSecond *= 1 + (window.helpers.reduce((a, h) => a + h.owned, 0) * 0.0002),
+            'Abyssinian': () => window.clickUpgrades.forEach(u => u.cost *= 0.99),
+            'Scottish Fold': () => window.legacyMultiplier *= 1.05,
+            'Norwegian Forest': () => window.legacyMultiplier *= 1 + (window.resets * 0.03)
         };
 
         // DOM Elements
@@ -537,10 +542,10 @@
 
         // Function to update notification dots with counts
         function updateNotifications() {
-            const clickCount = clickUpgrades.filter(u => cp >= u.cost && u.owned < 100).length;
-            const helperCount = helpers.filter(h => cp >= h.cost && h.owned < 100).length;
-            const specialCount = specials.filter(s => cp >= s.cost && (!s.once || !s.owned)).length;
-            const canReset = cp >= (50000 * Math.pow(15, resets));
+            const clickCount = window.clickUpgrades.filter(u => window.cp >= u.cost && u.owned < 100).length;
+            const helperCount = window.helpers.filter(h => window.cp >= h.cost && h.owned < 100).length;
+            const specialCount = window.specials.filter(s => window.cp >= s.cost && (!s.once || !s.owned)).length;
+            const canReset = window.cp >= (50000 * Math.pow(15, window.resets));
             clickNotif.textContent = clickCount || '';
             helperNotif.textContent = helperCount || '';
             specialNotif.textContent = specialCount || '';
@@ -553,19 +558,19 @@
 
         // Function to update background based on resets
         function updateBackground() {
-            const backgroundIndex = Math.floor(resets / 5) % backgroundGradients.length;
+            const backgroundIndex = Math.floor(window.resets / 5) % backgroundGradients.length;
             document.body.style.background = backgroundGradients[backgroundIndex];
         }
 
         // Function to update all displayed values
         function updateDisplay() {
-            cpCounter.textContent = `Meow Coins: ${formatCP(cp)} MC`;
-            cpsDisplay.textContent = `${formatCP(cpPerSecond)} MC/s`;
-            multiplierDisplay.textContent = `Multiplier: x${legacyMultiplier.toFixed(2)}`;
-            resetBtn.textContent = `Reset (${formatCP(50000 * Math.pow(15, resets))} MC)`;
-            resetCount.textContent = `Resets: ${resets}`;
-            breedInfo.textContent = `Breed: ${breeds[breeds.length - 1]} (${breeds.length > 1 ? '+Unique Bonus' : '+1% MC'})`;
-            document.title = `${formatCP(cp)} Meow Coins - Cat Clicker`;
+            cpCounter.textContent = `Meow Coins: ${formatCP(window.cp)} MC`;
+            cpsDisplay.textContent = `${formatCP(window.cpPerSecond)} MC/s`;
+            multiplierDisplay.textContent = `Multiplier: x${window.legacyMultiplier.toFixed(2)}`;
+            resetBtn.textContent = `Reset (${formatCP(50000 * Math.pow(15, window.resets))} MC)`;
+            resetCount.textContent = `Resets: ${window.resets}`;
+            breedInfo.textContent = `Breed: ${window.breeds[window.breeds.length - 1]} (${window.breeds.length > 1 ? '+Unique Bonus' : '+1% MC'})`;
+            document.title = `${formatCP(window.cp)} Meow Coins - Cat Clicker`;
             populatePanels();
             updateNotifications();
             updateBackground();
@@ -573,26 +578,26 @@
 
         // Function to populate upgrade panels with buttons and owned count
         function populatePanels() {
-            clickUpgradesList.innerHTML = clickUpgrades.map(u =>
-                `<div class="upgrade-row"><button class="${cp >= u.cost ? 'affordable' : ''}" onclick="buyClickUpgrade('${u.name}')">${u.icon} ${u.name} (x${u.owned}) <span>${formatCP(u.cost)} MC</span></button>` +
+            clickUpgradesList.innerHTML = window.clickUpgrades.map(u =>
+                `<div class="upgrade-row"><button class="${window.cp >= u.cost ? 'affordable' : ''}" onclick="buyClickUpgrade('${u.name}')">${u.icon} ${u.name} (x${u.owned}) <span>${formatCP(u.cost)} MC</span></button>` +
                 `<button class="upgrade-all-btn" onclick="buyAllClickUpgrade('${u.name}')">All</button></div>`
             ).join('');
-            helpersList.innerHTML = helpers.map(h =>
-                `<div class="upgrade-row"><button class="${cp >= h.cost ? 'affordable' : ''}" onclick="buyHelper('${h.name}')">${h.icon} ${h.name} (x${h.owned}) <span>${formatCP(h.cost)} MC</span></button>` +
+            helpersList.innerHTML = window.helpers.map(h =>
+                `<div class="upgrade-row"><button class="${window.cp >= h.cost ? 'affordable' : ''}" onclick="buyHelper('${h.name}')">${h.icon} ${h.name} (x${h.owned}) <span>${formatCP(h.cost)} MC</span></button>` +
                 `<button class="upgrade-all-btn" onclick="buyAllHelper('${h.name}')">All</button></div>`
             ).join('');
-            specialsList.innerHTML = specials.map(s =>
-                `<div class="upgrade-row"><button class="${cp >= s.cost ? 'affordable' : ''}" onclick="buySpecial('${s.name}')" ${s.owned && s.once ? 'disabled' : ''}>${s.icon} ${s.name} ${s.owned ? '(x1)' : ''} <span>${formatCP(s.cost)} MC</span></button>` +
+            specialsList.innerHTML = window.specials.map(s =>
+                `<div class="upgrade-row"><button class="${window.cp >= s.cost ? 'affordable' : ''}" onclick="buySpecial('${s.name}')" ${s.owned && s.once ? 'disabled' : ''}>${s.icon} ${s.name} ${s.owned ? '(x1)' : ''} <span>${formatCP(s.cost)} MC</span></button>` +
                 `<button class="upgrade-all-btn" onclick="buyAllSpecial('${s.name}')" ${s.owned && s.once ? 'disabled' : ''}>All</button></div>`
             ).join('');
         }
 
         // Function to buy a clicking upgrade
         function buyClickUpgrade(name) {
-            const upgrade = clickUpgrades.find(u => u.name === name);
-            if (cp >= upgrade.cost) {
-                cp -= upgrade.cost;
-                cpPerClick += upgrade.boost;
+            const upgrade = window.clickUpgrades.find(u => u.name === name);
+            if (window.cp >= upgrade.cost) {
+                window.cp -= upgrade.cost;
+                window.cpPerClick += upgrade.boost;
                 upgrade.owned++;
                 upgrade.cost = upgrade.baseCost * Math.pow(1.15, upgrade.owned);
                 updateDisplay();
@@ -601,11 +606,11 @@
 
         // Function to buy multiple clicking upgrades
         function buyAllClickUpgrade(name) {
-            const upgrade = clickUpgrades.find(u => u.name === name);
+            const upgrade = window.clickUpgrades.find(u => u.name === name);
             let count = 0;
-            while (cp >= upgrade.cost && count < 100 - upgrade.owned) {
-                cp -= upgrade.cost;
-                cpPerClick += upgrade.boost;
+            while (window.cp >= upgrade.cost && count < 100 - upgrade.owned) {
+                window.cp -= upgrade.cost;
+                window.cpPerClick += upgrade.boost;
                 upgrade.owned++;
                 upgrade.cost = upgrade.baseCost * Math.pow(1.15, upgrade.owned);
                 count++;
@@ -615,10 +620,10 @@
 
         // Function to buy a helper
         function buyHelper(name) {
-            const helper = helpers.find(h => h.name === name);
-            if (cp >= helper.cost) {
-                cp -= helper.cost;
-                cpPerSecond += helper.cps;
+            const helper = window.helpers.find(h => h.name === name);
+            if (window.cp >= helper.cost) {
+                window.cp -= helper.cost;
+                window.cpPerSecond += helper.cps;
                 helper.owned++;
                 helper.cost = helper.baseCost * Math.pow(1.15, helper.owned);
                 updateDisplay();
@@ -627,11 +632,11 @@
 
         // Function to buy multiple helpers
         function buyAllHelper(name) {
-            const helper = helpers.find(h => h.name === name);
+            const helper = window.helpers.find(h => h.name === name);
             let count = 0;
-            while (cp >= helper.cost && count < 100 - helper.owned) {
-                cp -= helper.cost;
-                cpPerSecond += helper.cps;
+            while (window.cp >= helper.cost && count < 100 - helper.owned) {
+                window.cp -= helper.cost;
+                window.cpPerSecond += helper.cps;
                 helper.owned++;
                 helper.cost = helper.baseCost * Math.pow(1.15, helper.owned);
                 count++;
@@ -641,9 +646,9 @@
 
         // Function to buy a special upgrade
         function buySpecial(name) {
-            const special = specials.find(s => s.name === name);
-            if (cp >= special.cost && (!special.once || !special.owned)) {
-                cp -= special.cost;
+            const special = window.specials.find(s => s.name === name);
+            if (window.cp >= special.cost && (!special.once || !special.owned)) {
+                window.cp -= special.cost;
                 special.effect();
                 special.owned = true;
                 special.cost = special.baseCost * Math.pow(1.15, special.owned ? 1 : 0);
@@ -653,10 +658,10 @@
 
         // Function to buy multiple special upgrades
         function buyAllSpecial(name) {
-            const special = specials.find(s => s.name === name);
+            const special = window.specials.find(s => s.name === name);
             let count = 0;
-            while (cp >= special.cost && (!special.once || !special.owned)) {
-                cp -= special.cost;
+            while (window.cp >= special.cost && (!special.once || !special.owned)) {
+                window.cp -= special.cost;
                 special.effect();
                 special.owned = true;
                 special.cost = special.baseCost * Math.pow(1.15, special.owned ? 1 : 0);
@@ -668,23 +673,23 @@
 
         // Function to reset the game for prestige with multiplier and price reset
         function resetGame() {
-            const resetCost = 50000 * Math.pow(15, resets);
-            if (cp >= resetCost) {
-                const cpBeforeReset = cp;
-                resets++;
-                cp = 0;
-                cpPerClick = 1;
-                cpPerSecond = 0;
-                legacyMultiplier = 1;
-                clickUpgrades.forEach(u => { u.owned = 0; u.cost = u.baseCost; });
-                helpers.forEach(h => { h.owned = 0; h.cost = h.baseCost; });
-                specials.forEach(s => { s.owned = false; s.cost = s.baseCost; });
-                legacyMultiplier *= 1 + (cpBeforeReset / 10000 * 0.01);
+            const resetCost = 50000 * Math.pow(15, window.resets);
+            if (window.cp >= resetCost) {
+                const cpBeforeReset = window.cp;
+                window.resets++;
+                window.cp = 0;
+                window.cpPerClick = 1;
+                window.cpPerSecond = 0;
+                window.legacyMultiplier = 1;
+                window.clickUpgrades.forEach(u => { u.owned = 0; u.cost = u.baseCost; });
+                window.helpers.forEach(h => { h.owned = 0; h.cost = h.baseCost; });
+                window.specials.forEach(s => { s.owned = false; s.cost = s.baseCost; });
+                window.legacyMultiplier *= 1 + (cpBeforeReset / 10000 * 0.01);
                 cat.style.color = colors[Math.floor(Math.random() * colors.length)];
-                const newBreed = resets === 1 ? 'Siamese' : resets === 2 ? 'Persian' : resets === 3 ? 'Maine Coon' :
-                                resets === 4 ? 'Sphynx' : resets === 5 ? 'Bengal' : resets === 6 ? 'Ragdoll' :
-                                resets === 7 ? 'Abyssinian' : resets === 8 ? 'Scottish Fold' : resets === 9 ? 'Norwegian Forest' : `Cosmic Cat ${resets}`;
-                breeds.push(newBreed);
+                const newBreed = window.resets === 1 ? 'Siamese' : window.resets === 2 ? 'Persian' : window.resets === 3 ? 'Maine Coon' :
+                                window.resets === 4 ? 'Sphynx' : window.resets === 5 ? 'Bengal' : window.resets === 6 ? 'Ragdoll' :
+                                window.resets === 7 ? 'Abyssinian' : window.resets === 8 ? 'Scottish Fold' : window.resets === 9 ? 'Norwegian Forest' : `Cosmic Cat ${window.resets}`;
+                window.breeds.push(newBreed);
                 Object.values(breedBonuses).forEach(b => b());
                 updateStory();
                 updateDisplay();
@@ -693,11 +698,11 @@
 
         // Function to update the story log based on resets
         function updateStory() {
-            if (resets === 0) storyLog.textContent = '“Your cat’s purrs seem oddly powerful...”';
-            else if (resets <= 5) storyLog.textContent = '“Your cats reveal a cosmic destiny...”';
-            else if (resets <= 20) storyLog.textContent = '“The Catnip Nexus calls across galaxies...”';
-            else if (resets <= 50) storyLog.textContent = '“The Dog Dimension falls to your feline might...”';
-            else if (resets <= 100) storyLog.textContent = '“Void Mice tremble before your multiverse empire...”';
+            if (window.resets === 0) storyLog.textContent = '“Your cat’s purrs seem oddly powerful...”';
+            else if (window.resets <= 5) storyLog.textContent = '“Your cats reveal a cosmic destiny...”';
+            else if (window.resets <= 20) storyLog.textContent = '“The Catnip Nexus calls across galaxies...”';
+            else if (window.resets <= 50) storyLog.textContent = '“The Dog Dimension falls to your feline might...”';
+            else if (window.resets <= 100) storyLog.textContent = '“Void Mice tremble before your multiverse empire...”';
             else storyLog.textContent = '“Purrfinity achieved—reality bends to your cats’ will!”';
         }
 
@@ -710,13 +715,6 @@
             document.getElementById(panelId).classList.remove('hidden');
             document.querySelector(`.tab[onclick="showPanel('${panelId}')"]`).classList.add('active');
             document.getElementById(panelId).scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Enhanced email validation function
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const hasAtSymbol = email.includes('@');
-            return emailRegex.test(email) && hasAtSymbol;
         }
 
         // Function to spawn rainbow cat bonus
@@ -732,11 +730,11 @@
             rainbowCat.addEventListener('click', () => {
                 if (!bonusActive) {
                     bonusActive = true;
-                    const originalMultiplier = legacyMultiplier;
-                    legacyMultiplier *= 2;
+                    const originalMultiplier = window.legacyMultiplier;
+                    window.legacyMultiplier *= 2;
                     updateDisplay();
                     setTimeout(() => {
-                        legacyMultiplier = originalMultiplier;
+                        window.legacyMultiplier = originalMultiplier;
                         updateDisplay();
                     }, 10000);
                     rainbowCat.remove();
@@ -752,18 +750,18 @@
 
         // Event Listeners
         cat.addEventListener('click', () => {
-            cp += cpPerClick * legacyMultiplier;
+            window.cp += window.cpPerClick * window.legacyMultiplier;
             updateDisplay();
-            specials.forEach(s => !s.once && s.owned && s.effect());
+            window.specials.forEach(s => !s.once && s.owned && s.effect());
         });
         resetBtn.addEventListener('click', resetGame);
         accountBtn.addEventListener('click', toggleAccountPanel);
-        saveBtn.addEventListener('click', saveProgress);
-        loadBtn.addEventListener('click', loadProgress);
+        saveBtn.addEventListener('click', window.saveProgress);
+        loadBtn.addEventListener('click', window.loadProgress);
 
         // Start the game loop and rainbow cat spawn
         setInterval(() => {
-            cp += cpPerSecond * legacyMultiplier;
+            window.cp += window.cpPerSecond * window.legacyMultiplier;
             updateDisplay();
         }, 1000);
 
@@ -772,8 +770,9 @@
         updateDisplay();
         spawnRainbowCat();
 
-        // Load account.js for account management
-        document.write('<script src="account.js"></script>');
+        // Expose updateDisplay for account.js
+        window.updateDisplay = updateDisplay;
     </script>
+    <script src="account.js"></script>
 </body>
 </html>
