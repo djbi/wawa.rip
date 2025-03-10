@@ -2,223 +2,76 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background-color: black; /* Changed to basic black background */
+    background-color: black;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     overflow: hidden;
-    touch-action: manipulation;
 }
 
-#enter-screen, #coin-screen, #clicker-screen {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-#enter-screen {
-    display: flex;
-}
-
-#ip-display, #ip-display-coin, #ip-display-clicker {
-    font-size: 2rem;
+#game-container {
     text-align: center;
-    margin-bottom: 20px;
-    animation: glow 0.3s infinite alternate;
 }
 
-#enter-btn {
-    padding: 15px 30px;
+#score-display, #per-second {
     font-size: 1.5rem;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    margin: 10px 0;
 }
 
-#enter-btn:hover {
-    background-color: #45a049;
-}
-
-#visit-counter {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    display: flex;
-    align-items: center;
-    animation: counterGlow 1s infinite alternate;
-}
-
-#eye-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 5px;
-    cursor: pointer;
-}
-
-#count {
-    font-size: 1rem;
-}
-
-#coin-choice {
-    display: flex;
-    gap: 20px;
-}
-
-.coin-btn {
-    padding: 15px 30px;
-    font-size: 1.5rem;
-    background-color: #2196F3;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.coin-btn:hover {
-    background-color: #1976D2;
-}
-
-#clicker-game {
-    display: flex;
-    width: 80%;
-    max-width: 1200px;
-}
-
-#clicker-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-#clicker-ip {
-    font-size: 5rem;
+#button {
+    font-size: 3rem;
+    padding: 20px 40px;
+    background-color: #f0e68c;
+    border: 2px solid #d2b48c;
+    border-radius: 50%;
     cursor: pointer;
     user-select: none;
     transition: transform 0.1s;
 }
 
-#clicker-ip:active {
+#button:active {
     transform: scale(0.95);
 }
 
-#multiplier-counter, #clicker-score, #per-second {
-    font-size: 1.2rem;
-    margin: 10px 0;
+#upgrade-container {
+    margin-top: 20px;
 }
 
-#sidebar {
-    width: 300px;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.7);
-    overflow-y: auto;
-    max-height: 80vh;
-}
-
-.upgrade-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.upgrade-btn, .max-btn, .multiplier-btn {
-    padding: 10px;
-    background-color: #FF9800;
+.upgrade-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #4CAF50;
     border: none;
     border-radius: 5px;
+    color: white;
     cursor: pointer;
     transition: background-color 0.3s;
-    width: 100%;
-    text-align: left;
-    display: flex;
-    justify-content: space-between;
 }
 
-.upgrade-btn:hover, .max-btn:hover, .multiplier-btn:hover {
-    background-color: #F57C00;
+.upgrade-btn:hover {
+    background-color: #45a049;
 }
 
-.max-btn {
-    width: 60px;
-    margin-left: 10px;
-    background-color: #9C27B0;
-}
-
-.max-btn:hover {
-    background-color: #7B1FA2;
-}
-
-.upgrade-count {
-    margin-left: 10px;
-    font-size: 1rem;
-}
-
-@keyframes glow {
-    from {
-        text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00, 0 0 15px #00FF00, 0 0 20px #FF00FF;
-    }
-    to {
-        text-shadow: 0 0 5px #FF00FF, 0 0 10px #FF00FF, 0 0 15px #FF00FF, 0 0 20px #00FF00;
-    }
-}
-
-@keyframes counterGlow {
-    from {
-        text-shadow: 0 0 5px #FF0000, 0 0 10px #FF0000;
-    }
-    to {
-        text-shadow: 0 0 5px #0000FF, 0 0 10px #0000FF;
-    }
-}
-
-@keyframes flash {
-    50% { background-color: red; }
+.upgrade-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
-    #clicker-game {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #sidebar {
-        width: 100%;
-        max-height: 50vh;
-    }
-
-    #clicker-ip {
-        font-size: 3rem;
-    }
-}
-
-@media (max-width: 480px) {
-    #clicker-ip {
+    #button {
         font-size: 2rem;
+        padding: 15px 30px;
     }
 
-    #enter-btn, .coin-btn {
-        padding: 10px 20px;
+    #score-display, #per-second {
         font-size: 1.2rem;
     }
-}
 
-@media (orientation: landscape) and (max-height: 500px) {
-    #clicker-game {
-        flex-direction: row;
-    }
-
-    #sidebar {
-        max-height: 70vh;
+    .upgrade-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
     }
 }
