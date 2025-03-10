@@ -2,18 +2,633 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cookie Clicker Concept</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Clicker</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #87CEEB, #4682B4);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        #container {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><line x1="0" y1="0" x2="0" y2="100" stroke="%23466D87" stroke-width="5"/><line x1="10" y1="0" x2="10" y2="100" stroke="%23466D87" stroke-width="5"/></svg>') repeat-y;
+            background-size: 20px;
+        }
+        #cat-area {
+            position: sticky;
+            top: 0;
+            width: 40%;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(to bottom, #87CEEB, #B0E0E6);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        #cat {
+            font-size: 200px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            display: inline-block;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        #cat:active { transform: scale(0.95); }
+        #cp-counter {
+            font-size: 24px;
+            margin: 10px 0;
+            background: #FFD700;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        #cps-display {
+            font-size: 18px;
+            color: #fff;
+            background: #4682B4;
+            padding: 3px 8px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        #middle-section {
+            width: 30%;
+            padding: 10px;
+            background: #3A1C1A;
+            color: #fff;
+            border-left: 2px solid #8B4513;
+            border-right: 2px solid #8B4513;
+            height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #middle-section h2 {
+            font-size: 20px;
+            margin: 0 0 10px;
+            border-bottom: 2px solid #DAA520;
+            color: #FFD700;
+        }
+        #story-log {
+            font-style: italic;
+            margin-top: 10px;
+            background: #5A2E2C;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        #panels {
+            width: 30%;
+            padding: 10px;
+            background: #3A1C1A;
+            color: #fff;
+            border-left: 2px solid #8B4513;
+            height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #tabs {
+            display: flex;
+            justify-content: space-around;
+            background: #8B4513;
+            padding: 5px 0;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        .tab {
+            padding: 5px 10px;
+            background: #DEB887;
+            border: 1px solid #5C4033;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            transition: background 0.3s;
+            position: relative;
+        }
+        .tab:hover { background: #FFD700; }
+        .tab.active { background: #FFD700; font-weight: bold; }
+        .notification {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 10px;
+            height: 10px;
+            background: red;
+            border-radius: 50%;
+            display: none;
+        }
+        .tab.has-notification .notification { display: block; }
+        .panel {
+            background: #8B4513;
+            border: 2px solid #5C4033;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            display: block;
+        }
+        .panel.hidden { display: none; }
+        @media (max-width: 600px) {
+            .panel {
+                height: 150px; /* Match Legacy panel size on mobile */
+                overflow-y: auto;
+            }
+            button { font-size: 12px; } /* Smaller font for compact layout */
+            .upgrade-all-btn { font-size: 10px; } /* Smaller font for compact layout */
+            #cat { font-size: 150px; }
+            #container { flex-direction: column; }
+            #cat-area, #middle-section, #panels { width: 100%; height: auto; }
+            #tabs { flex-wrap: wrap; }
+            .tab { font-size: 12px; padding: 3px 5px; }
+        }
+        .panel h2 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #FFD700;
+            border-bottom: 1px solid #DAA520;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 40px; /* Adjust for tabs */
+            background: #8B4513;
+            padding: 5px 0;
+            z-index: 1;
+        }
+        .toggle-btn {
+            cursor: pointer;
+            background: #DAA520;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .sort-btn {
+            cursor: pointer;
+            background: #4682B4;
+            color: #fff;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .upgrade-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 3px 0;
+        }
+        button {
+            width: 70%;
+            padding: 5px;
+            background: linear-gradient(to bottom, #DEB887, #CD853F);
+            border: 1px solid #8B4513;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: left;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            transition: background 0.3s, border 0.3s;
+        }
+        button:hover { background: linear-gradient(to bottom, #FFD700, #DAA520); }
+        button:disabled {
+            background: #8B5F45;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        button.affordable { border: 2px solid #32CD32; }
+        .upgrade-all-btn {
+            width: 25%;
+            padding: 5px;
+            background: linear-gradient(to bottom, #32CD32, #228B22);
+            border: 1px solid #006400;
+            cursor: pointer;
+            font-size: 12px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .upgrade-all-btn:hover { background: linear-gradient(to bottom, #3CB371, #2E8B57); }
+        .upgrade-all-btn:disabled {
+            background: #556B2F;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+    </style>
 </head>
 <body>
-    <div id="game">
-        <h1>Cookie Clicker</h1>
-        <p>Cookies: <span id="cookie-counter">0</span></p>
-        <img id="cookie" src="img/cookie.png" alt="Cookie" width="200">
-        <div id="store">
-            <button id="upgrade-click">Upgrade Click (10 cookies)</button>
+    <div id="container">
+        <div id="cat-area">
+            <h1>Cat Clicker</h1>
+            <div id="cp-counter">Cat Points: 0 CP</div>
+            <div id="cps-display">0 CP/s</div>
+            <span id="cat">🐱</span>
+        </div>
+        <div id="middle-section">
+            <h2>Stats</h2>
+            <div id="story-log">“Your cat’s purrs seem oddly powerful...”</div>
+        </div>
+        <div id="panels">
+            <div id="tabs">
+                <div class="tab active" onclick="showPanel('click-upgrades')">
+                    Clicking <span class="notification" id="click-notif"></span>
+                </div>
+                <div class="tab" onclick="showPanel('helpers')">
+                    Helpers <span class="notification" id="helper-notif"></span>
+                </div>
+                <div class="tab" onclick="showPanel('specials')">
+                    Specials <span class="notification" id="special-notif"></span>
+                </div>
+                <div class="tab" onclick="showPanel('legacy')">
+                    Legacy <span class="notification" id="legacy-notif"></span>
+                </div>
+            </div>
+            <div class="panel" id="click-upgrades">
+                <h2>Clicking Upgrades <span class="toggle-btn" onclick="toggleSection('click-upgrades')">[-]</span> <span class="sort-btn" onclick="sortClickUpgrades()">Sort</span></h2>
+                <div class="upgrade-list" id="click-upgrades-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+            <div class="panel hidden" id="helpers">
+                <h2>Cat Helpers <span class="toggle-btn" onclick="toggleSection('helpers')">[-]</span> <span class="sort-btn" onclick="sortHelpers()">Sort</span></h2>
+                <div class="upgrade-list" id="helpers-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+            <div class="panel hidden" id="specials">
+                <h2>Special Upgrades <span class="toggle-btn" onclick="toggleSection('specials')">[-]</span> <span class="sort-btn" onclick="sortSpecials()">Sort</span></h2>
+                <div class="upgrade-list" id="specials-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+            <div class="panel hidden" id="legacy">
+                <h2>Catnip Legacy</h2>
+                <button id="reset-btn">Reset (10K CP)</button>
+                <p id="breed-info">Breed: Tabby (+1% CP)</p>
+                <p id="reset-count">Resets: 0</p>
+            </div>
         </div>
     </div>
-    <script src="main.js"></script>
+
+    <script>
+        // Game State
+        let cp = 0, cpPerClick = 1, cpPerSecond = 0, resets = 0, legacyMultiplier = 1, breeds = ['Tabby'];
+        const colors = ['#000000', '#ff0000', '#00ff00', '#0000ff', '#ff00ff', '#00ffff', '#ffff00', '#ff8000', '#8000ff'];
+        const prefixes = [
+            { name: '', value: 1 },
+            { name: 'K', value: 1e3 },
+            { name: 'M', value: 1e6 },
+            { name: 'B', value: 1e9 },
+            { name: 'T', value: 1e12 },
+            { name: 'Qa', value: 1e15 },
+            { name: 'Qi', value: 1e18 },
+            { name: 'Sx', value: 1e21 },
+            { name: 'Sp', value: 1e24 },
+            { name: 'Oc', value: 1e27 },
+            { name: 'No', value: 1e30 },
+            { name: 'Dc', value: 1e33 },
+            { name: 'Ud', value: 1e36 },
+            { name: 'Dd', value: 1e39 },
+            { name: 'Td', value: 1e42 },
+            { name: 'Qad', value: 1e45 },
+            { name: 'Qid', value: 1e48 },
+            { name: 'Sxd', value: 1e51 },
+            { name: 'Spd', value: 1e54 },
+            { name: 'Ocd', value: 1e57 },
+            { name: 'Nod', value: 1e60 },
+            { name: 'Vg', value: 1e63 },
+            { name: 'Uvg', value: 1e66 },
+            { name: 'Dvg', value: 1e69 },
+            { name: 'Tvg', value: 1e72 },
+            { name: 'Qavg', value: 1e75 },
+            { name: 'Qivg', value: 1e78 },
+            { name: 'Sxvg', value: 1e81 },
+            { name: 'Spvg', value: 1e84 },
+            { name: 'Ocvg', value: 1e87 },
+            { name: 'Novg', value: 1e90 },
+            { name: 'Tng', value: 1e93 },
+            { name: 'Qatng', value: 1e96 },
+            { name: 'Qitng', value: 1e99 },
+            { name: 'Sxtng', value: 1e102 },
+            { name: 'Sptng', value: 1e105 },
+            { name: 'Octng', value: 1e108 },
+            { name: 'Notng', value: 1e111 },
+            { name: 'Cent', value: 1e114 },
+            { name: 'Decent', value: 1e117 },
+            { name: 'Novdec', value: 1e120 }
+        ];
+
+        // Data Structures with Initial Costs and Icons
+        const clickUpgrades = [
+            { name: 'Catnip Boost', baseCost: 50, cost: 50, boost: 1, owned: 0, icon: '🌿' },
+            { name: 'Laser Pointer', baseCost: 200, cost: 200, boost: 5, owned: 0, icon: '🔴' },
+            { name: 'Feather Wand', baseCost: 1000, cost: 1000, boost: 20, owned: 0, icon: '🪶' },
+            { name: 'Jingle Bell Ball', baseCost: 5000, cost: 5000, boost: 50, owned: 0, icon: '🔔' },
+            { name: 'Cardboard Box Trap', baseCost: 20000, cost: 20000, boost: 100, owned: 0, icon: '📦' },
+            { name: 'Cat Tree Scratcher', baseCost: 75000, cost: 75000, boost: 250, owned: 0, icon: '🌳' },
+            { name: 'Robot Mouse', baseCost: 250000, cost: 250000, boost: 500, owned: 0, icon: '🤖' },
+            { name: 'Hovering Drone Toy', baseCost: 1000000, cost: 1000000, boost: 1000, owned: 0, icon: '🚁' },
+            { name: 'Treat Dispenser', baseCost: 5000000, cost: 5000000, boost: 2500, owned: 0, icon: '🍖' },
+            { name: 'Catnip Cannon', baseCost: 25000000, cost: 25000000, boost: 10000, owned: 0, icon: '💥' },
+            { name: 'Paw-Powered Generator', baseCost: 100000000, cost: 100000000, boost: 50000, owned: 0, icon: '⚡' },
+            { name: 'Quantum Whisker', baseCost: 500000000, cost: 500000000, boost: 250000, owned: 0, icon: '🔬' },
+            { name: 'Cosmic Yarn Ball', baseCost: 2500000000, cost: 2500000000, boost: 1000000, owned: 0, icon: '🪐' },
+            { name: 'Stellar Scratcher', baseCost: 10000000000, cost: 10000000000, boost: 5000000, owned: 0, icon: '⭐' },
+            { name: 'Nebula Nip', baseCost: 50000000000, cost: 50000000000, boost: 25000000, owned: 0, icon: '🌌' },
+            { name: 'Black Hole Bell', baseCost: 250000000000, cost: 250000000000, boost: 100000000, owned: 0, icon: '🕳️' },
+            { name: 'Purrtron 3000', baseCost: 1000000000000, cost: 1000000000000, boost: 500000000, owned: 0, icon: '⚙️' },
+            { name: 'Galactic Feather', baseCost: 5000000000000, cost: 5000000000000, boost: 2500000000, owned: 0, icon: '🌠' },
+            { name: 'Void Whisker', baseCost: 25000000000000, cost: 25000000000000, boost: 10000000000, owned: 0, icon: '🖤' },
+            { name: 'Infinity Scratcher', baseCost: 100000000000000, cost: 100000000000000, boost: 50000000000, owned: 0, icon: '♾️' },
+            { name: 'Paw of Eternity', baseCost: 500000000000000, cost: 500000000000000, boost: 250000000000, owned: 0, icon: '⏳' },
+            { name: 'Meowgaverse Manipulator', baseCost: 2500000000000000, cost: 2500000000000000, boost: 1000000000000, owned: 0, icon: '🌍' }
+        ];
+        const helpers = [
+            { name: 'Kitten', baseCost: 100, cost: 100, cps: 1, owned: 0, icon: '🐾' },
+            { name: 'Stray Cat', baseCost: 500, cost: 500, cps: 5, owned: 0, icon: '🐱' },
+            { name: 'Cat Tower', baseCost: 2500, cost: 2500, cps: 25, owned: 0, icon: '🏰' },
+            { name: 'Cat Cafe', baseCost: 10000, cost: 10000, cps: 100, owned: 0, icon: '☕' },
+            { name: 'Feline Army', baseCost: 50000, cost: 50000, cps: 500, owned: 0, icon: '🐯' },
+            { name: 'Cat Shelter', baseCost: 200000, cost: 200000, cps: 2000, owned: 0, icon: '🏠' },
+            { name: 'Kitty Daycare', baseCost: 1000000, cost: 1000000, cps: 10000, owned: 0, icon: '🍼' },
+            { name: 'Catnip Farm', baseCost: 5000000, cost: 5000000, cps: 50000, owned: 0, icon: '🌾' },
+            { name: 'Feline Metropolis', baseCost: 25000000, cost: 25000000, cps: 250000, owned: 0, icon: '🏙️' },
+            { name: 'Cat Planet', baseCost: 100000000, cost: 100000000, cps: 1000000, owned: 0, icon: '🪐' },
+            { name: 'Cat Moon Base', baseCost: 500000000, cost: 500000000, cps: 5000000, owned: 0, icon: '🌙' },
+            { name: 'Interstellar Cat Fleet', baseCost: 2500000000, cost: 2500000000, cps: 25000000, owned: 0, icon: '🚀' },
+            { name: 'Galactic Cat Empire', baseCost: 10000000000, cost: 10000000000, cps: 100000000, owned: 0, icon: '👑' },
+            { name: 'Multiverse Cat Nexus', baseCost: 50000000000, cost: 50000000000, cps: 500000000, owned: 0, icon: '🌐' },
+            { name: 'Omnipotent Cat God', baseCost: 250000000000, cost: 250000000000, cps: 2500000000, owned: 0, icon: '🙏' },
+            { name: 'Quantum Cat Colony', baseCost: 1000000000000, cost: 1000000000000, cps: 10000000000, owned: 0, icon: '🔬' },
+            { name: 'Paw Nebula', baseCost: 5000000000000, cost: 5000000000000, cps: 50000000000, owned: 0, icon: '🌌' },
+            { name: 'Eternal Cat Void', baseCost: 25000000000000, cost: 25000000000000, cps: 250000000000, owned: 0, icon: '🖤' },
+            { name: 'Cosmic Cat Hierarchy', baseCost: 100000000000000, cost: 100000000000000, cps: 1000000000000, owned: 0, icon: '🌟' },
+            { name: 'Omni-Meow Overlords', baseCost: 500000000000000, cost: 500000000000000, cps: 5000000000000, owned: 0, icon: '👽' },
+            { name: 'Purrfinity Guardians', baseCost: 2500000000000000, cost: 2500000000000000, cps: 25000000000000, owned: 0, icon: '🛡️' },
+            { name: 'Clawsome Legion', baseCost: 10000000000000000, cost: 10000000000000000, cps: 100000000000000, owned: 0, icon: '⚔️' },
+            { name: 'Meowgaverse Monarchs', baseCost: 50000000000000000, cost: 50000000000000000, cps: 500000000000000, owned: 0, icon: '👑' },
+            { name: 'Felinefinity Sentinels', baseCost: 250000000000000000, cost: 250000000000000000, cps: 2500000000000000, owned: 0, icon: '🛡️' },
+            { name: 'Pawtacular Titans', baseCost: 1000000000000000000, cost: 1000000000000000000, cps: 10000000000000000, owned: 0, icon: '💪' }
+        ];
+        const specials = [
+            { name: 'Purr Multiplier', baseCost: 10000, cost: 10000, effect: () => legacyMultiplier *= 2, once: true, owned: false, icon: '🐾' },
+            { name: 'Whisker Luck', baseCost: 25000, cost: 25000, effect: () => Math.random() < 0.05 && (cp += cpPerClick * 2), once: false, owned: false, icon: '🍀' },
+            { name: 'Catnip Frenzy', baseCost: 100000, cost: 100000, effect: () => { let boost = setInterval(() => cp += cpPerClick * 10, 100); setTimeout(() => clearInterval(boost), 30000); }, once: true, owned: false, icon: '🌿' },
+            { name: 'Feline Aura', baseCost: 50000, cost: 50000, effect: () => cpPerSecond *= 1.1, once: true, owned: false, icon: '✨' },
+            { name: 'Nine Lives', baseCost: 250000, cost: 250000, effect: () => Math.random() < 0.01 && (cp += cpPerClick * 8), once: false, owned: false, icon: '💖' },
+            { name: 'Cat Whisperer', baseCost: 1000000, cost: 1000000, effect: () => cpPerClick += cpPerSecond * 0.5, once: true, owned: false, icon: '👂' },
+            { name: 'Paw-some Efficiency', baseCost: 5000000, cost: 5000000, effect: () => cpPerSecond *= 1.25, once: true, owned: false, icon: '⚡' },
+            { name: 'Golden Fur', baseCost: 10000000, cost: 10000000, effect: () => Math.random() < 0.001 && (cp += cpPerSecond * 3600), once: false, owned: false, icon: '🏆' },
+            { name: 'Hyper Purr', baseCost: 50000000, cost: 50000000, effect: () => { let boost = setInterval(() => cp += cpPerSecond * 2, 1000); setTimeout(() => clearInterval(boost), 60000); }, once: true, owned: false, icon: '🚀' },
+            { name: 'Temporal Catnip', baseCost: 250000000, cost: 250000000, effect: () => { let boost = setInterval(() => cp += cpPerSecond, 1000); setTimeout(() => clearInterval(boost), 600000); }, once: true, owned: false, icon: '⏳' },
+            { name: 'Quantum Paws', baseCost: 1000000000, cost: 1000000000, effect: () => Math.random() < 0.02 && (cp += cpPerSecond * 10), once: false, owned: false, icon: '🔬' },
+            { name: 'Celestial Claws', baseCost: 5000000000, cost: 5000000000, effect: () => cpPerClick *= 1.5, once: true, owned: false, icon: '🌟' },
+            { name: 'Omniversal Meow', baseCost: 25000000000, cost: 25000000000, effect: () => Math.random() < 0.0001 && (cp += cpPerClick * 999), once: false, owned: false, icon: '🌌' },
+            { name: 'Purrfect Harmony', baseCost: 100000000000, cost: 100000000000, effect: () => cpPerSecond *= 1 + (helpers.reduce((a, h) => a + h.owned, 0) * 0.0015), once: true, owned: false, icon: '🎶' },
+            { name: 'Claw of Destiny', baseCost: 500000000000, cost: 500000000000, effect: () => { let boost = setInterval(() => cp += cpPerClick * 4, 100); setTimeout(() => clearInterval(boost), 60000); }, once: true, owned: false, icon: '⚔️' }
+        ];
+        const breedBonuses = {
+            'Tabby': () => legacyMultiplier *= 1.01,
+            'Siamese': () => cpPerClick *= 1.02,
+            'Persian': () => cpPerSecond *= 1.03,
+            'Maine Coon': () => Math.random() < 0.05 && (cp += cpPerSecond * 3600),
+            'Sphynx': () => Math.random() < 0.01 && (cp += cpPerClick),
+            'Bengal': () => cpPerClick *= 1.1,
+            'Ragdoll': () => cpPerSecond *= 1 + (helpers.reduce((a, h) => a + h.owned, 0) * 0.0002),
+            'Abyssinian': () => clickUpgrades.forEach(u => u.cost *= 0.99),
+            'Scottish Fold': () => legacyMultiplier *= 1.05,
+            'Norwegian Forest': () => legacyMultiplier *= 1 + (resets * 0.03)
+        };
+
+        // DOM Elements
+        const cat = document.getElementById('cat');
+        const cpCounter = document.getElementById('cp-counter');
+        const cpsDisplay = document.getElementById('cps-display');
+        const storyLog = document.getElementById('story-log');
+        const clickPanel = document.getElementById('click-upgrades');
+        const helperPanel = document.getElementById('helpers');
+        const specialPanel = document.getElementById('specials');
+        const resetBtn = document.getElementById('reset-btn');
+        const breedInfo = document.getElementById('breed-info');
+        const resetCount = document.getElementById('reset-count');
+        const clickUpgradesList = document.getElementById('click-upgrades-list');
+        const helpersList = document.getElementById('helpers-list');
+        const specialsList = document.getElementById('specials-list');
+        const clickNotif = document.getElementById('click-notif');
+        const helperNotif = document.getElementById('helper-notif');
+        const specialNotif = document.getElementById('special-notif');
+        const legacyNotif = document.getElementById('legacy-notif');
+
+        // Functions
+        function formatCP(num) {
+            for (let i = prefixes.length - 1; i >= 0; i--) {
+                if (num >= prefixes[i].value) {
+                    return (num / prefixes[i].value).toFixed(1) + prefixes[i].name;
+                }
+            }
+            return num.toFixed(0);
+        }
+
+        function updateNotifications() {
+            const hasClickUpgrade = clickUpgrades.some(u => cp >= u.cost && u.owned < 100); // Cap at 100 for balance
+            const hasHelper = helpers.some(h => cp >= h.cost && h.owned < 100); // Cap at 100 for balance
+            const hasSpecial = specials.some(s => cp >= s.cost && (!s.once || !s.owned));
+            const canReset = cp >= (10000 * Math.pow(10, resets)); // Updated reset cost
+            clickPanel.classList.toggle('has-notification', hasClickUpgrade);
+            helperPanel.classList.toggle('has-notification', hasHelper);
+            specialPanel.classList.toggle('has-notification', hasSpecial);
+            legacyPanel.classList.toggle('has-notification', canReset);
+        }
+
+        function updateDisplay() {
+            cpCounter.textContent = `Cat Points: ${formatCP(cp)} CP`;
+            cpsDisplay.textContent = `${formatCP(cpPerSecond)} CP/s`;
+            resetBtn.textContent = `Reset (${formatCP(10000 * Math.pow(10, resets))} CP)`; // Updated reset cost
+            resetCount.textContent = `Resets: ${resets}`;
+            breedInfo.textContent = `Breed: ${breeds[breeds.length - 1]} (${breeds.length > 1 ? '+Unique Bonus' : '+1% CP'})`;
+            cat.style.color = colors[resets % colors.length];
+            populatePanels();
+            updateNotifications();
+        }
+
+        function populatePanels() {
+            clickUpgradesList.innerHTML = clickUpgrades.map(u =>
+                `<div class="upgrade-row"><button class="${cp >= u.cost ? 'affordable' : ''}" onclick="buyClickUpgrade('${u.name}')">${u.icon} ${u.name} <span>${formatCP(u.cost)} CP</span></button>` +
+                `<button class="upgrade-all-btn" onclick="buyAllClickUpgrade('${u.name}')">All</button></div>`
+            ).join('');
+            helpersList.innerHTML = helpers.map(h =>
+                `<div class="upgrade-row"><button class="${cp >= h.cost ? 'affordable' : ''}" onclick="buyHelper('${h.name}')">${h.icon} ${h.name} <span>${formatCP(h.cost)} CP</span></button>` +
+                `<button class="upgrade-all-btn" onclick="buyAllHelper('${h.name}')">All</button></div>`
+            ).join('');
+            specialsList.innerHTML = specials.map(s =>
+                `<div class="upgrade-row"><button class="${cp >= s.cost ? 'affordable' : ''}" onclick="buySpecial('${s.name}')" ${s.owned && s.once ? 'disabled' : ''}>${s.icon} ${s.name} <span>${formatCP(s.cost)} CP</span></button>` +
+                `<button class="upgrade-all-btn" onclick="buyAllSpecial('${s.name}')" ${s.owned && s.once ? 'disabled' : ''}>All</button></div>`
+            ).join('');
+        }
+
+        function buyClickUpgrade(name) {
+            const upgrade = clickUpgrades.find(u => u.name === name);
+            if (cp >= upgrade.cost) {
+                cp -= upgrade.cost;
+                cpPerClick += upgrade.boost;
+                upgrade.owned++;
+                upgrade.cost = upgrade.baseCost * Math.pow(1.15, upgrade.owned);
+                updateDisplay();
+            }
+        }
+
+        function buyAllClickUpgrade(name) {
+            const upgrade = clickUpgrades.find(u => u.name === name);
+            let count = 0;
+            while (cp >= upgrade.cost && count < 100 - upgrade.owned) { // Cap at 100
+                cp -= upgrade.cost;
+                cpPerClick += upgrade.boost;
+                upgrade.owned++;
+                upgrade.cost = upgrade.baseCost * Math.pow(1.15, upgrade.owned);
+                count++;
+            }
+            if (count > 0) updateDisplay();
+        }
+
+        function buyHelper(name) {
+            const helper = helpers.find(h => h.name === name);
+            if (cp >= helper.cost) {
+                cp -= helper.cost;
+                cpPerSecond += helper.cps;
+                helper.owned++;
+                helper.cost = helper.baseCost * Math.pow(1.15, helper.owned);
+                updateDisplay();
+            }
+        }
+
+        function buyAllHelper(name) {
+            const helper = helpers.find(h => h.name === name);
+            let count = 0;
+            while (cp >= helper.cost && count < 100 - helper.owned) { // Cap at 100
+                cp -= helper.cost;
+                cpPerSecond += helper.cps;
+                helper.owned++;
+                helper.cost = helper.baseCost * Math.pow(1.15, helper.owned);
+                count++;
+            }
+            if (count > 0) updateDisplay();
+        }
+
+        function buySpecial(name) {
+            const special = specials.find(s => s.name === name);
+            if (cp >= special.cost && (!special.once || !special.owned)) {
+                cp -= special.cost;
+                special.effect();
+                special.owned = true;
+                special.cost = special.baseCost * Math.pow(1.15, special.owned ? 1 : 0);
+                updateDisplay();
+            }
+        }
+
+        function buyAllSpecial(name) {
+            const special = specials.find(s => s.name === name);
+            let count = 0;
+            while (cp >= special.cost && (!special.once || !special.owned)) {
+                cp -= special.cost;
+                special.effect();
+                special.owned = true;
+                special.cost = special.baseCost * Math.pow(1.15, special.owned ? 1 : 0);
+                count++;
+                if (special.once) break;
+            }
+            if (count > 0) updateDisplay();
+        }
+
+        function resetGame() {
+            const resetCost = 10000 * Math.pow(10, resets); // Increased difficulty
+            if (cp >= resetCost) {
+                const cpBeforeReset = cp;
+                resets++;
+                cp = 0;
+                cpPerClick = 1;
+                cpPerSecond = 0;
+                clickUpgrades.forEach(u => { u.owned = 0; u.cost = u.baseCost; });
+                helpers.forEach(h => { h.owned = 0; h.cost = h.baseCost; });
+                specials.forEach(s => { s.owned = false; s.cost = s.baseCost; });
+                legacyMultiplier *= 1 + (cpBeforeReset / 10000 * 0.01);
+                const newBreed = resets === 1 ? 'Siamese' : resets === 2 ? 'Persian' : resets === 3 ? 'Maine Coon' :
+                                resets === 4 ? 'Sphynx' : resets === 5 ? 'Bengal' : resets === 6 ? 'Ragdoll' :
+                                resets === 7 ? 'Abyssinian' : resets === 8 ? 'Scottish Fold' : resets === 9 ? 'Norwegian Forest' : `Cosmic Cat ${resets}`;
+                breeds.push(newBreed);
+                Object.values(breedBonuses).forEach(b => b());
+                updateStory();
+                updateDisplay();
+            }
+        }
+
+        function updateStory() {
+            if (resets === 0) storyLog.textContent = '“Your cat’s purrs seem oddly powerful...”';
+            else if (resets <= 5) storyLog.textContent = '“Your cats reveal a cosmic destiny...”';
+            else if (resets <= 20) storyLog.textContent = '“The Catnip Nexus calls across galaxies...”';
+            else if (resets <= 50) storyLog.textContent = '“The Dog Dimension falls to your feline might...”';
+            else if (resets <= 100) storyLog.textContent = '“Void Mice tremble before your multiverse empire...”';
+            else storyLog.textContent = '“Purrfinity achieved—reality bends to your cats’ will!”';
+        }
+
+        // Navigation Functions
+        function toggleSection(sectionId) {
+            const panel = document.getElementById(sectionId);
+            const list = panel.querySelector('.upgrade-list');
+            const toggleBtn = panel.querySelector('.toggle-btn');
+            if (list.style.display === 'none') {
+                list.style.display = 'block';
+                toggleBtn.textContent = '[-]';
+            } else {
+                list.style.display = 'none';
+                toggleBtn.textContent = '[+]';
+            }
+        }
+
+        function showPanel(panelId) {
+            const panels = document.querySelectorAll('.panel');
+            const tabs = document.querySelectorAll('.tab');
+            panels.forEach(panel => panel.classList.add('hidden'));
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.getElementById(panelId).classList.remove('hidden');
+            document.querySelector(`.tab[onclick="showPanel('${panelId}')"]`).classList.add('active');
+            document.getElementById(panelId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function sortClickUpgrades() {
+            clickUpgrades.sort((a, b) => a.cost - b.cost);
+            updateDisplay();
+        }
+
+        function sortHelpers() {
+            helpers.sort((a, b) => a.cost - b.cost);
+            updateDisplay();
+        }
+
+        function sortSpecials() {
+            specials.sort((a, b) => a.cost - b.cost);
+            updateDisplay();
+        }
+
+        // Event Listeners
+        cat.addEventListener('click', () => {
+            cp += cpPerClick * legacyMultiplier;
+            updateDisplay();
+            specials.forEach(s => !s.once && s.owned && s.effect());
+        });
+        resetBtn.addEventListener('click', resetGame);
+
+        // Game Loop
+        setInterval(() => {
+            cp += cpPerSecond * legacyMultiplier;
+            updateDisplay();
+        }, 1000);
+
+        // Initial Setup
+        populatePanels();
+        updateDisplay();
+    </script>
 </body>
 </html>
